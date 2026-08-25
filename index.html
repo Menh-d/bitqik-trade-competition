@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bitqik Trade Championship | Alternative Investment for Futures</title>
+  <meta name="description" content="ການແຂ່ງຂັນ Trade Future ສຸດຍອດ ຊິງລາງວັນກວ່າ $6,000+ — MacBook Neo, Meta Glasses ແລະ ອີກຫຼາຍ!" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+Lao:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #FFD700;
+      --gold-light: #FFE94D;
+      --gold-dark: #B8860B;
+      --green: #00FF88;
+      --green-dim: #00C96B;
+      --red: #FF4060;
+      --bg-deep: #030712;
+      --bg-glass: rgba(255, 255, 255, 0.04);
+      --bg-glass-strong: rgba(18, 26, 53, 0.65);
+      --border: rgba(255, 215, 0, 0.22);
+      --border-green: rgba(0, 255, 136, 0.25);
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --text: #F1F5F9;
+      --text-dim: #94A3B8;
+      --font-en: 'Outfit', sans-serif;
+      --font-lo: 'Noto Sans Lao', 'Outfit', sans-serif;
+      --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-lo); background: var(--bg-deep); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+
+    /* ANIMATED BG */
+    .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 45% at 50% -10%, rgba(255,215,0,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 85% 90%, rgba(0,255,136,0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #030712 0%, #080d24 50%, #030712 100%); }
+    .grid-lines { position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: linear-gradient(rgba(255,215,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,215,0,0.03) 1px, transparent 1px);
+      background-size: 50px 50px; animation: gridPan 35s linear infinite; }
+    @keyframes gridPan { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
+
+    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+    .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0; }
+    @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 15% { opacity: 0.7; } 85% { opacity: 0.3; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
+
+    .wrapper { position: relative; z-index: 1; }
+
+    /* GLASS DYNAMIC LOGO COMPONENT */
+    .glass-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2);
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-logo:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+      box-shadow: 0 15px 35px rgba(255,215,0,0.2), inset 0 1px 1px rgba(255,255,255,0.4);
+    }
+    .glass-logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--green));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 900; color: #000;
+      box-shadow: 0 4px 12px rgba(255,215,0,0.3);
+    }
+    .glass-logo-text { display: flex; flex-direction: column; text-align: left; }
+    .glass-logo-title {
+      font-family: var(--font-en); font-weight: 900; font-size: 1.15rem; letter-spacing: 0.05em; line-height: 1;
+      background: linear-gradient(135deg, #FFF, var(--gold-light), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .glass-logo-sub { font-family: var(--font-en); font-size: 0.62rem; font-weight: 700; color: var(--green); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 2px; }
+
+    /* NAV */
+    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 2.5rem;
+      background: rgba(3, 7, 18, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,215,0,0.15); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; padding: 0.4rem 0.8rem; border-radius: 8px; }
+    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .nav-links a.active-link { color: var(--gold); background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25); }
+
+    .nav-cta {
+      font-family: var(--font-en);
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+      color: #000; padding: 0.65rem 1.6rem; border-radius: 50px; font-weight: 800; font-size: 0.9rem;
+      cursor: pointer; border: none; text-decoration: none; transition: all 0.3s;
+      box-shadow: 0 4px 20px rgba(255,215,0,0.25);
+    }
+    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,215,0,0.4); }
+
+    /* TICKER */
+    .ticker-wrap { background: rgba(18, 26, 53, 0.4); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0.55rem 0; overflow: hidden; backdrop-filter: blur(10px); }
+    .ticker-inner { display: flex; animation: tickerMove 30s linear infinite; white-space: nowrap; }
+    .ticker-item { font-family: var(--font-en); font-size: 0.82rem; font-weight: 600; color: var(--gold); padding: 0 2.5rem; flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem; }
+    .ticker-item .up { color: var(--green); }
+    .ticker-item .down { color: var(--red); }
+    @keyframes tickerMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+    /* HERO SECTION */
+    .hero { position: relative; min-height: 88vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 4rem 1.5rem; overflow: hidden; }
+    .hero-content { position: relative; max-width: 960px; z-index: 2; }
+    
+    .hero-logo-badge {
+      display: inline-flex; align-items: center; gap: 0.8rem;
+      background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 215, 0, 0.35); padding: 0.6rem 1.6rem; border-radius: 50px;
+      margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      animation: fadeInDown 0.8s ease;
+    }
+    .hero-logo-badge span { font-family: var(--font-en); font-size: 0.85rem; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    .hero h1 {
+      font-family: var(--font-en); font-size: clamp(2.8rem, 7.5vw, 6rem); font-weight: 900; line-height: 1.05; letter-spacing: -2px;
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--gold-light) 35%, var(--gold) 65%, var(--green) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem; animation: fadeInUp 0.8s ease 0.2s both;
+      text-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    .hero-sub {
+      font-family: var(--font-en); font-size: clamp(1rem, 2.2vw, 1.4rem); font-weight: 700;
+      color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 1.5rem;
+      animation: fadeInUp 0.8s ease 0.3s both;
+    }
+
+    .hero-desc {
+      font-size: clamp(1rem, 1.8vw, 1.15rem); color: var(--text-dim); max-width: 680px; margin: 0 auto 2.5rem;
+      line-height: 1.8; animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .hero-stats {
+      display: flex; justify-content: center; gap: 3rem; margin-bottom: 3rem; flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease 0.5s both;
+    }
+    .hero-stat-card {
+      background: var(--bg-glass-strong); border: 1px solid var(--border); border-radius: 16px;
+      padding: 1rem 1.8rem; backdrop-filter: blur(12px); box-shadow: var(--glass-shadow); min-width: 140px;
+    }
+    .hero-stat-value { font-family: var(--font-en); font-size: 2.2rem; font-weight: 900; color: var(--gold); display: block; line-height: 1; }
+    .hero-stat-label { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.4rem; font-family: var(--font-en); font-weight: 600; text-transform: uppercase; }
+
+    .hero-buttons { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.6s both; }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #000; padding: 1rem 2.5rem;
+      border-radius: 50px; font-weight: 800; font-size: 1.05rem; font-family: var(--font-en); cursor: pointer;
+      border: none; text-decoration: none; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.6rem;
+      box-shadow: 0 10px 30px rgba(255,215,0,0.3);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 45px rgba(255,215,0,0.5); }
+
+    .btn-glass {
+      background: rgba(255,255,255,0.06); color: var(--text); padding: 1rem 2.2rem; border-radius: 50px;
+      font-weight: 700; font-size: 1.05rem; font-family: var(--font-en); cursor: pointer;
+      border: 1px solid var(--border-glass); text-decoration: none; transition: all 0.3s;
+      backdrop-filter: blur(16px); display: inline-flex; align-items: center; gap: 0.6rem;
+    }
+    .btn-glass:hover { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1); transform: translateY(-3px); }
+
+    /* COUNTDOWN */
+    .countdown-section { padding: 3rem 1.5rem; text-align: center; }
+    .countdown-label { font-size: 0.85rem; color: var(--text-dim); font-family: var(--font-en); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .countdown-grid { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
+    .countdown-item { background: var(--bg-glass-strong); border: 1px solid var(--border); border-radius: 18px; padding: 1.2rem 1.8rem; min-width: 105px; backdrop-filter: blur(16px); box-shadow: var(--glass-shadow); }
+    .countdown-num { font-family: var(--font-en); font-size: 2.8rem; font-weight: 900; color: var(--gold); display: block; line-height: 1; }
+    .countdown-unit { font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-en); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem; display: block; font-weight: 600; }
+
+    /* SECTION BASE */
+    section { padding: 5rem 1.5rem; }
+    .container { max-width: 1140px; margin: 0 auto; }
+    .section-badge { display: inline-block; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); padding: 0.35rem 1.1rem; border-radius: 50px; font-size: 0.75rem; font-family: var(--font-en); font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; }
+    .section-title { font-size: clamp(2rem, 3.8vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 0.75rem; line-height: 1.2; }
+    .section-title span { background: linear-gradient(135deg, var(--gold), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .section-desc { color: var(--text-dim); font-size: 1rem; line-height: 1.8; max-width: 620px; margin-bottom: 3rem; }
+
+    /* FEATURE QUICK ACCESS CARDS (GLASSMORPHIC) */
+    .feature-cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 3.5rem; }
+    
+    .glass-feature-card {
+      background: var(--bg-glass-strong);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 2.2rem 1.8rem;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--glass-shadow);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .glass-feature-card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 24px; padding: 1.5px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent, rgba(255,215,0,0.3));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    }
+    .glass-feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 30px rgba(255,215,0,0.15);
+    }
+    .glass-feature-card.card-reg:hover { border-color: var(--gold); }
+    .glass-feature-card.card-trade:hover { border-color: var(--green); }
+    .glass-feature-card.card-lead:hover { border-color: #8B7CF6; }
+
+    .card-icon-box {
+      width: 70px; height: 70px; border-radius: 20px; display: flex; align-items: center; justify-content: center;
+      font-size: 2.4rem; margin-bottom: 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+    .card-title { font-family: var(--font-en); font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .card-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 1.5rem; }
+    .card-btn {
+      width: 100%; padding: 0.75rem 1.2rem; border-radius: 50px; font-family: var(--font-en); font-weight: 800; font-size: 0.9rem;
+      border: none; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+    }
+    .btn-gold { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #000; box-shadow: 0 4px 15px rgba(255,215,0,0.3); }
+    .btn-green { background: linear-gradient(135deg, var(--green-dim), var(--green)); color: #000; box-shadow: 0 4px 15px rgba(0,255,136,0.3); }
+    .btn-purple { background: linear-gradient(135deg, #7C3AED, #8B7CF6); color: #fff; box-shadow: 0 4px 15px rgba(139,124,246,0.3); }
+
+    /* TASKS GRID */
+    .tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .task-card { background: var(--bg-glass-strong); border: 1px solid var(--border); border-radius: 24px; padding: 2.2rem; backdrop-filter: blur(16px); box-shadow: var(--glass-shadow); position: relative; }
+    .task-badge { display: inline-block; padding: 0.35rem 0.9rem; border-radius: 6px; font-size: 0.72rem; font-family: var(--font-en); font-weight: 800; letter-spacing: 0.1em; margin-bottom: 1.2rem; }
+    .task-badge-bd { background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); }
+    .task-badge-pc { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+    .task-card h3 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.4rem; font-family: var(--font-en); }
+    .task-card .task-fee { font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.5rem; }
+    .task-steps { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+    .task-steps li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.92rem; color: var(--text); }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-family: var(--font-en); font-weight: 800; flex-shrink: 0; }
+    .task-steps.green .step-num { background: rgba(0,255,136,0.15); border-color: rgba(0,255,136,0.3); color: var(--green); }
+    .task-bonus { margin-top: 1.5rem; padding: 1rem; background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.25); border-radius: 12px; font-size: 0.85rem; color: var(--gold-light); }
+
+    /* TIMELINE */
+    .timeline-outer { overflow-x: auto; padding-bottom: 1.5rem; }
+    .timeline-track { display: flex; gap: 0; min-width: 950px; position: relative; }
+    .timeline-track::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--green-dim)); transform: translateY(-50%); z-index: 0; }
+    .timeline-item { flex: 1; text-align: center; position: relative; padding: 0 0.5rem; }
+    .timeline-dot { width: 48px; height: 48px; border-radius: 50%; background: #080d24; border: 2.5px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; position: relative; z-index: 1; font-family: var(--font-en); font-size: 0.85rem; font-weight: 800; color: var(--gold); transition: all 0.3s; }
+    .timeline-item.active .timeline-dot { background: var(--gold); color: #000; transform: scale(1.2); box-shadow: 0 0 0 8px rgba(255,215,0,0.2); }
+    .timeline-item.final .timeline-dot { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #000; width: 58px; height: 58px; transform: scale(1.25); box-shadow: 0 0 0 10px rgba(255,215,0,0.2); }
+    .timeline-day { font-size: 0.68rem; font-family: var(--font-en); font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+    .timeline-event { font-size: 0.78rem; color: var(--text-dim); line-height: 1.4; }
+
+    /* REWARDS */
+    .top3-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2.5rem; align-items: end; }
+    .prize-card { background: var(--bg-glass-strong); border: 1px solid var(--border); border-radius: 24px; padding: 2rem; text-align: center; backdrop-filter: blur(16px); box-shadow: var(--glass-shadow); position: relative; }
+    .prize-card.champion { border-color: rgba(255,215,0,0.6); background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.05)); transform: scale(1.05); }
+    .prize-rank { font-size: 3rem; margin-bottom: 0.5rem; }
+    .prize-place { font-family: var(--font-en); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-dim); margin-bottom: 1rem; }
+    .prize-card.champion .prize-place { color: var(--gold); }
+    .prize-usdt { font-family: var(--font-en); font-size: 2.6rem; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 0.3rem; }
+    .prize-card:nth-child(1) .prize-usdt { font-size: 2.1rem; color: #C0C0C0; }
+    .prize-card:nth-child(3) .prize-usdt { font-size: 1.9rem; color: #CD7F32; }
+    .prize-extra { display: inline-block; margin-top: 1rem; background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3); color: var(--gold-light); padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-family: var(--font-en); font-weight: 700; }
+
+    /* TABLE */
+    .prizes-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; backdrop-filter: blur(16px); }
+    .prizes-table { width: 100%; border-collapse: collapse; font-family: var(--font-en); font-size: 0.9rem; }
+    .prizes-table th { background: rgba(255,215,0,0.12); color: var(--gold); font-weight: 800; padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .prizes-table td { padding: 0.9rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text); }
+    .prizes-table tr:hover td { background: rgba(255,215,0,0.04); }
+
+    /* FOOTER */
+    footer { background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 1.5rem; text-align: center; font-size: 0.85rem; color: var(--text-dim); }
+
+    @media (max-width: 850px) {
+      nav { padding: 0.8rem 1.2rem; }
+      .nav-links { display: none; }
+      .feature-cards-grid, .tasks-grid, .top3-grid { grid-template-columns: 1fr; }
+      .prize-card.champion { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-canvas"></div>
+<div class="grid-lines"></div>
+<div class="particles" id="particles"></div>
+
+<div class="wrapper">
+
+  <!-- GLASS NAV -->
+  <nav>
+    <a href="index.html" class="glass-logo">
+      <div class="glass-logo-icon">⚡</div>
+      <div class="glass-logo-text">
+        <span class="glass-logo-title">BITQIK</span>
+        <span class="glass-logo-sub">Trade Championship</span>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#join" class="active-link">ວິທີເຂົ້າຮ່ວມ</a></li>
+      <li><a href="#timeline">ຕາຕະລາງ</a></li>
+      <li><a href="#rewards">ລາງວັນ</a></li>
+      <li><a href="register.html" style="color:var(--gold)">📋 ລົງທະບຽນ</a></li>
+      <li><a href="trade.html" style="color:var(--green)">📈 Demo Trade</a></li>
+      <li><a href="leaderboard.html" style="color:#8B7CF6">🏆 Leaderboard</a></li>
+    </ul>
+
+    <a href="register.html" class="nav-cta">🚀 ສະໝັກດ່ວນ</a>
+  </nav>
+
+  <!-- LIVE TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-inner">
+      <span class="ticker-item">BTC/USDT <span class="up">▲ +2.4%</span></span>
+      <span class="ticker-item">ETH/USDT <span class="down">▼ -0.8%</span></span>
+      <span class="ticker-item">XAUT/USDT <span class="up">▲ +1.2%</span></span>
+      <span class="ticker-item">🏆 Total Prize Pool: $6,000+</span>
+      <span class="ticker-item">👥 Top 40 Traders Advance to Finals</span>
+      <span class="ticker-item">📅 Event: October 2026</span>
+      <span class="ticker-item">BTC/USDT <span class="up">▲ +2.4%</span></span>
+      <span class="ticker-item">ETH/USDT <span class="down">▼ -0.8%</span></span>
+      <span class="ticker-item">XAUT/USDT <span class="up">▲ +1.2%</span></span>
+      <span class="ticker-item">🏆 Total Prize Pool: $6,000+</span>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      
+      <!-- Glassmorphic Event Badge -->
+      <div class="hero-logo-badge">
+        <span style="color:var(--green)">● LIVE</span>
+        <span>BITQIK ALTERNATIVE INVESTMENT FOR FUTURES</span>
+      </div>
+
+      <h1>TRADE CHAMPIONSHIP</h1>
+      <p class="hero-sub">The Ultimate Crypto Trading Showdown</p>
+      <p class="hero-desc">
+        ການແຂ່ງຂັນ Trade Future ສຸດຍອດ! ສະແດງສີມືການລົງທຶນຂອງທ່ານ ຊິງລາງວັນກວ່າ <strong style="color:var(--gold)">$6,000+</strong> ພ້ອມ MacBook Neo, Meta Glasses ແລະ ລາງວັນສຸດຄຸ້ມອີກຫຼາຍ
+      </p>
+
+      <div class="hero-stats">
+        <div class="hero-stat-card">
+          <span class="hero-stat-value">$6K+</span>
+          <span class="hero-stat-label">Prize Pool</span>
+        </div>
+        <div class="hero-stat-card">
+          <span class="hero-stat-value">40</span>
+          <span class="hero-stat-label">Final Slots</span>
+        </div>
+        <div class="hero-stat-card">
+          <span class="hero-stat-value">3</span>
+          <span class="hero-stat-label">Rounds</span>
+        </div>
+        <div class="hero-stat-card">
+          <span class="hero-stat-value">OCT</span>
+          <span class="hero-stat-label">2026</span>
+        </div>
+      </div>
+
+      <div class="hero-buttons">
+        <a href="register.html" class="btn-primary">⚡ ເຂົ້າຮ່ວມລົງທະບຽນ</a>
+        <a href="trade.html" class="btn-glass">📈 ລອງ Demo Trade</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-section">
+    <p class="countdown-label">⏳ ເວລາທີ່ເຫຼືອກ່ອນເລີ່ມການແຂ່ງຂັນ</p>
+    <div class="countdown-grid">
+      <div class="countdown-item"><span class="countdown-num" id="cd-days">--</span><span class="countdown-unit">ວັນ</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-hours">--</span><span class="countdown-unit">ຊົ່ວໂມງ</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-mins">--</span><span class="countdown-unit">ນາທີ</span></div>
+      <div class="countdown-item"><span class="countdown-num" id="cd-secs">--</span><span class="countdown-unit">ວິນາທີ</span></div>
+    </div>
+  </div>
+
+  <!-- HOW TO JOIN & FEATURE ACCESS -->
+  <section id="join">
+    <div class="container">
+      <div class="section-badge">HOW TO JOIN & EXPERIENCES</div>
+      <h2 class="section-title">ວິທີ<span>ເຂົ້າຮ່ວມ</span> ແລະ ລະບົບແຂ່ງຂັນ</h2>
+      <p class="section-desc">ກົດເຂົ້າເບິ່ງແຕ່ລະລະບົບໄດ້ທັນທີ — ຈາກການລົງທະບຽນ ຈົນເຖິງ Demo Trade ແລະ Leaderboard Realtime</p>
+
+      <!-- 3 GLASSMORPHIC FEATURE CARDS -->
+      <div class="feature-cards-grid">
+        
+        <!-- CARD 1: REGISTER -->
+        <a href="register.html" class="glass-feature-card card-reg">
+          <div class="card-icon-box">📋</div>
+          <div>
+            <div class="card-title" style="color:var(--gold)">Timeline ລົງທະບຽນ</div>
+            <div class="card-desc">ຈຳລອງ ຂັ້ນຕອນການລົງທະບຽນ Task 1 (BD) & Task 2 (PC) ພ້ອມ Animation ຄວາມຄືບໜ້າ</div>
+          </div>
+          <button class="card-btn btn-gold">ເລີ່ມ ລົງທະບຽນ →</button>
+        </a>
+
+        <!-- CARD 2: DEMO TRADE -->
+        <a href="trade.html" class="glass-feature-card card-trade">
+          <div class="card-icon-box">📈</div>
+          <div>
+            <div class="card-title" style="color:var(--green)">Demo Trade Realtime</div>
+            <div class="card-desc">ລະບົບ Trade Future ຈຳລອງ ອີງລາຄາ Realtime ຈາກ Binance WebSocket + TradingView Charts</div>
+          </div>
+          <button class="card-btn btn-green">Trade Now →</button>
+        </a>
+
+        <!-- CARD 3: LEADERBOARD -->
+        <a href="leaderboard.html" class="glass-feature-card card-lead">
+          <div class="card-icon-box">🏆</div>
+          <div>
+            <div class="card-title" style="color:#8B7CF6">Live Leaderboard</div>
+            <div class="card-desc">ຕາຕະລາງຈັດອັນດັບ 25 Traders ແບບ Realtime ທຸກ 5 ວິນາທີ ພ້ອມ Sync Position ຂອງທ່ານ</div>
+          </div>
+          <button class="card-btn btn-purple">ເບິ່ງ Leaderboard →</button>
+        </a>
+
+      </div>
+
+      <!-- TASK DETAIL CARDS -->
+      <div class="tasks-grid">
+        
+        <div class="task-card">
+          <span class="task-badge task-badge-bd">TASK 1 — BD (Bonus Distribution)</span>
+          <h3>💰 Bonus Distribution</h3>
+          <p class="task-fee">ຮັບ <strong style="color:var(--gold)">10 USDT ຟຣີ</strong> ເພື່ອເທຣດ</p>
+          <ul class="task-steps">
+            <li><span class="step-num">1</span>ດາວໂຫຼດ Bitqik App</li>
+            <li><span class="step-num">2</span>ລົງທະບຽນ (Register)</li>
+            <li><span class="step-num">3</span>ຢືນຢັນຕົວຕົນ KYC (Passport / ໃບຂັບຂີ່)</li>
+            <li><span class="step-num">4</span>ຕັ້ງ 2FA Security</li>
+            <li><span class="step-num">5</span>ຝາກເງີນຂັ້ນຕ່ຳ 50 USDT</li>
+            <li><span class="step-num">6</span>ຊື້ Spot BTC/XAUT ມູນລະຄ່າ 50 USD</li>
+          </ul>
+          <div class="task-bonus">
+            🎁 ໄດ້ຮັບ <strong>10 USDT Bonus</strong> ທັນທີ + ສິດຖືຄອງ BTC & ທອງຄຳ ແລະ ຂາຍໄດ້ຫຼັງຈົບ campaign
+          </div>
+        </div>
+
+        <div class="task-card">
+          <span class="task-badge task-badge-pc">TASK 2 — PC (Player Contribution)</span>
+          <h3>🎮 Player Contribution</h3>
+          <p class="task-fee">ຄ່າທຳນຽມລົງທະບຽນ <strong style="color:var(--green)">10 USDT</strong></p>
+          <ul class="task-steps green">
+            <li><span class="step-num">1</span>ດາວໂຫຼດ Bitqik App</li>
+            <li><span class="step-num">2</span>ລົງທະບຽນ + KYC ຢືນຢັນຕົວຕົນ</li>
+            <li><span class="step-num">3</span>ຕັ້ງ 2FA Security</li>
+            <li><span class="step-num">4</span>ຈ່າຍຄ່າລົງທະບຽນ 10 USDT</li>
+            <li><span class="step-num">5</span>ໂອນເຂົ້າ Future Wallet ເພື່ອເລີ່ມແຂ່ງ</li>
+          </ul>
+          <div class="task-bonus" style="border-color:rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);color:var(--green)">
+            ⚠️ ກໍລະນີຕົກຮອບ: ສາມາດຖອນເງີນຕາມຍອດຄົງເຫຼືອໃນ Future Wallet ໄດ້
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <div class="container">
+      <div class="section-badge">SCHEDULE</div>
+      <h2 class="section-title">ຕາຕະລາງ<span>ການແຂ່ງຂັນ</span></h2>
+      <p class="section-desc">October 2026 — ທຸກກິດຈະກຳ Live Leaderboard</p>
+
+      <div class="timeline-outer">
+        <div class="timeline-track">
+          <div class="timeline-item"><div class="timeline-day">Saturday</div><div class="timeline-dot">📋</div><div class="timeline-event">Relation /<br/>Registration</div></div>
+          <div class="timeline-item active"><div class="timeline-day">Wednesday</div><div class="timeline-dot">🚀</div><div class="timeline-event">Start Trade<br/>Round 1</div></div>
+          <div class="timeline-item"><div class="timeline-day">Tue/Fri/Sat/Sun</div><div class="timeline-dot">📊</div><div class="timeline-event">Live<br/>Leaderboard</div></div>
+          <div class="timeline-item"><div class="timeline-day">Tuesday D+1</div><div class="timeline-dot">P1</div><div class="timeline-event">Phase 1 (A)<br/>Artwork Trailer</div></div>
+          <div class="timeline-item"><div class="timeline-day">Thursday D+3</div><div class="timeline-dot">P1</div><div class="timeline-event">Phase 1 (B)<br/>Meme VDO</div></div>
+          <div class="timeline-item"><div class="timeline-day">Friday D+4</div><div class="timeline-dot">P1</div><div class="timeline-event">Phase 1 (C)<br/>Official VDO</div></div>
+          <div class="timeline-item"><div class="timeline-day">Monday D+7</div><div class="timeline-dot">P2</div><div class="timeline-event">Phase 2 (A)<br/>History VDO</div></div>
+          <div class="timeline-item"><div class="timeline-day">Wednesday D+9</div><div class="timeline-dot">P2</div><div class="timeline-event">Phase 2 (B)<br/>Reward VDO</div></div>
+          <div class="timeline-item"><div class="timeline-day">Friday D+11</div><div class="timeline-dot">P2</div><div class="timeline-event">Phase 2 (C)<br/>Meet Up Art</div></div>
+          <div class="timeline-item"><div class="timeline-day">Monday</div><div class="timeline-dot">40</div><div class="timeline-event">Top 40<br/>Phase 3 (A)</div></div>
+          <div class="timeline-item"><div class="timeline-day">Monday</div><div class="timeline-dot">20</div><div class="timeline-event">Top 20<br/>Phase 3 (B)</div></div>
+          <div class="timeline-item"><div class="timeline-day">Wednesday</div><div class="timeline-dot">10</div><div class="timeline-event">Top 10<br/>Announce</div></div>
+          <div class="timeline-item"><div class="timeline-day">Friday</div><div class="timeline-dot">🎬</div><div class="timeline-event">Phase 3 (D)<br/>Studio Photo</div></div>
+          <div class="timeline-item final"><div class="timeline-day">SATURDAY</div><div class="timeline-dot">🏆</div><div class="timeline-event"><strong>FINAL BATTLE</strong><br/>Phase 3 (E)</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REWARDS -->
+  <section id="rewards">
+    <div class="container">
+      <div class="section-badge">REWARDS</div>
+      <h2 class="section-title">ລາງວັນ<span>ສຸດຄຸ້ມ</span></h2>
+      <p class="section-desc">ລາງວັນລວມກວ່າ $6,000+ — ທຸກ Rank ໄດ້ລາງວັນ!</p>
+
+      <div class="top3-grid">
+        <div class="prize-card">
+          <div class="prize-rank">🥈</div>
+          <div class="prize-place">2nd Place</div>
+          <div class="prize-usdt">$500</div>
+          <div class="prize-extra">+ Meta Glasses ($299)</div>
+        </div>
+        <div class="prize-card champion">
+          <div class="prize-rank">🏆</div>
+          <div class="prize-place">CHAMPION</div>
+          <div class="prize-usdt">$1,000</div>
+          <div class="prize-extra">+ MacBook Neo ($699)</div>
+        </div>
+        <div class="prize-card">
+          <div class="prize-rank">🥉</div>
+          <div class="prize-place">3rd Place</div>
+          <div class="prize-usdt">$300</div>
+          <div class="prize-extra">+ Extend Display ($150)</div>
+        </div>
+      </div>
+
+      <div class="prizes-table-wrap">
+        <table class="prizes-table">
+          <thead>
+            <tr><th>ອັນດັບ</th><th>ລາງວັນ USDT</th><th>ລາງວັນ Item</th><th>ມູນລະຄ່ານວນ</th></tr>
+          </thead>
+          <tbody>
+            <tr><td style="color:var(--gold);font-weight:700;">🥇 Champion</td><td>$1,000 USDT</td><td>MacBook Neo</td><td>~$1,699</td></tr>
+            <tr><td style="color:var(--gold);font-weight:700;">🥈 2nd Place</td><td>$500 USDT</td><td>Meta Glasses</td><td>~$799</td></tr>
+            <tr><td style="color:var(--gold);font-weight:700;">🥉 3rd Place</td><td>$300 USDT</td><td>Extend Display</td><td>~$450</td></tr>
+            <tr><td>🎖 4th – 10th</td><td>$50 USDT each</td><td>Giftset</td><td>~$350 total</td></tr>
+            <tr><td>🎖 11th – 20th</td><td>$50 USDT each</td><td>Giftset</td><td>~$500 total</td></tr>
+            <tr><td>🏅 21st – 40th</td><td>$20 USDT each</td><td>Giftset</td><td>~$400 total</td></tr>
+            <tr><td>🎓 Academy Training</td><td>—</td><td>4 Sessions</td><td>~$100</td></tr>
+            <tr><td>💰 Bonus Distribute</td><td>$2,000 USDT</td><td>200 Users</td><td>~$2,000 total</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div style="margin-bottom:1rem;">
+      <a href="index.html" class="glass-logo" style="display:inline-flex;">
+        <div class="glass-logo-icon">⚡</div>
+        <div class="glass-logo-text">
+          <span class="glass-logo-title">BITQIK</span>
+          <span class="glass-logo-sub">Trade Championship</span>
+        </div>
+      </a>
+    </div>
+    <p>Alternative Investment for Futures Trading Championship</p>
+    <p style="margin-top:0.5rem;font-size:0.75rem;opacity:0.5;">© 2026 Bitqik Platform. All Rights Reserved.</p>
+  </footer>
+
+</div>
+
+<script>
+  // Particles
+  const pEl = document.getElementById('particles');
+  const colors = ['#FFD700','#FFE94D','#00FF88','#B8860B'];
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 4 + 2;
+    p.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;`;
+    pEl.appendChild(p);
+  }
+
+  // Countdown to Oct 1, 2026
+  function updateCountdown() {
+    const target = new Date('2026-10-01T00:00:00+07:00');
+    const now = new Date();
+    const diff = target - now;
+    if (diff <= 0) {
+      ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+    document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+    document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>
