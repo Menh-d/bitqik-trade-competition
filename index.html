@@ -47,15 +47,14 @@
       background-image: linear-gradient(rgba(255, 107, 0, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 107, 0, 0.04) 1px, transparent 1px);
       background-size: 60px 60px; }
 
-    /* FALLING REALISTIC 3D COINS ANIMATION */
+    /* FALLING VECTOR COINS ANIMATION */
     #falling-coins-container {
       position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
     }
     .falling-coin-img {
       position: absolute; top: -80px; pointer-events: none; user-select: none;
       border-radius: 50%; animation: coinFall linear infinite;
-      object-fit: cover; filter: drop-shadow(0 10px 25px rgba(255, 107, 0, 0.5));
-      mix-blend-mode: screen;
+      object-fit: contain; filter: drop-shadow(0 10px 25px rgba(255, 107, 0, 0.5));
     }
 
     @keyframes coinFall {
@@ -309,7 +308,7 @@
 <div class="light-beam-1"></div>
 <div class="grid-lines"></div>
 
-<!-- FALLING 3D COINS BACKGROUND CONTAINER -->
+<!-- FALLING 2D VECTOR USER COINS CONTAINER -->
 <div id="falling-coins-container"></div>
 
 <div class="wrapper">
@@ -651,21 +650,20 @@
   setInterval(updateCountdown, 1000);
 </script>
 
-<!-- FALLING 3D USER COINS GENERATOR SCRIPT -->
+<!-- FALLING TRANSPARENT VECTOR COINS GENERATOR SCRIPT -->
 <script>
   function createFallingCoins() {
     const container = document.getElementById('falling-coins-container');
     const coinImages = [
-      'assets/coin_usdt.jpg',
-      'assets/coin_btc.jpg',
-      'assets/coin_xaut.jpg'
+      'assets/coin_btc_transparent.png',
+      'assets/coin_usdt_transparent.png'
     ];
-    const coinCount = 36;
+    const coinCount = 38;
 
     for (let i = 0; i < coinCount; i++) {
       const coin = document.createElement('img');
       const src = coinImages[i % coinImages.length];
-      const size = Math.floor(Math.random() * 26) + 42; // Size 42px - 68px
+      const size = Math.floor(Math.random() * 28) + 44; // Size 44px - 72px
       const left = Math.random() * 98;
       const duration = Math.random() * 10 + 12; // Fall duration 12s - 22s
       const delay = Math.random() * 14;
@@ -677,7 +675,7 @@
       coin.style.left = `${left}%`;
       coin.style.animationDuration = `${duration}s`;
       coin.style.animationDelay = `${delay}s`;
-      coin.style.opacity = (Math.random() * 0.4 + 0.55).toFixed(2);
+      coin.style.opacity = (Math.random() * 0.35 + 0.65).toFixed(2);
 
       container.appendChild(coin);
     }
