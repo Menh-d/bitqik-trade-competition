@@ -26,7 +26,7 @@
     }
 
     html { scroll-behavior: smooth; }
-    body { font-family: var(--font-lao); background: var(--bg-dark); color: var(--text-main); overflow-x: hidden; min-height: 100vh; }
+    body { font-family: var(--font-lao); background: var(--bg-dark); color: var(--text-main); overflow-x: hidden; min-height: 100vh; position: relative; }
 
     .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #0A0806; }
 
@@ -47,7 +47,33 @@
       background-image: linear-gradient(rgba(255, 107, 0, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 107, 0, 0.04) 1px, transparent 1px);
       background-size: 60px 60px; }
 
-    .wrapper { position: relative; z-index: 1; }
+    /* FALLING COINS CANVAS CONTAINER */
+    #falling-coins-container {
+      position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
+    }
+    .falling-coin {
+      position: absolute; top: -60px; pointer-events: none; user-select: none;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; animation: coinFall linear infinite;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    .coin-usdt {
+      background: radial-gradient(circle at 35% 35%, #00FF88 0%, #008855 70%, #004D30 100%);
+      border: 2px solid #A3FFD6; color: #FFFFFF; font-weight: 900; font-family: sans-serif;
+    }
+    .coin-xaut {
+      background: radial-gradient(circle at 35% 35%, #FFE970 0%, #FFB700 70%, #996E00 100%);
+      border: 2px solid #FFF2A3; color: #3A2900; font-weight: 900; font-family: sans-serif;
+    }
+
+    @keyframes coinFall {
+      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
+      10% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(115vh) rotate(360deg) scale(0.9); opacity: 0; }
+    }
+
+    .wrapper { position: relative; z-index: 2; }
 
     /* NAV */
     nav {
@@ -77,7 +103,7 @@
     .nav-links a.active-link { color: #FFFFFF; opacity: 1; border-bottom: 2px solid var(--orange-accent); }
 
     .btn-pill-cta {
-      padding: 8px 24px; min-width: 150px; height: 42px; border-radius: 100px;
+      padding: 8px 24px; min-width: 170px; height: 42px; border-radius: 100px;
       background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 107, 0, 0.8) 100%), #FF6B00;
       border: 1px solid rgba(255, 255, 255, 0.3); color: #FFFFFF; font-family: var(--font-lao); font-weight: 700; font-size: 0.95rem;
       cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
@@ -103,10 +129,24 @@
 
     /* HERO SECTION */
     .hero { position: relative; min-height: 82vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 3rem 1.5rem 2.5rem; }
-    .hero-content { position: relative; max-width: 950px; z-index: 2; margin: 0 auto; }
+    .hero-content { position: relative; max-width: 950px; z-index: 2; margin: 0 auto; width: 100%; }
 
+    /* TOP RIGHT FLOATING COUNTDOWN WIDGET */
+    .top-right-countdown {
+      position: absolute; right: 0; top: 0; z-index: 10;
+      background: rgba(255, 107, 0, 0.08); border: 1px solid rgba(255, 107, 0, 0.35);
+      border-radius: 20px; padding: 0.8rem 1.2rem; backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center;
+    }
+    .top-right-countdown-lbl { font-family: var(--font-lao); font-size: 0.7rem; color: var(--orange-light); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; display: block; }
+    .top-right-countdown-grid { display: flex; gap: 0.6rem; justify-content: center; }
+    .mini-cd-item { text-align: center; min-width: 44px; background: rgba(0,0,0,0.4); border-radius: 8px; padding: 4px 6px; border: 1px solid rgba(255, 107, 0, 0.2); }
+    .mini-cd-val { font-family: var(--font-lao); font-size: 1.15rem; font-weight: 900; color: var(--gold); line-height: 1; }
+    .mini-cd-lbl { font-family: var(--font-lao); font-size: 0.6rem; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-top: 2px; }
+
+    /* ENLARGED LOGO SHOWCASE */
     .hero-logo-showcase {
-      position: relative; width: clamp(300px, 45vw, 460px); height: clamp(300px, 45vw, 460px); margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center;
+      position: relative; width: clamp(280px, 40vw, 420px); height: clamp(280px, 40vw, 420px); margin: 1rem auto 1.8rem; display: flex; align-items: center; justify-content: center;
     }
     .hero-logo-showcase::before {
       content: ''; position: absolute; inset: -25px; border-radius: 50%;
@@ -138,17 +178,6 @@
     .hero-stat-num { font-family: var(--font-lao); font-size: 2.3rem; font-weight: 900; color: var(--gold); line-height: 1; }
     .hero-stat-lbl { font-family: var(--font-lao); font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; margin-top: 0.4rem; font-weight: 600; }
 
-    /* COUNTDOWN SECTION */
-    .countdown-box { text-align: center; padding: 3rem 1.5rem; }
-    .countdown-lbl { font-family: var(--font-lao); font-size: 0.9rem; color: var(--orange-light); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1.5rem; }
-    .countdown-grid { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
-    .countdown-card {
-      background: rgba(255, 107, 0, 0.08); border: 1px solid rgba(255, 107, 0, 0.3); border-radius: 20px;
-      padding: 1.4rem 2rem; min-width: 110px; backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-    .countdown-val { font-family: var(--font-lao); font-size: 3rem; font-weight: 900; color: var(--gold); line-height: 1; }
-    .countdown-unit { font-family: var(--font-lao); font-size: 0.78rem; color: rgba(255, 255, 255, 0.7); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem; display: block; font-weight: 600; }
-
     /* SECTION BASE */
     section { padding: 5rem 1.5rem; }
     .container { max-width: 1140px; margin: 0 auto; }
@@ -161,7 +190,7 @@
     .section-title span { color: var(--orange-accent); }
     .section-desc { color: var(--text-sub); font-size: 1rem; line-height: 1.8; max-width: 650px; margin-bottom: 3.5rem; }
 
-    /* TOURNAMENT TIMELINE VISUAL CARD (NEW COMPONENT) */
+    /* TOURNAMENT TIMELINE VISUAL CARD */
     .timeline-visual-card {
       background: rgba(255, 107, 0, 0.04); border: 1.5px solid rgba(255, 107, 0, 0.25);
       border-radius: 32px; padding: 3rem 2rem; backdrop-filter: blur(20px);
@@ -177,7 +206,6 @@
 
     .tournament-tree { display: flex; flex-direction: column; align-items: center; gap: 2rem; position: relative; }
 
-    /* ROUND 1, 2, FINAL STAGES */
     .tree-stage { width: 100%; display: flex; flex-direction: column; align-items: center; position: relative; }
     
     .stage-pill {
@@ -196,7 +224,7 @@
       padding: 1.2rem 1.6rem; min-width: 140px; text-align: center; color: #FFFFFF;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8); transition: all 0.3s; z-index: 2;
     }
-    .capsule-node:hover { border-color: var(--orange-accent); transform: translateY(-50%) scale(1.05); box-shadow: 0 15px 35px rgba(255, 107, 0, 0.4); }
+    .capsule-node:hover { border-color: var(--orange-accent); transform: scale(1.05); box-shadow: 0 15px 35px rgba(255, 107, 0, 0.4); }
     .capsule-num { font-size: 1.8rem; font-weight: 900; line-height: 1; font-family: var(--font-lao); }
     .capsule-text { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; margin-top: 4px; color: rgba(255, 255, 255, 0.9); }
     .capsule-sub { font-size: 0.72rem; color: var(--orange-light); margin-top: 3px; font-weight: 600; }
@@ -278,6 +306,7 @@
       .foxy-cards-grid, .tasks-grid, .top3-grid { grid-template-columns: 1fr; }
       .nodes-grid { gap: 1rem; }
       .capsule-node { min-width: 110px; padding: 0.8rem 1rem; }
+      .top-right-countdown { position: relative; right: auto; top: auto; margin-bottom: 1.5rem; }
     }
   </style>
 </head>
@@ -287,6 +316,9 @@
 <div class="orange-ambient-light"></div>
 <div class="light-beam-1"></div>
 <div class="grid-lines"></div>
+
+<!-- FALLING COINS BACKGROUND (USDT & XAUT ANIMATION) -->
+<div id="falling-coins-container"></div>
 
 <div class="wrapper">
 
@@ -302,14 +334,15 @@
 
     <ul class="nav-links">
       <li><a href="#join">ວິທີເຂົ້າຮ່ວມ</a></li>
-      <li><a href="#timeline" class="active-link">ຕາຕະລາງແຂ່ງຂັນ</a></li>
+      <li><a href="#timeline">ຕາຕະລາງແຂ່ງຂັນ</a></li>
       <li><a href="#rewards">ລາງວັນ</a></li>
       <li><a href="register.html">📋 ລົງທະບຽນ</a></li>
       <li><a href="trade.html" style="color:var(--orange-light)">📈 Demo Trade</a></li>
       <li><a href="leaderboard.html" style="color:var(--gold)">🏆 Leaderboard</a></li>
     </ul>
 
-    <a href="register.html" class="btn-pill-cta">Try for free</a>
+    <!-- BUTTON LABELED "ລົງທະບຽນແຂ່ງຂັນ" -->
+    <a href="register.html" class="btn-pill-cta">ລົງທະບຽນແຂ່ງຂັນ</a>
   </nav>
 
   <!-- TICKER -->
@@ -327,10 +360,22 @@
     </div>
   </div>
 
-  <!-- HERO -->
+  <!-- HERO SECTION -->
   <section class="hero">
     <div class="hero-content">
       
+      <!-- RELOCATED FLOATING TOP RIGHT COUNTDOWN WIDGET -->
+      <div class="top-right-countdown">
+        <span class="top-right-countdown-lbl">⏳ COUNTDOWN TO GRAND TOURNAMENT</span>
+        <div class="top-right-countdown-grid">
+          <div class="mini-cd-item"><div class="mini-cd-val" id="cd-days">--</div><div class="mini-cd-lbl">Days</div></div>
+          <div class="mini-cd-item"><div class="mini-cd-val" id="cd-hours">--</div><div class="mini-cd-lbl">Hours</div></div>
+          <div class="mini-cd-item"><div class="mini-cd-val" id="cd-mins">--</div><div class="mini-cd-lbl">Mins</div></div>
+          <div class="mini-cd-item"><div class="mini-cd-val" id="cd-secs">--</div><div class="mini-cd-lbl">Secs</div></div>
+        </div>
+      </div>
+
+      <!-- ENLARGED LOGO SHOWCASE -->
       <div class="hero-logo-showcase">
         <img src="assets/logo.png" alt="Bitqik Trade Championship Logo" class="hero-logo-img" />
       </div>
@@ -340,7 +385,8 @@
       </div>
 
       <div class="hero-cta-group">
-        <a href="register.html" class="btn-pill-cta" style="min-width:190px; height:48px; font-size:1.05rem;">Try for free →</a>
+        <!-- BUTTON LABELED "ລົງທະບຽນແຂ່ງຂັນ →" -->
+        <a href="register.html" class="btn-pill-cta" style="min-width:210px; height:48px; font-size:1.05rem;">ລົງທະບຽນແຂ່ງຂັນ →</a>
         <a href="trade.html" class="btn-pill-secondary" style="min-width:210px; height:48px; font-size:1.05rem;">Explore Terminal ></a>
       </div>
 
@@ -365,18 +411,7 @@
     </div>
   </section>
 
-  <!-- COUNTDOWN -->
-  <div class="countdown-box">
-    <p class="countdown-lbl">⏳ COUNTDOWN TO GRAND TOURNAMENT</p>
-    <div class="countdown-grid">
-      <div class="countdown-card"><span class="countdown-val" id="cd-days">--</span><span class="countdown-unit">Days</span></div>
-      <div class="countdown-card"><span class="countdown-card"><span class="countdown-val" id="cd-hours">--</span><span class="countdown-unit">Hours</span></div>
-      <div class="countdown-card"><span class="countdown-val" id="cd-mins">--</span><span class="countdown-unit">Mins</span></div>
-      <div class="countdown-card"><span class="countdown-val" id="cd-secs">--</span><span class="countdown-unit">Secs</span></div>
-    </div>
-  </div>
-
-  <!-- TOURNAMENT TIMELINE SECTION (MATCHING USER IMAGE DIAGRAM) -->
+  <!-- TOURNAMENT TIMELINE SECTION -->
   <section id="timeline">
     <div class="container">
       <div class="section-badge">TOURNAMENT TIMELINE</div>
@@ -469,7 +504,7 @@
             <div class="foxy-card-title">Timeline ລົງທະບຽນ</div>
             <div class="foxy-card-desc">ຈຳລອງ ຂັ້ນຕອນການລົງທະບຽນ Task 1 (BD) & Task 2 (PC) ພ້ອມ Animation ຄວາມຄືບໜ້າ</div>
           </div>
-          <span class="btn-pill-cta" style="width:100%; margin-top:1rem;">ເລີ່ມ ລົງທະບຽນ →</span>
+          <span class="btn-pill-cta" style="width:100%; margin-top:1rem;">ລົງທະບຽນແຂ່ງຂັນ →</span>
         </a>
 
         <a href="trade.html" class="foxy-card">
@@ -594,26 +629,72 @@
 
 </div>
 
+<!-- COUNTDOWN SCRIPT -->
 <script>
   function updateCountdown() {
     const target = new Date('2026-10-01T00:00:00+07:00');
     const now = new Date();
     const diff = target - now;
     if (diff <= 0) {
-      ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+      ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = '00';
+      });
       return;
     }
     const d = Math.floor(diff / 86400000);
     const h = Math.floor((diff % 86400000) / 3600000);
     const m = Math.floor((diff % 3600000) / 60000);
     const s = Math.floor((diff % 60000) / 1000);
-    document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
-    document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
-    document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
-    document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+    
+    const elD = document.getElementById('cd-days');
+    const elH = document.getElementById('cd-hours');
+    const elM = document.getElementById('cd-mins');
+    const elS = document.getElementById('cd-secs');
+    
+    if (elD) elD.textContent = String(d).padStart(2,'0');
+    if (elH) elH.textContent = String(h).padStart(2,'0');
+    if (elM) elM.textContent = String(m).padStart(2,'0');
+    if (elS) elS.textContent = String(s).padStart(2,'0');
   }
   updateCountdown();
   setInterval(updateCountdown, 1000);
+</script>
+
+<!-- FALLING USDT & XAUT COINS GENERATOR SCRIPT -->
+<script>
+  function createFallingCoins() {
+    const container = document.getElementById('falling-coins-container');
+    const coinTypes = ['USDT', 'XAUT'];
+    const coinCount = 35; // Number of floating coins
+
+    for (let i = 0; i < coinCount; i++) {
+      const coin = document.createElement('div');
+      const type = coinTypes[Math.floor(Math.random() * coinTypes.length)];
+      const size = Math.floor(Math.random() * 24) + 32; // Size between 32px and 56px
+      const left = Math.random() * 100; // Left percentage 0 - 100%
+      const duration = Math.random() * 10 + 10; // Fall duration 10s - 20s
+      const delay = Math.random() * 12; // Start delay 0s - 12s
+
+      coin.className = `falling-coin ${type === 'USDT' ? 'coin-usdt' : 'coin-xaut'}`;
+      coin.style.width = `${size}px`;
+      coin.style.height = `${size}px`;
+      coin.style.left = `${left}%`;
+      coin.style.animationDuration = `${duration}s`;
+      coin.style.animationDelay = `${delay}s`;
+      coin.style.fontSize = `${size * 0.38}px`;
+
+      if (type === 'USDT') {
+        coin.innerHTML = `<span>₮</span>`;
+      } else {
+        coin.innerHTML = `<span>🪙</span>`;
+      }
+
+      container.appendChild(coin);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', createFallingCoins);
 </script>
 </body>
 </html>
