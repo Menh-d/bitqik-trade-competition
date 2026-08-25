@@ -6,57 +6,56 @@
   <title>Bitqik Futures Demo | BTC-PERP Trading Terminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+Lao:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --gold: #FFD700;
-      --purple-accent: #C069FF;
-      --purple-deep: #551A94;
-      --purple-bg: #0C0414;
-      --bg-panel: #0E071F;
+      --orange-accent: #FF6B00;
+      --orange-light: #FF9433;
+      --bg-dark: #0A0806;
+      --bg-panel: #140E0A;
+      --gold: #FFC700;
       --green: #00FF88;
       --red: #FF4060;
-      --border: rgba(255, 255, 255, 0.08);
-      --font-en: 'Inter', 'Outfit', sans-serif;
-      --font-lo: 'Noto Sans Lao', 'Inter', sans-serif;
+      --border: rgba(255, 107, 0, 0.15);
+      --font-lao: 'Noto Sans Lao', sans-serif;
     }
-    body { font-family: var(--font-lo); background: var(--purple-bg); color: #FFFFFF; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+    body { font-family: var(--font-lao); background: var(--bg-dark); color: #FFFFFF; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-    header { height: 62px; background: rgba(14, 7, 31, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 1.2rem; z-index: 10; flex-shrink: 0; }
+    header { height: 62px; background: rgba(20, 14, 10, 0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 1.2rem; z-index: 10; flex-shrink: 0; }
     .header-left { display: flex; align-items: center; gap: 1.5rem; }
 
     .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand-logo-img { width: 36px; height: 36px; border-radius: 8px; object-fit: cover; border: 1.5px solid rgba(255, 215, 0, 0.6); box-shadow: 0 4px 15px rgba(192, 105, 255, 0.4); }
-    .brand-title { font-family: var(--font-en); font-weight: 800; font-size: 1.15rem; color: #FFFFFF; }
+    .brand-logo-img { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1.5px solid var(--orange-accent); box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4); }
+    .brand-title { font-family: var(--font-lao); font-weight: 800; font-size: 1.15rem; color: #FFFFFF; }
 
-    .pair-badge { display: flex; align-items: center; gap: 0.8rem; background: rgba(255,255,255,0.04); padding: 0.35rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); }
-    .pair-symbol { font-family: var(--font-en); font-weight: 800; font-size: 0.95rem; color: #fff; }
+    .pair-badge { display: flex; align-items: center; gap: 0.8rem; background: rgba(255,107,0,0.08); padding: 0.35rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); }
+    .pair-symbol { font-family: var(--font-lao); font-weight: 800; font-size: 0.95rem; color: #fff; }
 
-    .ticker-metrics { display: flex; align-items: center; gap: 1.5rem; font-family: var(--font-en); }
+    .ticker-metrics { display: flex; align-items: center; gap: 1.5rem; font-family: var(--font-lao); }
     .metric-item { display: flex; flex-direction: column; }
-    .metric-label { font-size: 0.68rem; color: rgba(244,223,255,0.6); text-transform: uppercase; font-weight: 600; }
+    .metric-label { font-size: 0.68rem; color: rgba(255,255,255,0.6); text-transform: uppercase; font-weight: 600; }
     .metric-val { font-size: 0.9rem; font-weight: 700; color: #fff; }
 
     .header-right { display: flex; align-items: center; gap: 1rem; }
-    .nav-link { color: rgba(244,223,255,0.7); text-decoration: none; font-size: 0.82rem; font-weight: 600; padding: 0.35rem 0.7rem; border-radius: 6px; }
-    .nav-link:hover { color: #fff; }
+    .nav-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 0.35rem 0.7rem; border-radius: 6px; }
+    .nav-link:hover { color: var(--orange-light); }
 
-    .demo-bal-box { background: rgba(192, 105, 255, 0.12); border: 1px solid rgba(192, 105, 255, 0.3); border-radius: 8px; padding: 0.35rem 0.8rem; text-align: right; }
-    .demo-bal-num { font-family: var(--font-en); font-weight: 800; font-size: 0.95rem; color: var(--gold); }
+    .demo-bal-box { background: rgba(255, 107, 0, 0.15); border: 1px solid rgba(255, 107, 0, 0.35); border-radius: 8px; padding: 0.35rem 0.8rem; text-align: right; }
+    .demo-bal-num { font-family: var(--font-lao); font-weight: 800; font-size: 0.95rem; color: var(--gold); }
 
     .terminal-container { flex: 1; display: grid; grid-template-columns: 280px 1fr 320px; grid-template-rows: 1fr 230px; overflow: hidden; }
 
     .left-col { grid-column: 1 / 2; grid-row: 1 / 3; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-    .center-col-chart { grid-column: 2 / 3; grid-row: 1 / 2; background: #070312; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; }
+    .center-col-chart { grid-column: 2 / 3; grid-row: 1 / 2; background: #070504; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; }
     .center-col-pos { grid-column: 2 / 3; grid-row: 2 / 3; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
     .right-col-order { grid-column: 3 / 4; grid-row: 1 / 3; background: var(--bg-panel); padding: 1.2rem; display: flex; flex-direction: column; gap: 1.1rem; overflow-y: auto; }
 
     #tv-chart { flex: 1; width: 100%; height: 100%; }
 
     .btn-pill-action {
-      padding: 10px; border-radius: 100px; border: none; font-family: var(--font-en); font-weight: 800; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; transition: all 0.2s;
+      padding: 10px; border-radius: 100px; border: none; font-family: var(--font-lao); font-weight: 800; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; transition: all 0.2s;
     }
     .btn-pill-action.long { background: linear-gradient(135deg, #00C96B, #00FF88); color: #000; box-shadow: 0 4px 15px rgba(0,255,136,0.3); }
     .btn-pill-action.short { background: linear-gradient(135deg, #D32F2F, #FF4060); color: #fff; box-shadow: 0 4px 15px rgba(255,64,96,0.3); }
@@ -83,9 +82,9 @@
     <div class="header-right">
       <a href="index.html" class="nav-link">🏠 ໜ້າຫຼັກ</a>
       <a href="register.html" class="nav-link">📋 ລົງທະບຽນ</a>
-      <a href="leaderboard.html" class="nav-link" style="color:var(--purple-accent)">🏆 Leaderboard</a>
+      <a href="leaderboard.html" class="nav-link" style="color:var(--gold)">🏆 Leaderboard</a>
       <div class="demo-bal-box">
-        <div style="font-size:0.65rem; color:rgba(244,223,255,0.6); text-transform:uppercase;">Margin Bal</div>
+        <div style="font-size:0.65rem; color:rgba(255,255,255,0.7); text-transform:uppercase;">Margin Bal</div>
         <div class="demo-bal-num" id="user-balance">$10.00 USDT</div>
       </div>
     </div>
@@ -93,10 +92,10 @@
 
   <div class="terminal-container">
     <div class="left-col">
-      <div style="height:36px; background:rgba(0,0,0,0.3); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 0.8rem; font-size:0.8rem; font-weight:700; color:rgba(244,223,255,0.7);">
+      <div style="height:36px; background:rgba(0,0,0,0.4); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 0.8rem; font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.8);">
         Order Book (Live Depth)
       </div>
-      <div style="flex:1; padding:0.8rem; font-family:var(--font-en); font-size:0.8rem;" id="ob-container">
+      <div style="flex:1; padding:0.8rem; font-family:var(--font-lao); font-size:0.8rem;" id="ob-container">
         <div style="color:var(--red); display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>65,242.00</span><span>0.412 BTC</span></div>
         <div style="color:var(--red); display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>65,241.50</span><span>1.050 BTC</span></div>
         <div style="color:var(--red); display:flex; justify-content:space-between; margin-bottom:0.6rem;"><span>65,241.00</span><span>0.180 BTC</span></div>
@@ -110,43 +109,43 @@
     </div>
 
     <div class="center-col-chart">
-      <div style="height:36px; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:space-between; padding:0 1rem; background:rgba(0,0,0,0.2);">
-        <span style="font-size:0.78rem; font-family:var(--font-en); font-weight:700; color:var(--purple-accent);">BTC-PERP Lightweight Chart</span>
+      <div style="height:36px; border-bottom:1px solid rgba(255,107,0,0.1); display:flex; align-items:center; justify-content:space-between; padding:0 1rem; background:rgba(0,0,0,0.3);">
+        <span style="font-size:0.78rem; font-family:var(--font-lao); font-weight:700; color:var(--orange-light);">BTC-PERP Lightweight Chart</span>
         <span style="font-size:0.75rem; color:var(--green);">🟢 Live WS Connected</span>
       </div>
       <div id="tv-chart"></div>
     </div>
 
     <div class="center-col-pos">
-      <div style="height:36px; background:rgba(0,0,0,0.3); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 1rem; font-size:0.82rem; font-weight:700; color:var(--gold);">
+      <div style="height:36px; background:rgba(0,0,0,0.4); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 1rem; font-size:0.82rem; font-weight:700; color:var(--gold);">
         Open Positions (1)
       </div>
       <div style="flex:1; padding:0.8rem; overflow-y:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.82rem; font-family:var(--font-en); text-align:left;">
+        <table style="width:100%; border-collapse:collapse; font-size:0.82rem; font-family:var(--font-lao); text-align:left;">
           <thead>
-            <tr style="color:rgba(244,223,255,0.6); font-size:0.72rem; border-bottom:1px solid var(--border);">
+            <tr style="color:rgba(255,255,255,0.6); font-size:0.75rem; border-bottom:1px solid var(--border);">
               <th>Symbol</th><th>Side</th><th>Size</th><th>Entry Price</th><th>Mark Price</th><th>P&L</th><th>Action</th>
             </tr>
           </thead>
           <tbody id="pos-tbody"></tbody>
         </table>
-        <div id="empty-pos" style="text-align:center; padding:2.5rem; color:rgba(244,223,255,0.5); font-size:0.85rem;">
+        <div id="empty-pos" style="text-align:center; padding:2.5rem; color:rgba(255,255,255,0.5); font-size:0.85rem;">
           No open positions. Use the order form on the right to open a position.
         </div>
       </div>
     </div>
 
     <div class="right-col-order">
-      <div style="font-family:var(--font-en); font-weight:800; font-size:1.05rem; color:#fff;">Futures Order Entry</div>
+      <div style="font-family:var(--font-lao); font-weight:800; font-size:1.05rem; color:#fff;">Futures Order Entry</div>
 
       <div style="display:flex; flex-direction:column; gap:0.4rem;">
-        <label style="font-size:0.78rem; color:rgba(244,223,255,0.6);">Leverage (20x)</label>
-        <input type="range" min="1" max="100" value="20" style="accent-color:var(--purple-accent);" id="lev-range" />
+        <label style="font-size:0.78rem; color:rgba(255,255,255,0.7);">Leverage (20x)</label>
+        <input type="range" min="1" max="100" value="20" style="accent-color:var(--orange-accent);" id="lev-range" />
       </div>
 
       <div style="display:flex; flex-direction:column; gap:0.4rem;">
-        <label style="font-size:0.78rem; color:rgba(244,223,255,0.6);">Margin USDT</label>
-        <input type="number" value="10" style="background:rgba(0,0,0,0.4); border:1px solid var(--border); border-radius:8px; padding:0.6rem 0.8rem; color:#fff; font-family:var(--font-en); font-weight:700; outline:none;" id="margin-input" />
+        <label style="font-size:0.78rem; color:rgba(255,255,255,0.7);">Margin USDT</label>
+        <input type="number" value="10" style="background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:8px; padding:0.6rem 0.8rem; color:#fff; font-family:var(--font-lao); font-weight:700; outline:none;" id="margin-input" />
       </div>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-top:0.5rem;">
@@ -165,8 +164,8 @@
   function initChart() {
     const container = document.getElementById('tv-chart');
     chart = LightweightCharts.createChart(container, {
-      layout: { background: { color: '#070312' }, textColor: '#F4DFFF' },
-      grid: { vertLines: { color: 'rgba(255,255,255,0.03)' }, horzLines: { color: 'rgba(255,255,255,0.03)' } }
+      layout: { background: { color: '#070504' }, textColor: '#E8D5C8' },
+      grid: { vertLines: { color: 'rgba(255,107,0,0.03)' }, horzLines: { color: 'rgba(255,107,0,0.03)' } }
     });
     candleSeries = chart.addCandlestickSeries({ upColor: '#00FF88', downColor: '#FF4060' });
 

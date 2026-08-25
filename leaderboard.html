@@ -6,60 +6,60 @@
   <title>Bitqik Trade Championship - Live Leaderboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+Lao:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --gold: #FFD700;
-      --purple-accent: #C069FF;
-      --purple-deep: #551A94;
-      --purple-bg: #0C0414;
-      --text-purple-light: #F4DFFF;
+      --orange-accent: #FF6B00;
+      --orange-light: #FF9433;
+      --bg-dark: #0A0806;
+      --bg-panel: #140E0A;
+      --text-sub: #E8D5C8;
+      --gold: #FFC700;
       --green: #00FF88;
       --red: #FF4060;
-      --font-en: 'Inter', 'Outfit', sans-serif;
-      --font-lo: 'Noto Sans Lao', 'Inter', sans-serif;
+      --font-lao: 'Noto Sans Lao', sans-serif;
     }
 
-    body { font-family: var(--font-lo); background: var(--purple-bg); color: #FFFFFF; min-height: 100vh; overflow-x: hidden; }
+    body { font-family: var(--font-lao); background: var(--bg-dark); color: #FFFFFF; min-height: 100vh; overflow-x: hidden; }
 
-    .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #0C0414; }
-    .purple-ambient-light { position: fixed; width: 1000px; height: 900px; left: 50%; top: -150px; transform: translateX(-50%); background: rgba(85, 26, 148, 0.5); filter: blur(240px); border-radius: 50%; pointer-events: none; z-index: 0; }
-    .grid-lines { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 60px 60px; }
+    .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #0A0806; }
+    .orange-ambient-light { position: fixed; width: 1000px; height: 900px; left: 50%; top: -150px; transform: translateX(-50%); background: rgba(255, 107, 0, 0.3); filter: blur(240px); border-radius: 50%; pointer-events: none; z-index: 0; }
+    .grid-lines { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255, 107, 0, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 107, 0, 0.04) 1px, transparent 1px); background-size: 60px 60px; }
 
     .wrapper { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
 
-    nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0 2rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 2rem; }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0 2rem; border-bottom: 1px solid rgba(255,107,0,0.15); margin-bottom: 2rem; }
     .brand-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .brand-logo-img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; border: 1.5px solid rgba(255, 215, 0, 0.6); box-shadow: 0 4px 15px rgba(192, 105, 255, 0.4); }
-    .brand-title { font-family: var(--font-en); font-weight: 800; font-size: 1.25rem; color: #FFFFFF; }
+    .brand-logo-img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--orange-accent); box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4); }
+    .brand-title { font-family: var(--font-lao); font-weight: 800; font-size: 1.25rem; color: #FFFFFF; }
     .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
-    .nav-links a { color: rgba(244, 223, 255, 0.7); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
+    .nav-links a { color: var(--text-sub); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
 
     .page-title { text-align: center; margin-bottom: 2.5rem; }
-    .live-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0,255,136,0.12); border: 1px solid rgba(0,255,136,0.3); color: var(--green); padding: 6px 18px; border-radius: 100px; font-size: 0.78rem; font-family: var(--font-en); font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; }
+    .live-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0,255,136,0.12); border: 1px solid rgba(0,255,136,0.3); color: var(--green); padding: 6px 18px; border-radius: 100px; font-size: 0.8rem; font-family: var(--font-lao); font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; }
 
-    .page-title h1 { font-family: var(--font-en); font-size: 2.4rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
-    .page-title h1 span { background: linear-gradient(91.84deg, #F4DFFF 0%, var(--purple-accent) 60%, var(--green) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-title h1 { font-family: var(--font-lao); font-size: 2.4rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
+    .page-title h1 span { color: var(--orange-accent); }
 
     .podium-grid { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 1.2rem; align-items: end; margin-bottom: 3rem; }
-    .podium-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 2rem 1.2rem; text-align: center; backdrop-filter: blur(16px); position: relative; }
-    .podium-card.rank-1 { border-color: var(--purple-accent); background: linear-gradient(135deg, rgba(192, 105, 255, 0.15), rgba(85, 26, 148, 0.4)); transform: translateY(-10px); }
-    .podium-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #551A94, #C069FF); color: #fff; font-family: var(--font-en); font-weight: 800; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; box-shadow: 0 6px 20px rgba(192, 105, 255, 0.4); }
+    .podium-card { background: rgba(255, 107, 0, 0.05); border: 1px solid rgba(255, 107, 0, 0.2); border-radius: 24px; padding: 2rem 1.2rem; text-align: center; backdrop-filter: blur(16px); position: relative; }
+    .podium-card.rank-1 { border-color: var(--orange-accent); background: linear-gradient(135deg, rgba(255, 107, 0, 0.2), rgba(10, 8, 6, 0.8)); transform: translateY(-10px); box-shadow: 0 15px 40px rgba(255, 107, 0, 0.3); }
+    .podium-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #C94A00, #FF6B00); color: #fff; font-family: var(--font-lao); font-weight: 800; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4); }
     .podium-name { font-weight: 800; font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem; }
-    .podium-pnl { font-family: var(--font-en); font-weight: 900; font-size: 1.8rem; color: var(--green); line-height: 1.1; }
+    .podium-pnl { font-family: var(--font-lao); font-weight: 900; font-size: 1.8rem; color: var(--green); line-height: 1.1; }
 
-    .lead-table-box { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; overflow: hidden; backdrop-filter: blur(16px); }
-    .lead-table { width: 100%; border-collapse: collapse; font-family: var(--font-en); font-size: 0.9rem; text-align: left; }
-    .lead-table th { background: rgba(85, 26, 148, 0.4); color: var(--text-purple-light); font-weight: 800; padding: 1rem 1.2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.8rem; text-transform: uppercase; }
-    .lead-table td { padding: 0.9rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,0.04); }
-    .lead-table tr.user-row td { background: rgba(192, 105, 255, 0.15); font-weight: 800; }
+    .lead-table-box { background: rgba(255, 107, 0, 0.05); border: 1px solid rgba(255, 107, 0, 0.2); border-radius: 24px; overflow: hidden; backdrop-filter: blur(16px); }
+    .lead-table { width: 100%; border-collapse: collapse; font-family: var(--font-lao); font-size: 0.9rem; text-align: left; }
+    .lead-table th { background: rgba(255, 107, 0, 0.18); color: #FFFFFF; font-weight: 800; padding: 1rem 1.2rem; border-bottom: 1px solid rgba(255, 107, 0, 0.2); font-size: 0.82rem; text-transform: uppercase; }
+    .lead-table td { padding: 0.9rem 1.2rem; border-bottom: 1px solid rgba(255,107,0,0.08); }
+    .lead-table tr.user-row td { background: rgba(255, 107, 0, 0.2); font-weight: 800; }
   </style>
 </head>
 <body>
 
 <div class="bg-canvas"></div>
-<div class="purple-ambient-light"></div>
+<div class="orange-ambient-light"></div>
 <div class="grid-lines"></div>
 
 <div class="wrapper">
@@ -72,7 +72,7 @@
     <ul class="nav-links">
       <li><a href="index.html">🏠 ໜ້າຫຼັກ</a></li>
       <li><a href="register.html">📋 ລົງທະບຽນ</a></li>
-      <li><a href="trade.html" style="color:var(--green)">📈 Demo Trade</a></li>
+      <li><a href="trade.html" style="color:var(--orange-light)">📈 Demo Trade</a></li>
     </ul>
   </nav>
 
@@ -85,20 +85,20 @@
   <div class="podium-grid">
     <div class="podium-card rank-2">
       <div class="podium-avatar">NP</div>
-      <div style="font-size:0.75rem; color:rgba(244,223,255,0.6); font-family:var(--font-en);">RANK #2</div>
+      <div style="font-size:0.78rem; color:var(--text-sub); font-family:var(--font-lao);">RANK #2</div>
       <div class="podium-name">ນ້ອຍ ພ</div>
       <div class="podium-pnl" id="podium-2-pnl">+134.2%</div>
     </div>
     <div class="podium-card rank-1">
       <div style="font-size:2rem; margin-bottom:0.3rem;">👑</div>
       <div class="podium-avatar">KS</div>
-      <div style="font-size:0.75rem; color:var(--purple-accent); font-family:var(--font-en); font-weight:800;">CHAMPION #1</div>
+      <div style="font-size:0.78rem; color:var(--orange-light); font-family:var(--font-lao); font-weight:800;">CHAMPION #1</div>
       <div class="podium-name">ໄຄ ສົມຣ</div>
       <div class="podium-pnl" id="podium-1-pnl">+156.4%</div>
     </div>
     <div class="podium-card rank-3">
       <div class="podium-avatar">DV</div>
-      <div style="font-size:0.75rem; color:rgba(244,223,255,0.6); font-family:var(--font-en);">RANK #3</div>
+      <div style="font-size:0.78rem; color:var(--text-sub); font-family:var(--font-lao);">RANK #3</div>
       <div class="podium-name">ແດງ ວ</div>
       <div class="podium-pnl" id="podium-3-pnl">+98.7%</div>
     </div>
