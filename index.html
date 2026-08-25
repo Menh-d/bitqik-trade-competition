@@ -47,30 +47,22 @@
       background-image: linear-gradient(rgba(255, 107, 0, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 107, 0, 0.04) 1px, transparent 1px);
       background-size: 60px 60px; }
 
-    /* FALLING COINS CANVAS CONTAINER */
+    /* FALLING REALISTIC 3D COINS ANIMATION */
     #falling-coins-container {
       position: fixed; inset: 0; pointer-events: none; z-index: 1; overflow: hidden;
     }
-    .falling-coin {
-      position: absolute; top: -60px; pointer-events: none; user-select: none;
-      display: flex; align-items: center; justify-content: center;
+    .falling-coin-img {
+      position: absolute; top: -80px; pointer-events: none; user-select: none;
       border-radius: 50%; animation: coinFall linear infinite;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    }
-    .coin-usdt {
-      background: radial-gradient(circle at 35% 35%, #00FF88 0%, #008855 70%, #004D30 100%);
-      border: 2px solid #A3FFD6; color: #FFFFFF; font-weight: 900; font-family: sans-serif;
-    }
-    .coin-xaut {
-      background: radial-gradient(circle at 35% 35%, #FFE970 0%, #FFB700 70%, #996E00 100%);
-      border: 2px solid #FFF2A3; color: #3A2900; font-weight: 900; font-family: sans-serif;
+      object-fit: cover; filter: drop-shadow(0 10px 25px rgba(255, 107, 0, 0.5));
+      mix-blend-mode: screen;
     }
 
     @keyframes coinFall {
       0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
-      10% { opacity: 0.8; }
-      90% { opacity: 0.8; }
-      100% { transform: translateY(115vh) rotate(360deg) scale(0.9); opacity: 0; }
+      10% { opacity: 0.85; }
+      90% { opacity: 0.85; }
+      100% { transform: translateY(115vh) rotate(360deg) scale(0.85); opacity: 0; }
     }
 
     .wrapper { position: relative; z-index: 2; }
@@ -317,7 +309,7 @@
 <div class="light-beam-1"></div>
 <div class="grid-lines"></div>
 
-<!-- FALLING COINS BACKGROUND (USDT & XAUT ANIMATION) -->
+<!-- FALLING 3D COINS BACKGROUND CONTAINER -->
 <div id="falling-coins-container"></div>
 
 <div class="wrapper">
@@ -341,7 +333,6 @@
       <li><a href="leaderboard.html" style="color:var(--gold)">🏆 Leaderboard</a></li>
     </ul>
 
-    <!-- BUTTON LABELED "ລົງທະບຽນແຂ່ງຂັນ" -->
     <a href="register.html" class="btn-pill-cta">ລົງທະບຽນແຂ່ງຂັນ</a>
   </nav>
 
@@ -364,7 +355,7 @@
   <section class="hero">
     <div class="hero-content">
       
-      <!-- RELOCATED FLOATING TOP RIGHT COUNTDOWN WIDGET -->
+      <!-- TOP RIGHT FLOATING COUNTDOWN WIDGET -->
       <div class="top-right-countdown">
         <span class="top-right-countdown-lbl">⏳ COUNTDOWN TO GRAND TOURNAMENT</span>
         <div class="top-right-countdown-grid">
@@ -385,7 +376,6 @@
       </div>
 
       <div class="hero-cta-group">
-        <!-- BUTTON LABELED "ລົງທະບຽນແຂ່ງຂັນ →" -->
         <a href="register.html" class="btn-pill-cta" style="min-width:210px; height:48px; font-size:1.05rem;">ລົງທະບຽນແຂ່ງຂັນ →</a>
         <a href="trade.html" class="btn-pill-secondary" style="min-width:210px; height:48px; font-size:1.05rem;">Explore Terminal ></a>
       </div>
@@ -661,34 +651,33 @@
   setInterval(updateCountdown, 1000);
 </script>
 
-<!-- FALLING USDT & XAUT COINS GENERATOR SCRIPT -->
+<!-- FALLING 3D USER COINS GENERATOR SCRIPT -->
 <script>
   function createFallingCoins() {
     const container = document.getElementById('falling-coins-container');
-    const coinTypes = ['USDT', 'XAUT'];
-    const coinCount = 35; // Number of floating coins
+    const coinImages = [
+      'assets/coin_usdt.jpg',
+      'assets/coin_btc.jpg',
+      'assets/coin_xaut.jpg'
+    ];
+    const coinCount = 36;
 
     for (let i = 0; i < coinCount; i++) {
-      const coin = document.createElement('div');
-      const type = coinTypes[Math.floor(Math.random() * coinTypes.length)];
-      const size = Math.floor(Math.random() * 24) + 32; // Size between 32px and 56px
-      const left = Math.random() * 100; // Left percentage 0 - 100%
-      const duration = Math.random() * 10 + 10; // Fall duration 10s - 20s
-      const delay = Math.random() * 12; // Start delay 0s - 12s
+      const coin = document.createElement('img');
+      const src = coinImages[i % coinImages.length];
+      const size = Math.floor(Math.random() * 26) + 42; // Size 42px - 68px
+      const left = Math.random() * 98;
+      const duration = Math.random() * 10 + 12; // Fall duration 12s - 22s
+      const delay = Math.random() * 14;
 
-      coin.className = `falling-coin ${type === 'USDT' ? 'coin-usdt' : 'coin-xaut'}`;
+      coin.src = src;
+      coin.className = 'falling-coin-img';
       coin.style.width = `${size}px`;
       coin.style.height = `${size}px`;
       coin.style.left = `${left}%`;
       coin.style.animationDuration = `${duration}s`;
       coin.style.animationDelay = `${delay}s`;
-      coin.style.fontSize = `${size * 0.38}px`;
-
-      if (type === 'USDT') {
-        coin.innerHTML = `<span>₮</span>`;
-      } else {
-        coin.innerHTML = `<span>🪙</span>`;
-      }
+      coin.style.opacity = (Math.random() * 0.4 + 0.55).toFixed(2);
 
       container.appendChild(coin);
     }
