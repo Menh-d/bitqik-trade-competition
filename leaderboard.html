@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bitqik Trade Championship - Live Leaderboard</title>
+  <title>Bitqik Trade Championship - Live Leaderboard & Terminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -18,42 +19,95 @@
       --gold: #FFC700;
       --green: #00FF88;
       --red: #FF4060;
+      --border: rgba(255, 107, 0, 0.18);
       --font-lao: 'Noto Sans Lao', sans-serif;
     }
 
+    html { scroll-behavior: smooth; }
     body { font-family: var(--font-lao); background: var(--bg-dark); color: #FFFFFF; min-height: 100vh; overflow-x: hidden; }
 
     .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #0A0806; }
     .orange-ambient-light { position: fixed; width: 1000px; height: 900px; left: 50%; top: -150px; transform: translateX(-50%); background: rgba(255, 107, 0, 0.3); filter: blur(240px); border-radius: 50%; pointer-events: none; z-index: 0; }
     .grid-lines { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255, 107, 0, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 107, 0, 0.04) 1px, transparent 1px); background-size: 60px 60px; }
 
-    .wrapper { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
+    .wrapper { position: relative; z-index: 1; max-width: 1380px; margin: 0 auto; padding: 1rem 1.2rem 4rem; }
 
-    nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0 2rem; border-bottom: 1px solid rgba(255,107,0,0.15); margin-bottom: 2rem; }
+    /* NAV */
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 1.5rem; }
     .brand-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .brand-logo-img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--orange-accent); box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4); }
     .brand-title { font-family: var(--font-lao); font-weight: 800; font-size: 1.25rem; color: #FFFFFF; }
     .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
     .nav-links a { color: var(--text-sub); text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+    .nav-links a:hover { color: var(--orange-light); }
 
-    .page-title { text-align: center; margin-bottom: 2.5rem; }
-    .live-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0,255,136,0.12); border: 1px solid rgba(0,255,136,0.3); color: var(--green); padding: 6px 18px; border-radius: 100px; font-size: 0.8rem; font-family: var(--font-lao); font-weight: 700; text-transform: uppercase; margin-bottom: 1rem; }
+    .demo-bal-box { background: rgba(255, 107, 0, 0.15); border: 1px solid rgba(255, 107, 0, 0.35); border-radius: 8px; padding: 0.35rem 0.8rem; text-align: right; }
+    .demo-bal-num { font-family: var(--font-lao); font-weight: 800; font-size: 0.95rem; color: var(--gold); }
 
-    .page-title h1 { font-family: var(--font-lao); font-size: 2.4rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
+    /* PAGE HEADER */
+    .page-title { text-align: center; margin-bottom: 2rem; }
+    .live-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: rgba(0,255,136,0.12); border: 1px solid rgba(0,255,136,0.3); color: var(--green); padding: 6px 18px; border-radius: 100px; font-size: 0.8rem; font-family: var(--font-lao); font-weight: 700; text-transform: uppercase; margin-bottom: 0.8rem; }
+    .page-title h1 { font-family: var(--font-lao); font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 0.3rem; }
     .page-title h1 span { color: var(--orange-accent); }
+    .page-title p { color: var(--text-sub); font-size: 0.92rem; }
 
-    .podium-grid { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 1.2rem; align-items: end; margin-bottom: 3rem; }
-    .podium-card { background: rgba(255, 107, 0, 0.05); border: 1px solid rgba(255, 107, 0, 0.2); border-radius: 24px; padding: 2rem 1.2rem; text-align: center; backdrop-filter: blur(16px); position: relative; }
-    .podium-card.rank-1 { border-color: var(--orange-accent); background: linear-gradient(135deg, rgba(255, 107, 0, 0.2), rgba(10, 8, 6, 0.8)); transform: translateY(-10px); box-shadow: 0 15px 40px rgba(255, 107, 0, 0.3); }
-    .podium-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #C94A00, #FF6B00); color: #fff; font-family: var(--font-lao); font-weight: 800; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4); }
-    .podium-name { font-weight: 800; font-size: 1.1rem; color: #fff; margin-bottom: 0.2rem; }
-    .podium-pnl { font-family: var(--font-lao); font-weight: 900; font-size: 1.8rem; color: var(--green); line-height: 1.1; }
+    /* LAYOUT TABS / CONTROLS */
+    .layout-controls { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; }
+    .btn-tab {
+      padding: 8px 22px; border-radius: 100px; border: 1px solid var(--border); background: rgba(255, 107, 0, 0.06);
+      color: var(--text-sub); font-family: var(--font-lao); font-weight: 700; font-size: 0.88rem; cursor: pointer; transition: all 0.3s;
+    }
+    .btn-tab.active { background: var(--orange-accent); color: #fff; border-color: var(--orange-accent); box-shadow: 0 4px 20px rgba(255, 107, 0, 0.5); }
 
-    .lead-table-box { background: rgba(255, 107, 0, 0.05); border: 1px solid rgba(255, 107, 0, 0.2); border-radius: 24px; overflow: hidden; backdrop-filter: blur(16px); }
-    .lead-table { width: 100%; border-collapse: collapse; font-family: var(--font-lao); font-size: 0.9rem; text-align: left; }
-    .lead-table th { background: rgba(255, 107, 0, 0.18); color: #FFFFFF; font-weight: 800; padding: 1rem 1.2rem; border-bottom: 1px solid rgba(255, 107, 0, 0.2); font-size: 0.82rem; text-transform: uppercase; }
-    .lead-table td { padding: 0.9rem 1.2rem; border-bottom: 1px solid rgba(255,107,0,0.08); }
-    .lead-table tr.user-row td { background: rgba(255, 107, 0, 0.2); font-weight: 800; }
+    /* MAIN DASHBOARD GRID */
+    .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.8rem; align-items: start; }
+
+    /* TERMINAL CARD */
+    .terminal-card {
+      background: var(--bg-panel); border: 1.5px solid var(--border); border-radius: 24px;
+      overflow: hidden; backdrop-filter: blur(20px); box-shadow: 0 15px 45px rgba(0,0,0,0.6);
+      display: flex; flex-direction: column; height: 750px;
+    }
+
+    .terminal-header {
+      background: rgba(0,0,0,0.4); border-bottom: 1px solid var(--border); padding: 0.8rem 1.2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .term-pair-title { font-size: 1rem; font-weight: 800; color: #fff; font-family: var(--font-lao); display: flex; align-items: center; gap: 0.6rem; }
+    .term-price { font-family: var(--font-lao); font-weight: 800; font-size: 1.1rem; color: var(--green); }
+
+    #tv-chart-container { flex: 1; min-height: 320px; background: #070504; }
+
+    .term-controls-panel { padding: 1.2rem; background: rgba(0,0,0,0.3); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 1rem; }
+
+    .btn-pill-action {
+      padding: 10px; border-radius: 100px; border: none; font-family: var(--font-lao); font-weight: 800; font-size: 0.92rem; cursor: pointer; text-transform: uppercase; transition: all 0.2s;
+    }
+    .btn-pill-action.long { background: linear-gradient(135deg, #00C96B, #00FF88); color: #000; box-shadow: 0 4px 15px rgba(0,255,136,0.3); }
+    .btn-pill-action.short { background: linear-gradient(135deg, #D32F2F, #FF4060); color: #fff; box-shadow: 0 4px 15px rgba(255,64,96,0.3); }
+
+    /* LEADERBOARD CARD */
+    .leaderboard-card-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    /* PODIUM */
+    .podium-grid { display: grid; grid-template-columns: 1fr 1.1fr 1fr; gap: 1rem; align-items: end; }
+    .podium-card { background: rgba(255, 107, 0, 0.05); border: 1px solid var(--border); border-radius: 20px; padding: 1.4rem 1rem; text-align: center; backdrop-filter: blur(16px); position: relative; }
+    .podium-card.rank-1 { border-color: var(--orange-accent); background: linear-gradient(135deg, rgba(255, 107, 0, 0.2), rgba(10, 8, 6, 0.8)); transform: translateY(-8px); box-shadow: 0 15px 40px rgba(255, 107, 0, 0.3); }
+    .podium-avatar { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, #C94A00, #FF6B00); color: #fff; font-family: var(--font-lao); font-weight: 800; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.6rem; box-shadow: 0 6px 20px rgba(255, 107, 0, 0.4); }
+    .podium-name { font-weight: 800; font-size: 1rem; color: #fff; margin-bottom: 0.2rem; }
+    .podium-pnl { font-family: var(--font-lao); font-weight: 900; font-size: 1.6rem; color: var(--green); line-height: 1.1; }
+
+    /* TABLE */
+    .lead-table-box { background: rgba(255, 107, 0, 0.05); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; backdrop-filter: blur(16px); }
+    .lead-table { width: 100%; border-collapse: collapse; font-family: var(--font-lao); font-size: 0.88rem; text-align: left; }
+    .lead-table th { background: rgba(255, 107, 0, 0.18); color: #FFFFFF; font-weight: 800; padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--border); font-size: 0.8rem; text-transform: uppercase; }
+    .lead-table td { padding: 0.8rem 1.1rem; border-bottom: 1px solid rgba(255,107,0,0.08); }
+    .lead-table tr.user-row td { background: rgba(255, 107, 0, 0.25); font-weight: 800; border-left: 3px solid var(--orange-accent); }
+
+    @media (max-width: 1080px) {
+      .dashboard-grid { grid-template-columns: 1fr; }
+      .terminal-card { height: 600px; }
+    }
   </style>
 </head>
 <body>
@@ -64,6 +118,7 @@
 
 <div class="wrapper">
 
+  <!-- NAV -->
   <nav>
     <a href="index.html" class="brand-logo">
       <img src="assets/logo.png" alt="Trade Championship Logo" class="brand-logo-img" />
@@ -72,63 +127,181 @@
     <ul class="nav-links">
       <li><a href="index.html">🏠 ໜ້າຫຼັກ</a></li>
       <li><a href="register.html">📋 ລົງທະບຽນ</a></li>
-      <li><a href="trade.html" style="color:var(--orange-light)">📈 Demo Trade</a></li>
+      <li><a href="trade.html" style="color:var(--orange-light)">📈 Full Terminal</a></li>
     </ul>
+    <div class="demo-bal-box">
+      <div style="font-size:0.65rem; color:rgba(255,255,255,0.7); text-transform:uppercase;">Margin Bal</div>
+      <div class="demo-bal-num" id="user-balance">$10.00 USDT</div>
+    </div>
   </nav>
 
+  <!-- PAGE HEADER -->
   <div class="page-title">
-    <div class="live-badge">REAL-TIME LIVE FEED</div>
-    <h1>ອັນດັບຜູ້ເຂົ້າຮ່ວມ<span>ແຂ່ງຂັນ</span></h1>
-    <p>ຕາຕະລາງ Leaderboard ຈັດອັນດັບ 25 Traders ແບບ Realtime</p>
+    <div class="live-badge">REAL-TIME DEMO TRADE & LEADERBOARD FEED</div>
+    <h1>ອັນດັບຜູ້ເຂົ້າຮ່ວມ<span>ແຂ່ງຂັນ & Realtime Demo Trade</span></h1>
+    <p>ຕິດຕາມກຣາຟລາຄາ real-time Binance ພ້ອມຕາຕະລາງຈັດອັນດັບ 25 Traders ແບບ Realtime</p>
   </div>
 
-  <div class="podium-grid">
-    <div class="podium-card rank-2">
-      <div class="podium-avatar">NP</div>
-      <div style="font-size:0.78rem; color:var(--text-sub); font-family:var(--font-lao);">RANK #2</div>
-      <div class="podium-name">ນ້ອຍ ພ</div>
-      <div class="podium-pnl" id="podium-2-pnl">+134.2%</div>
-    </div>
-    <div class="podium-card rank-1">
-      <div style="font-size:2rem; margin-bottom:0.3rem;">👑</div>
-      <div class="podium-avatar">KS</div>
-      <div style="font-size:0.78rem; color:var(--orange-light); font-family:var(--font-lao); font-weight:800;">CHAMPION #1</div>
-      <div class="podium-name">ໄຄ ສົມຣ</div>
-      <div class="podium-pnl" id="podium-1-pnl">+156.4%</div>
-    </div>
-    <div class="podium-card rank-3">
-      <div class="podium-avatar">DV</div>
-      <div style="font-size:0.78rem; color:var(--text-sub); font-family:var(--font-lao);">RANK #3</div>
-      <div class="podium-name">ແດງ ວ</div>
-      <div class="podium-pnl" id="podium-3-pnl">+98.7%</div>
-    </div>
-  </div>
+  <!-- DASHBOARD SPLIT GRID -->
+  <div class="dashboard-grid">
+    
+    <!-- LEFT PANEL: REALTIME DEMO TRADE TERMINAL EMBED -->
+    <div class="terminal-card">
+      <div class="terminal-header">
+        <div class="term-pair-title">
+          <span>📈 BTC-PERP</span>
+          <span style="font-size:0.75rem; color:var(--green); font-weight:600;">🟢 Live WS</span>
+        </div>
+        <div class="term-price" id="mark-price">$65,240.50</div>
+      </div>
 
-  <div class="lead-table-box">
-    <table class="lead-table">
-      <thead>
-        <tr><th># Rank</th><th>Trader</th><th>Leverage</th><th>P&L %</th><th>Est. Profit</th><th>Status</th></tr>
-      </thead>
-      <tbody id="leaderboard-tbody"></tbody>
-    </table>
+      <!-- TRADINGVIEW LIGHTWEIGHT CHART -->
+      <div id="tv-chart-container"></div>
+
+      <!-- ORDER EXECUTION FORM & POSITIONS PANEL -->
+      <div class="term-controls-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:0.85rem; font-weight:700; color:var(--text-sub);">Futures Order Entry (20x Leverage)</span>
+          <span style="font-size:0.78rem; color:var(--gold);">Available: $10 USDT</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem;">
+          <input type="number" value="10" placeholder="Margin USDT" style="background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:100px; padding:0.6rem 1rem; color:#fff; font-family:var(--font-lao); font-weight:700; outline:none;" id="margin-input" />
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+            <button class="btn-pill-action long" onclick="placeOrder('LONG')">LONG</button>
+            <button class="btn-pill-action short" onclick="placeOrder('SHORT')">SHORT</button>
+          </div>
+        </div>
+
+        <!-- OPEN POSITION STATUS -->
+        <div id="pos-status-bar" style="background:rgba(255,107,0,0.08); border:1px solid var(--border); border-radius:12px; padding:0.6rem 1rem; font-size:0.82rem; display:flex; justify-content:space-between; align-items:center;">
+          <span style="color:rgba(255,255,255,0.7);" id="pos-status-text">No active position. Enter order above.</span>
+          <button id="close-pos-btn" onclick="closePosition()" style="display:none; background:rgba(255,64,96,0.2); color:var(--red); border:1px solid var(--red); border-radius:4px; padding:0.25rem 0.6rem; cursor:pointer; font-weight:700;">Close Position</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL: PODIUM & LEADERBOARD TABLE -->
+    <div class="leaderboard-card-panel">
+      
+      <!-- PODIUM -->
+      <div class="podium-grid">
+        <div class="podium-card rank-2">
+          <div class="podium-avatar">NP</div>
+          <div style="font-size:0.75rem; color:var(--text-sub); font-family:var(--font-lao);">RANK #2</div>
+          <div class="podium-name">ນ້ອຍ ພ</div>
+          <div class="podium-pnl" id="podium-2-pnl">+134.2%</div>
+        </div>
+        <div class="podium-card rank-1">
+          <div style="font-size:1.8rem; margin-bottom:0.2rem;">👑</div>
+          <div class="podium-avatar">KS</div>
+          <div style="font-size:0.75rem; color:var(--orange-light); font-family:var(--font-lao); font-weight:800;">CHAMPION #1</div>
+          <div class="podium-name">ໄຄ ສົມຣ</div>
+          <div class="podium-pnl" id="podium-1-pnl">+156.4%</div>
+        </div>
+        <div class="podium-card rank-3">
+          <div class="podium-avatar">DV</div>
+          <div style="font-size:0.75rem; color:var(--text-sub); font-family:var(--font-lao);">RANK #3</div>
+          <div class="podium-name">ແດງ ວ</div>
+          <div class="podium-pnl" id="podium-3-pnl">+98.7%</div>
+        </div>
+      </div>
+
+      <!-- LEADERBOARD TABLE -->
+      <div class="lead-table-box">
+        <table class="lead-table">
+          <thead>
+            <tr><th># Rank</th><th>Trader</th><th>Leverage</th><th>P&L %</th><th>Est. Profit</th><th>Status</th></tr>
+          </thead>
+          <tbody id="leaderboard-tbody"></tbody>
+        </table>
+      </div>
+
+    </div>
+
   </div>
 
 </div>
 
 <script>
+  let currentPrice = 65240.50;
+  let chart, candleSeries;
+  let openPosition = JSON.parse(localStorage.getItem('bitqik_trade_position') || 'null');
+
   let TRADERS = [
     { id:1, name:'ໄຄ ສົມຣ', leverage:'20x', pnl: 156.4, profit: 782 },
     { id:2, name:'ນ້ອຍ ພ', leverage:'15x', pnl: 134.2, profit: 671 },
     { id:3, name:'ແດງ ວ', leverage:'25x', pnl: 98.7, profit: 493 },
     { id:4, name:'ວັນນາ ຕ', leverage:'10x', pnl: 87.3, profit: 436 },
-    { id:5, name:'ສີ ດາວ', leverage:'12x', pnl: 76.5, profit: 382 }
+    { id:5, name:'ສີ ດາວ', leverage:'12x', pnl: 76.5, profit: 382 },
+    { id:6, name:'Alex B', leverage:'8x', pnl: 65.1, profit: 325 },
+    { id:7, name:'ທອງ ໄຊ', leverage:'15x', pnl: 54.8, profit: 274 },
+    { id:8, name:'Emma K', leverage:'5x', pnl: 43.2, profit: 216 },
+    { id:9, name:'ຄຳ ລ', leverage:'20x', pnl: 38.9, profit: 194 },
+    { id:10, name:'ດາວ ຈ', leverage:'10x', pnl: 28.4, profit: 142 }
   ];
 
+  function initTerminalChart() {
+    const container = document.getElementById('tv-chart-container');
+    chart = LightweightCharts.createChart(container, {
+      layout: { background: { color: '#070504' }, textColor: '#E8D5C8' },
+      grid: { vertLines: { color: 'rgba(255,107,0,0.03)' }, horzLines: { color: 'rgba(255,107,0,0.03)' } }
+    });
+    candleSeries = chart.addCandlestickSeries({ upColor: '#00FF88', downColor: '#FF4060' });
+
+    fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=80')
+      .then(res => res.json())
+      .then(data => {
+        const candles = data.map(d => ({ time: d[0]/1000, open: parseFloat(d[1]), high: parseFloat(d[2]), low: parseFloat(d[3]), close: parseFloat(d[4]) }));
+        candleSeries.setData(candles);
+        if (candles.length > 0) currentPrice = candles[candles.length - 1].close;
+        updateLeaderboard();
+      }).catch(e => console.log(e));
+
+    const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@kline_1m');
+    ws.onmessage = (e) => {
+      const msg = JSON.parse(e.data);
+      if (msg.k) {
+        currentPrice = parseFloat(msg.k.c);
+        candleSeries.update({ time: msg.k.t/1000, open: parseFloat(msg.k.o), high: parseFloat(msg.k.h), low: parseFloat(msg.k.l), close: currentPrice });
+        document.getElementById('mark-price').textContent = `$${currentPrice.toFixed(2)}`;
+        updateLeaderboard();
+      }
+    };
+  }
+
+  function placeOrder(side) {
+    const margin = parseFloat(document.getElementById('margin-input').value) || 10;
+    openPosition = { symbol: 'BTC-PERP', side: side, margin: margin, leverage: 20, entryPrice: currentPrice };
+    localStorage.setItem('bitqik_trade_position', JSON.stringify(openPosition));
+    updateLeaderboard();
+  }
+
+  function closePosition() {
+    openPosition = null;
+    localStorage.removeItem('bitqik_trade_position');
+    updateLeaderboard();
+  }
+
   function updateLeaderboard() {
-    const userPos = JSON.parse(localStorage.getItem('bitqik_trade_position') || 'null');
-    if (userPos) {
-      TRADERS = TRADERS.filter(t => !t.isUser);
-      TRADERS.push({ id:99, name:'👤 YOU (ທ່ານເອງ)', leverage:`${userPos.leverage||20}x`, pnl:24.5, profit:122, isUser:true });
+    const statusText = document.getElementById('pos-status-text');
+    const closeBtn = document.getElementById('close-pos-btn');
+
+    let userPnl = 24.5;
+    if (openPosition) {
+      let deltaPct = (currentPrice - openPosition.entryPrice) / openPosition.entryPrice;
+      if (openPosition.side === 'SHORT') deltaPct = -deltaPct;
+      userPnl = (openPosition.margin * 20 * deltaPct / openPosition.margin) * 100;
+      statusText.innerHTML = `<strong>${openPosition.side} BTC-PERP</strong> @ $${openPosition.entryPrice.toFixed(2)} | P&L: <span style="color:${userPnl>=0?'var(--green)':'var(--red)'}">${userPnl>=0?'+':''}${userPnl.toFixed(2)}%</span>`;
+      closeBtn.style.display = 'inline-block';
+    } else {
+      statusText.textContent = 'No active position. Enter order above.';
+      closeBtn.style.display = 'none';
+    }
+
+    TRADERS = TRADERS.filter(t => !t.isUser);
+    if (openPosition) {
+      TRADERS.push({ id:99, name:'👤 YOU (ທ່ານເອງ)', leverage:'20x', pnl: userPnl, profit: Math.round(userPnl * 5), isUser: true });
     }
     TRADERS.sort((a,b) => b.pnl - a.pnl);
 
@@ -142,14 +315,14 @@
         <td style="font-weight:800; color:${idx === 0 ? 'var(--gold)' : '#fff'};">#${idx + 1}</td>
         <td><strong>${t.name}</strong></td>
         <td>${t.leverage}</td>
-        <td style="font-weight:800; color:var(--green);">+${t.pnl.toFixed(1)}%</td>
+        <td style="font-weight:800; color:${t.pnl>=0?'var(--green)':'var(--red)'};">${t.pnl>=0?'+':''}${t.pnl.toFixed(1)}%</td>
         <td style="font-weight:700;">$${t.profit} USDT</td>
         <td><span style="background:rgba(0,255,136,0.15); color:var(--green); padding:0.2rem 0.6rem; border-radius:100px; font-size:0.72rem; font-weight:700;">🟢 Trading</span></td>
       </tr>
     `).join('');
   }
 
-  updateLeaderboard();
+  initTerminalChart();
   setInterval(updateLeaderboard, 4000);
 </script>
 </body>
