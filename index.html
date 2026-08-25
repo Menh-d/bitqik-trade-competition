@@ -7,324 +7,268 @@
   <meta name="description" content="ການແຂ່ງຂັນ Trade Future ສຸດຍອດ ຊິງລາງວັນກວ່າ $6,000+ — MacBook Neo, Meta Glasses ແລະ ອີກຫຼາຍ!" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+Lao:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+Lao:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --gold: #FFD700;
       --gold-light: #FFE94D;
-      --gold-dark: #B8860B;
+      --purple-accent: #C069FF;
+      --purple-deep: #551A94;
+      --purple-bg: #0C0414;
+      --text-purple-light: #F4DFFF;
       --green: #00FF88;
       --green-dim: #00C96B;
       --red: #FF4060;
-      --bg-deep: #030712;
-      --bg-glass: rgba(255, 255, 255, 0.04);
-      --bg-glass-strong: rgba(18, 26, 53, 0.65);
-      --border: rgba(255, 215, 0, 0.22);
-      --border-green: rgba(0, 255, 136, 0.25);
       --border-glass: rgba(255, 255, 255, 0.12);
-      --text: #F1F5F9;
-      --text-dim: #94A3B8;
-      --font-en: 'Outfit', sans-serif;
-      --font-lo: 'Noto Sans Lao', 'Outfit', sans-serif;
-      --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      --border-purple: rgba(192, 105, 255, 0.3);
+      --font-en: 'Inter', 'Outfit', sans-serif;
+      --font-lo: 'Noto Sans Lao', 'Inter', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
-    body { font-family: var(--font-lo); background: var(--bg-deep); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+    body { font-family: var(--font-lo); background: var(--purple-bg); color: #FFFFFF; overflow-x: hidden; min-height: 100vh; }
 
-    /* ANIMATED BG */
-    .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 70% 45% at 50% -10%, rgba(255,215,0,0.12) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 40% at 85% 90%, rgba(0,255,136,0.08) 0%, transparent 50%),
-        linear-gradient(180deg, #030712 0%, #080d24 50%, #030712 100%); }
+    /* BACKGROUND MASK & AMBIENT LIGHTS */
+    .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #0C0414; }
+
+    .purple-ambient-light {
+      position: fixed; width: 1100px; height: 1000px; left: 50%; top: -200px; transform: translateX(-50%);
+      background: rgba(85, 26, 148, 0.55); filter: blur(240px); border-radius: 50%; pointer-events: none; z-index: 0;
+      animation: ambientPulse 8s ease-in-out infinite alternate;
+    }
+    @keyframes ambientPulse { 0% { opacity: 0.4; transform: translateX(-50%) scale(1); } 100% { opacity: 0.7; transform: translateX(-50%) scale(1.15); } }
+
+    .light-beam-1 {
+      position: absolute; width: 200px; height: 350px; right: 20%; top: -80px;
+      background: linear-gradient(180deg, #C069FF 0%, rgba(192, 105, 255, 0) 100%);
+      mix-blend-mode: plus-lighter; filter: blur(12px); transform: rotate(13deg); pointer-events: none; opacity: 0.6;
+      animation: beamPulse 4s ease-in-out infinite alternate;
+    }
+    @keyframes beamPulse { 0% { opacity: 0.4; } 100% { opacity: 0.9; } }
+
     .grid-lines { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(255,215,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,215,0,0.03) 1px, transparent 1px);
-      background-size: 50px 50px; animation: gridPan 35s linear infinite; }
-    @keyframes gridPan { 0% { transform: translateY(0); } 100% { transform: translateY(50px); } }
-
-    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-    .particle { position: absolute; border-radius: 50%; animation: floatUp linear infinite; opacity: 0; }
-    @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 15% { opacity: 0.7; } 85% { opacity: 0.3; } 100% { transform: translateY(-10vh) scale(1.2); opacity: 0; } }
+      background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px; }
 
     .wrapper { position: relative; z-index: 1; }
 
-    /* GLASS DYNAMIC LOGO COMPONENT */
-    .glass-logo {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border);
-      padding: 0.6rem 1.2rem;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2);
-      text-decoration: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* SHCOJ / FOXY HEADER NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem; background: rgba(12, 4, 20, 0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .glass-logo:hover {
-      transform: translateY(-2px);
-      border-color: var(--gold);
-      box-shadow: 0 15px 35px rgba(255,215,0,0.2), inset 0 1px 1px rgba(255,255,255,0.4);
-    }
-    .glass-logo-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--green));
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; font-weight: 900; color: #000;
-      box-shadow: 0 4px 12px rgba(255,215,0,0.3);
-    }
-    .glass-logo-text { display: flex; flex-direction: column; text-align: left; }
-    .glass-logo-title {
-      font-family: var(--font-en); font-weight: 900; font-size: 1.15rem; letter-spacing: 0.05em; line-height: 1;
-      background: linear-gradient(135deg, #FFF, var(--gold-light), var(--gold));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-    .glass-logo-sub { font-family: var(--font-en); font-size: 0.62rem; font-weight: 700; color: var(--green); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 2px; }
 
-    /* NAV */
-    nav { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 2.5rem;
-      background: rgba(3, 7, 18, 0.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,215,0,0.15); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
-    .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; padding: 0.4rem 0.8rem; border-radius: 8px; }
-    .nav-links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
-    .nav-links a.active-link { color: var(--gold); background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.25); }
-
-    .nav-cta {
-      font-family: var(--font-en);
-      background: linear-gradient(135deg, var(--gold-dark), var(--gold));
-      color: #000; padding: 0.65rem 1.6rem; border-radius: 50px; font-weight: 800; font-size: 0.9rem;
-      cursor: pointer; border: none; text-decoration: none; transition: all 0.3s;
-      box-shadow: 0 4px 20px rgba(255,215,0,0.25);
+    .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-icon {
+      width: 38px; height: 38px; border-radius: 12px;
+      background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 100%), #551A94;
+      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+      box-shadow: 0 4px 15px rgba(192, 105, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.2);
     }
-    .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,215,0,0.4); }
+    .brand-title {
+      font-family: var(--font-en); font-weight: 700; font-size: 1.4rem; color: #FFFFFF;
+      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); letter-spacing: -0.02em;
+    }
 
-    /* TICKER */
-    .ticker-wrap { background: rgba(18, 26, 53, 0.4); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 0.55rem 0; overflow: hidden; backdrop-filter: blur(10px); }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
+    .nav-links a {
+      font-family: var(--font-en); font-weight: 500; font-size: 0.95rem; color: rgba(255, 255, 255, 0.6);
+      text-decoration: none; transition: all 0.3s; padding: 0.4rem 0.6rem; border-radius: 8px;
+    }
+    .nav-links a:hover { color: #FFFFFF; opacity: 1; }
+    .nav-links a.active-link { color: #FFFFFF; opacity: 1; border-bottom: 2px solid var(--purple-accent); }
+
+    .btn-pill-cta {
+      padding: 8px 24px; min-width: 150px; height: 42px; border-radius: 100px;
+      background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.3) 100%), #551A94;
+      border: 1px solid rgba(255, 255, 255, 0.3); color: #FFFFFF; font-family: var(--font-en); font-weight: 600; font-size: 0.95rem;
+      cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 20px rgba(85, 26, 148, 0.6);
+    }
+    .btn-pill-cta:hover { transform: scale(1.05); box-shadow: 0 8px 30px rgba(192, 105, 255, 0.5); }
+
+    .btn-pill-secondary {
+      padding: 8px 24px; min-width: 170px; height: 42px; border-radius: 100px;
+      background: transparent; border: 1px solid rgba(255, 255, 255, 0.25); color: #FFFFFF;
+      font-family: var(--font-en); font-weight: 500; font-size: 0.95rem; cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; transition: all 0.3s;
+    }
+    .btn-pill-secondary:hover { border-color: var(--purple-accent); background: rgba(192, 105, 255, 0.1); transform: scale(1.05); }
+
+    /* TICKER BAR */
+    .ticker-wrap { background: rgba(85, 26, 148, 0.25); border-top: 1px solid rgba(255, 255, 255, 0.08); border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding: 0.6rem 0; overflow: hidden; backdrop-filter: blur(10px); }
     .ticker-inner { display: flex; animation: tickerMove 30s linear infinite; white-space: nowrap; }
-    .ticker-item { font-family: var(--font-en); font-size: 0.82rem; font-weight: 600; color: var(--gold); padding: 0 2.5rem; flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem; }
+    .ticker-item { font-family: var(--font-en); font-size: 0.85rem; font-weight: 600; color: var(--text-purple-light); padding: 0 2.5rem; flex-shrink: 0; display: flex; align-items: center; gap: 0.5rem; }
     .ticker-item .up { color: var(--green); }
     .ticker-item .down { color: var(--red); }
     @keyframes tickerMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
     /* HERO SECTION */
-    .hero { position: relative; min-height: 88vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 4rem 1.5rem; overflow: hidden; }
-    .hero-content { position: relative; max-width: 960px; z-index: 2; }
-    
-    .hero-logo-badge {
-      display: inline-flex; align-items: center; gap: 0.8rem;
-      background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 215, 0, 0.35); padding: 0.6rem 1.6rem; border-radius: 50px;
-      margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-      animation: fadeInDown 0.8s ease;
-    }
-    .hero-logo-badge span { font-family: var(--font-en); font-size: 0.85rem; font-weight: 700; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
+    .hero { position: relative; min-height: 85vh; display: flex; flex-direction: column; items-center; justify-content: center; text-align: center; padding: 5rem 1.5rem 3rem; }
+    .hero-content { position: relative; max-width: 860px; z-index: 2; margin: 0 auto; }
 
-    .hero h1 {
-      font-family: var(--font-en); font-size: clamp(2.8rem, 7.5vw, 6rem); font-weight: 900; line-height: 1.05; letter-spacing: -2px;
-      background: linear-gradient(135deg, #FFFFFF 0%, var(--gold-light) 35%, var(--gold) 65%, var(--green) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem; animation: fadeInUp 0.8s ease 0.2s both;
-      text-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    .hero-pill-badge {
+      display: inline-flex; align-items: center; gap: 0.7rem; padding: 6px 20px; border-radius: 100px;
+      background: rgba(192, 105, 255, 0.12); border: 1px solid rgba(192, 105, 255, 0.4);
+      color: var(--text-purple-light); font-family: var(--font-en); font-size: 0.85rem; font-weight: 600;
+      margin-bottom: 2rem; box-shadow: 0 0 25px rgba(192, 105, 255, 0.2);
     }
 
-    .hero-sub {
-      font-family: var(--font-en); font-size: clamp(1rem, 2.2vw, 1.4rem); font-weight: 700;
-      color: var(--gold); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 1.5rem;
-      animation: fadeInUp 0.8s ease 0.3s both;
+    .hero-title {
+      font-family: var(--font-en); font-weight: 800; font-size: clamp(3rem, 7vw, 5.8rem); line-height: 1.1; letter-spacing: -0.02em;
+      background: linear-gradient(91.84deg, #231233 -12.23%, #F4DFFF 50%, #FFD700 80%, #00FF88 115%), #F4DFFF;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.2rem;
     }
 
-    .hero-desc {
-      font-size: clamp(1rem, 1.8vw, 1.15rem); color: var(--text-dim); max-width: 680px; margin: 0 auto 2.5rem;
-      line-height: 1.8; animation: fadeInUp 0.8s ease 0.4s both;
+    .hero-subtitle {
+      font-family: var(--font-en); font-weight: 400; font-size: clamp(1.1rem, 2vw, 1.4rem); line-height: 1.5;
+      color: rgba(244, 223, 255, 0.8); max-width: 680px; margin: 0 auto 2.5rem;
     }
 
-    .hero-stats {
-      display: flex; justify-content: center; gap: 3rem; margin-bottom: 3rem; flex-wrap: wrap;
-      animation: fadeInUp 0.8s ease 0.5s both;
-    }
+    .hero-cta-group { display: flex; justify-content: center; align-items: center; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 3.5rem; }
+
+    .hero-stats-row { display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 2rem; }
     .hero-stat-card {
-      background: var(--bg-glass-strong); border: 1px solid var(--border); border-radius: 16px;
-      padding: 1rem 1.8rem; backdrop-filter: blur(12px); box-shadow: var(--glass-shadow); min-width: 140px;
+      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+      padding: 1.2rem 2rem; backdrop-filter: blur(16px); min-width: 150px;
     }
-    .hero-stat-value { font-family: var(--font-en); font-size: 2.2rem; font-weight: 900; color: var(--gold); display: block; line-height: 1; }
-    .hero-stat-label { font-size: 0.78rem; color: var(--text-dim); margin-top: 0.4rem; font-family: var(--font-en); font-weight: 600; text-transform: uppercase; }
+    .hero-stat-num { font-family: var(--font-en); font-size: 2.2rem; font-weight: 800; color: var(--gold); line-height: 1; }
+    .hero-stat-lbl { font-family: var(--font-en); font-size: 0.78rem; color: rgba(255, 255, 255, 0.6); text-transform: uppercase; margin-top: 0.4rem; }
 
-    .hero-buttons { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.6s both; }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #000; padding: 1rem 2.5rem;
-      border-radius: 50px; font-weight: 800; font-size: 1.05rem; font-family: var(--font-en); cursor: pointer;
-      border: none; text-decoration: none; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.6rem;
-      box-shadow: 0 10px 30px rgba(255,215,0,0.3);
-    }
-    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 45px rgba(255,215,0,0.5); }
-
-    .btn-glass {
-      background: rgba(255,255,255,0.06); color: var(--text); padding: 1rem 2.2rem; border-radius: 50px;
-      font-weight: 700; font-size: 1.05rem; font-family: var(--font-en); cursor: pointer;
-      border: 1px solid var(--border-glass); text-decoration: none; transition: all 0.3s;
-      backdrop-filter: blur(16px); display: inline-flex; align-items: center; gap: 0.6rem;
-    }
-    .btn-glass:hover { border-color: var(--gold); color: var(--gold); background: rgba(255,215,0,0.1); transform: translateY(-3px); }
-
-    /* COUNTDOWN */
-    .countdown-section { padding: 3rem 1.5rem; text-align: center; }
-    .countdown-label { font-size: 0.85rem; color: var(--text-dim); font-family: var(--font-en); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; }
+    /* COUNTDOWN SECTION */
+    .countdown-box { text-align: center; padding: 3rem 1.5rem; }
+    .countdown-lbl { font-family: var(--font-en); font-size: 0.85rem; color: rgba(244, 223, 255, 0.6); font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem; }
     .countdown-grid { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
-    .countdown-item { background: var(--bg-glass-strong); border: 1px solid var(--border); border-radius: 18px; padding: 1.2rem 1.8rem; min-width: 105px; backdrop-filter: blur(16px); box-shadow: var(--glass-shadow); }
-    .countdown-num { font-family: var(--font-en); font-size: 2.8rem; font-weight: 900; color: var(--gold); display: block; line-height: 1; }
-    .countdown-unit { font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-en); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem; display: block; font-weight: 600; }
+    .countdown-card {
+      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(192, 105, 255, 0.3); border-radius: 20px;
+      padding: 1.4rem 2rem; min-width: 110px; backdrop-filter: blur(16px); box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .countdown-val { font-family: var(--font-en); font-size: 3rem; font-weight: 800; color: var(--gold); line-height: 1; }
+    .countdown-unit { font-family: var(--font-en); font-size: 0.75rem; color: rgba(255, 255, 255, 0.6); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0.4rem; display: block; }
 
     /* SECTION BASE */
     section { padding: 5rem 1.5rem; }
     .container { max-width: 1140px; margin: 0 auto; }
-    .section-badge { display: inline-block; background: rgba(255,215,0,0.1); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); padding: 0.35rem 1.1rem; border-radius: 50px; font-size: 0.75rem; font-family: var(--font-en); font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem; }
-    .section-title { font-size: clamp(2rem, 3.8vw, 3rem); font-weight: 800; color: #fff; margin-bottom: 0.75rem; line-height: 1.2; }
-    .section-title span { background: linear-gradient(135deg, var(--gold), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .section-desc { color: var(--text-dim); font-size: 1rem; line-height: 1.8; max-width: 620px; margin-bottom: 3rem; }
+    .section-badge {
+      display: inline-block; padding: 6px 18px; border-radius: 100px;
+      background: rgba(192, 105, 255, 0.12); border: 1px solid rgba(192, 105, 255, 0.3);
+      color: var(--text-purple-light); font-family: var(--font-en); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem;
+    }
+    .section-title { font-family: var(--font-en); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #FFFFFF; margin-bottom: 0.8rem; line-height: 1.2; }
+    .section-title span { background: linear-gradient(91.84deg, #F4DFFF 0%, var(--gold) 50%, var(--green) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .section-desc { color: rgba(244, 223, 255, 0.7); font-size: 1rem; line-height: 1.8; max-width: 620px; margin-bottom: 3.5rem; }
 
-    /* FEATURE QUICK ACCESS CARDS (GLASSMORPHIC) */
-    .feature-cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 3.5rem; }
+    /* FOXY FEATURE CARDS (FOXY-HERO / SHCOJ STYLE) */
+    .foxy-cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; margin-bottom: 3.5rem; }
     
-    .glass-feature-card {
-      background: var(--bg-glass-strong);
-      border: 1px solid var(--border-glass);
-      border-radius: 24px;
-      padding: 2.2rem 1.8rem;
-      text-align: center;
-      text-decoration: none;
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      box-shadow: var(--glass-shadow);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      overflow: hidden;
+    .foxy-card {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 2.2rem 1.8rem;
+      text-decoration: none; color: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
     }
-    .glass-feature-card::before {
-      content: ''; position: absolute; inset: 0; border-radius: 24px; padding: 1.5px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent, rgba(255,215,0,0.3));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+    .foxy-card:hover {
+      transform: translateY(-8px); border-color: var(--purple-accent);
+      box-shadow: 0 20px 50px rgba(85, 26, 148, 0.5), 0 0 30px rgba(192, 105, 255, 0.3);
     }
-    .glass-feature-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 30px rgba(255,215,0,0.15);
-    }
-    .glass-feature-card.card-reg:hover { border-color: var(--gold); }
-    .glass-feature-card.card-trade:hover { border-color: var(--green); }
-    .glass-feature-card.card-lead:hover { border-color: #8B7CF6; }
 
-    .card-icon-box {
-      width: 70px; height: 70px; border-radius: 20px; display: flex; align-items: center; justify-content: center;
-      font-size: 2.4rem; margin-bottom: 1.2rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
+    .foxy-card-icon {
+      width: 70px; height: 70px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.4rem;
+      background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.2) 100%), #551A94;
+      border: 1px solid rgba(255, 255, 255, 0.2); margin-bottom: 1.2rem; box-shadow: 0 6px 20px rgba(192, 105, 255, 0.3);
     }
-    .card-title { font-family: var(--font-en); font-size: 1.3rem; font-weight: 800; margin-bottom: 0.5rem; }
-    .card-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 1.5rem; }
-    .card-btn {
-      width: 100%; padding: 0.75rem 1.2rem; border-radius: 50px; font-family: var(--font-en); font-weight: 800; font-size: 0.9rem;
-      border: none; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 0.4rem;
-    }
-    .btn-gold { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #000; box-shadow: 0 4px 15px rgba(255,215,0,0.3); }
-    .btn-green { background: linear-gradient(135deg, var(--green-dim), var(--green)); color: #000; box-shadow: 0 4px 15px rgba(0,255,136,0.3); }
-    .btn-purple { background: linear-gradient(135deg, #7C3AED, #8B7CF6); color: #fff; box-shadow: 0 4px 15px rgba(139,124,246,0.3); }
+    .foxy-card-title { font-family: var(--font-en); font-size: 1.3rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .foxy-card-desc { font-size: 0.88rem; color: rgba(244, 223, 255, 0.7); line-height: 1.6; margin-bottom: 1.5rem; }
 
     /* TASKS GRID */
     .tasks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-    .task-card { background: var(--bg-glass-strong); border: 1px solid var(--border); border-radius: 24px; padding: 2.2rem; backdrop-filter: blur(16px); box-shadow: var(--glass-shadow); position: relative; }
-    .task-badge { display: inline-block; padding: 0.35rem 0.9rem; border-radius: 6px; font-size: 0.72rem; font-family: var(--font-en); font-weight: 800; letter-spacing: 0.1em; margin-bottom: 1.2rem; }
-    .task-badge-bd { background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); }
-    .task-badge-pc { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
+    .task-card {
+      background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px; padding: 2.2rem; backdrop-filter: blur(20px); position: relative;
+    }
+    .task-badge { display: inline-block; padding: 4px 14px; border-radius: 100px; font-size: 0.75rem; font-family: var(--font-en); font-weight: 700; letter-spacing: 0.1em; margin-bottom: 1.2rem; }
+    .task-badge-bd { background: rgba(255, 215, 0, 0.15); color: var(--gold); border: 1px solid rgba(255, 215, 0, 0.3); }
+    .task-badge-pc { background: rgba(0, 255, 136, 0.15); color: var(--green); border: 1px solid rgba(0, 255, 136, 0.3); }
     .task-card h3 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.4rem; font-family: var(--font-en); }
-    .task-card .task-fee { font-size: 0.88rem; color: var(--text-dim); margin-bottom: 1.5rem; }
+    .task-card .task-fee { font-size: 0.88rem; color: rgba(244, 223, 255, 0.7); margin-bottom: 1.5rem; }
     .task-steps { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
-    .task-steps li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.92rem; color: var(--text); }
-    .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3); color: var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-family: var(--font-en); font-weight: 800; flex-shrink: 0; }
-    .task-steps.green .step-num { background: rgba(0,255,136,0.15); border-color: rgba(0,255,136,0.3); color: var(--green); }
-    .task-bonus { margin-top: 1.5rem; padding: 1rem; background: rgba(255,215,0,0.06); border: 1px solid rgba(255,215,0,0.25); border-radius: 12px; font-size: 0.85rem; color: var(--gold-light); }
+    .task-steps li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.92rem; color: #FFFFFF; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(192, 105, 255, 0.2); border: 1px solid rgba(192, 105, 255, 0.4); color: var(--text-purple-light); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-family: var(--font-en); font-weight: 800; flex-shrink: 0; }
+    .task-bonus { margin-top: 1.5rem; padding: 1rem; background: rgba(192, 105, 255, 0.08); border: 1px solid rgba(192, 105, 255, 0.25); border-radius: 12px; font-size: 0.85rem; color: var(--text-purple-light); }
 
-    /* TIMELINE */
+    /* TIMELINE TRACK */
     .timeline-outer { overflow-x: auto; padding-bottom: 1.5rem; }
     .timeline-track { display: flex; gap: 0; min-width: 950px; position: relative; }
-    .timeline-track::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--green-dim)); transform: translateY(-50%); z-index: 0; }
+    .timeline-track::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: linear-gradient(90deg, #551A94, #C069FF, var(--gold), var(--green)); transform: translateY(-50%); z-index: 0; }
     .timeline-item { flex: 1; text-align: center; position: relative; padding: 0 0.5rem; }
-    .timeline-dot { width: 48px; height: 48px; border-radius: 50%; background: #080d24; border: 2.5px solid var(--gold); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; position: relative; z-index: 1; font-family: var(--font-en); font-size: 0.85rem; font-weight: 800; color: var(--gold); transition: all 0.3s; }
-    .timeline-item.active .timeline-dot { background: var(--gold); color: #000; transform: scale(1.2); box-shadow: 0 0 0 8px rgba(255,215,0,0.2); }
-    .timeline-item.final .timeline-dot { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #000; width: 58px; height: 58px; transform: scale(1.25); box-shadow: 0 0 0 10px rgba(255,215,0,0.2); }
-    .timeline-day { font-size: 0.68rem; font-family: var(--font-en); font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
-    .timeline-event { font-size: 0.78rem; color: var(--text-dim); line-height: 1.4; }
+    .timeline-dot { width: 48px; height: 48px; border-radius: 50%; background: #0C0414; border: 2.5px solid var(--purple-accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; position: relative; z-index: 1; font-family: var(--font-en); font-size: 0.85rem; font-weight: 800; color: var(--text-purple-light); transition: all 0.3s; }
+    .timeline-item.active .timeline-dot { background: var(--purple-accent); color: #000; transform: scale(1.2); box-shadow: 0 0 25px rgba(192, 105, 255, 0.6); }
+    .timeline-day { font-size: 0.68rem; font-family: var(--font-en); font-weight: 800; color: var(--purple-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+    .timeline-event { font-size: 0.78rem; color: rgba(244, 223, 255, 0.7); line-height: 1.4; }
 
     /* REWARDS */
     .top3-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2.5rem; align-items: end; }
-    .prize-card { background: var(--bg-glass-strong); border: 1px solid var(--border); border-radius: 24px; padding: 2rem; text-align: center; backdrop-filter: blur(16px); box-shadow: var(--glass-shadow); position: relative; }
-    .prize-card.champion { border-color: rgba(255,215,0,0.6); background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(255,165,0,0.05)); transform: scale(1.05); }
+    .prize-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 2rem; text-align: center; backdrop-filter: blur(20px); position: relative; }
+    .prize-card.champion { border-color: rgba(255, 215, 0, 0.6); background: linear-gradient(135deg, rgba(192, 105, 255, 0.15), rgba(85, 26, 148, 0.3)); transform: scale(1.05); }
     .prize-rank { font-size: 3rem; margin-bottom: 0.5rem; }
-    .prize-place { font-family: var(--font-en); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-dim); margin-bottom: 1rem; }
-    .prize-card.champion .prize-place { color: var(--gold); }
+    .prize-place { font-family: var(--font-en); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255, 255, 255, 0.6); margin-bottom: 1rem; }
     .prize-usdt { font-family: var(--font-en); font-size: 2.6rem; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 0.3rem; }
-    .prize-card:nth-child(1) .prize-usdt { font-size: 2.1rem; color: #C0C0C0; }
-    .prize-card:nth-child(3) .prize-usdt { font-size: 1.9rem; color: #CD7F32; }
-    .prize-extra { display: inline-block; margin-top: 1rem; background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3); color: var(--gold-light); padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-family: var(--font-en); font-weight: 700; }
+    .prize-extra { display: inline-block; margin-top: 1rem; background: rgba(192, 105, 255, 0.15); border: 1px solid rgba(192, 105, 255, 0.3); color: var(--text-purple-light); padding: 0.4rem 0.9rem; border-radius: 8px; font-size: 0.82rem; font-family: var(--font-en); font-weight: 700; }
 
-    /* TABLE */
-    .prizes-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 20px; overflow: hidden; backdrop-filter: blur(16px); }
+    .prizes-table-wrap { overflow-x: auto; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 20px; overflow: hidden; backdrop-filter: blur(20px); }
     .prizes-table { width: 100%; border-collapse: collapse; font-family: var(--font-en); font-size: 0.9rem; }
-    .prizes-table th { background: rgba(255,215,0,0.12); color: var(--gold); font-weight: 800; padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
-    .prizes-table td { padding: 0.9rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: var(--text); }
-    .prizes-table tr:hover td { background: rgba(255,215,0,0.04); }
+    .prizes-table th { background: rgba(85, 26, 148, 0.4); color: var(--text-purple-light); font-weight: 800; padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
+    .prizes-table td { padding: 0.9rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: #FFFFFF; }
+
+    /* MULTI-BRAND SLIDER (FOXY STYLE) */
+    .brand-slider-section { position: relative; overflow: hidden; padding: 3rem 0 5rem; }
+    .brand-slider-title { font-family: var(--font-en); font-size: 0.9rem; font-weight: 600; color: rgba(244, 223, 255, 0.5); text-transform: uppercase; letter-spacing: 0.15em; text-align: center; margin-bottom: 2rem; }
+    .brand-slider-track { display: flex; gap: 4rem; animation: sliderMove 25s linear infinite; white-space: nowrap; }
+    .brand-item { flex-shrink: 0; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.3s; }
+    .brand-item:hover { opacity: 1; }
+    @keyframes sliderMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
     /* FOOTER */
-    footer { background: rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 1.5rem; text-align: center; font-size: 0.85rem; color: var(--text-dim); }
+    footer { background: rgba(0,0,0,0.6); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 1.5rem; text-align: center; font-size: 0.85rem; color: rgba(244, 223, 255, 0.6); }
 
     @media (max-width: 850px) {
-      nav { padding: 0.8rem 1.2rem; }
+      nav { padding: 1rem 1.2rem; }
       .nav-links { display: none; }
-      .feature-cards-grid, .tasks-grid, .top3-grid { grid-template-columns: 1fr; }
-      .prize-card.champion { transform: none; }
+      .foxy-cards-grid, .tasks-grid, .top3-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
 <div class="bg-canvas"></div>
+<div class="purple-ambient-light"></div>
+<div class="light-beam-1"></div>
 <div class="grid-lines"></div>
-<div class="particles" id="particles"></div>
 
 <div class="wrapper">
 
-  <!-- GLASS NAV -->
+  <!-- NAV -->
   <nav>
-    <a href="index.html" class="glass-logo">
-      <div class="glass-logo-icon">⚡</div>
-      <div class="glass-logo-text">
-        <span class="glass-logo-title">BITQIK</span>
-        <span class="glass-logo-sub">Trade Championship</span>
-      </div>
+    <a href="index.html" class="brand-logo">
+      <div class="brand-icon">⚡</div>
+      <span class="brand-title">BITQIK</span>
     </a>
 
     <ul class="nav-links">
       <li><a href="#join" class="active-link">ວິທີເຂົ້າຮ່ວມ</a></li>
       <li><a href="#timeline">ຕາຕະລາງ</a></li>
       <li><a href="#rewards">ລາງວັນ</a></li>
-      <li><a href="register.html" style="color:var(--gold)">📋 ລົງທະບຽນ</a></li>
+      <li><a href="register.html">📋 ລົງທະບຽນ</a></li>
       <li><a href="trade.html" style="color:var(--green)">📈 Demo Trade</a></li>
-      <li><a href="leaderboard.html" style="color:#8B7CF6">🏆 Leaderboard</a></li>
+      <li><a href="leaderboard.html" style="color:var(--purple-accent)">🏆 Leaderboard</a></li>
     </ul>
 
-    <a href="register.html" class="nav-cta">🚀 ສະໝັກດ່ວນ</a>
+    <a href="register.html" class="btn-pill-cta">Try for free</a>
   </nav>
 
-  <!-- LIVE TICKER -->
+  <!-- TICKER -->
   <div class="ticker-wrap">
     <div class="ticker-inner">
       <span class="ticker-item">BTC/USDT <span class="up">▲ +2.4%</span></span>
@@ -336,109 +280,115 @@
       <span class="ticker-item">BTC/USDT <span class="up">▲ +2.4%</span></span>
       <span class="ticker-item">ETH/USDT <span class="down">▼ -0.8%</span></span>
       <span class="ticker-item">XAUT/USDT <span class="up">▲ +1.2%</span></span>
-      <span class="ticker-item">🏆 Total Prize Pool: $6,000+</span>
     </div>
   </div>
 
   <!-- HERO -->
   <section class="hero">
     <div class="hero-content">
-      
-      <!-- Glassmorphic Event Badge -->
-      <div class="hero-logo-badge">
-        <span style="color:var(--green)">● LIVE</span>
-        <span>BITQIK ALTERNATIVE INVESTMENT FOR FUTURES</span>
+      <div class="hero-pill-badge">
+        <span>⚡ BITQIK ALTERNATIVE INVESTMENT FOR FUTURES</span>
       </div>
 
-      <h1>TRADE CHAMPIONSHIP</h1>
-      <p class="hero-sub">The Ultimate Crypto Trading Showdown</p>
-      <p class="hero-desc">
-        ການແຂ່ງຂັນ Trade Future ສຸດຍອດ! ສະແດງສີມືການລົງທຶນຂອງທ່ານ ຊິງລາງວັນກວ່າ <strong style="color:var(--gold)">$6,000+</strong> ພ້ອມ MacBook Neo, Meta Glasses ແລະ ລາງວັນສຸດຄຸ້ມອີກຫຼາຍ
-      </p>
+      <h1 class="hero-title">TRADE CHAMPIONSHIP</h1>
+      <p class="hero-subtitle">Where Artificial Intelligence Meets Financial Precision</p>
 
-      <div class="hero-stats">
-        <div class="hero-stat-card">
-          <span class="hero-stat-value">$6K+</span>
-          <span class="hero-stat-label">Prize Pool</span>
-        </div>
-        <div class="hero-stat-card">
-          <span class="hero-stat-value">40</span>
-          <span class="hero-stat-label">Final Slots</span>
-        </div>
-        <div class="hero-stat-card">
-          <span class="hero-stat-value">3</span>
-          <span class="hero-stat-label">Rounds</span>
-        </div>
-        <div class="hero-stat-card">
-          <span class="hero-stat-value">OCT</span>
-          <span class="hero-stat-label">2026</span>
-        </div>
+      <div class="hero-cta-group">
+        <a href="register.html" class="btn-pill-cta" style="min-width:180px; height:46px; font-size:1.05rem;">Try for free →</a>
+        <a href="trade.html" class="btn-pill-secondary" style="min-width:200px; height:46px; font-size:1.05rem;">Explore Terminal ></a>
       </div>
 
-      <div class="hero-buttons">
-        <a href="register.html" class="btn-primary">⚡ ເຂົ້າຮ່ວມລົງທະບຽນ</a>
-        <a href="trade.html" class="btn-glass">📈 ລອງ Demo Trade</a>
+      <div class="hero-stats-row">
+        <div class="hero-stat-card">
+          <div class="hero-stat-num">$6K+</div>
+          <div class="hero-stat-lbl">Prize Pool</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="hero-stat-num">40</div>
+          <div class="hero-stat-lbl">Finalists</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="hero-stat-num">3</div>
+          <div class="hero-stat-lbl">Rounds</div>
+        </div>
+        <div class="hero-stat-card">
+          <div class="hero-stat-num">OCT</div>
+          <div class="hero-stat-lbl">2026</div>
+        </div>
       </div>
-
     </div>
   </section>
 
   <!-- COUNTDOWN -->
-  <div class="countdown-section">
-    <p class="countdown-label">⏳ ເວລາທີ່ເຫຼືອກ່ອນເລີ່ມການແຂ່ງຂັນ</p>
+  <div class="countdown-box">
+    <p class="countdown-lbl">⏳ COUNTDOWN TO GRAND TOURNAMENT</p>
     <div class="countdown-grid">
-      <div class="countdown-item"><span class="countdown-num" id="cd-days">--</span><span class="countdown-unit">ວັນ</span></div>
-      <div class="countdown-item"><span class="countdown-num" id="cd-hours">--</span><span class="countdown-unit">ຊົ່ວໂມງ</span></div>
-      <div class="countdown-item"><span class="countdown-num" id="cd-mins">--</span><span class="countdown-unit">ນາທີ</span></div>
-      <div class="countdown-item"><span class="countdown-num" id="cd-secs">--</span><span class="countdown-unit">ວິນາທີ</span></div>
+      <div class="countdown-card"><span class="countdown-val" id="cd-days">--</span><span class="countdown-unit">Days</span></div>
+      <div class="countdown-card"><span class="countdown-val" id="cd-hours">--</span><span class="countdown-unit">Hours</span></div>
+      <div class="countdown-card"><span class="countdown-val" id="cd-mins">--</span><span class="countdown-unit">Mins</span></div>
+      <div class="countdown-card"><span class="countdown-val" id="cd-secs">--</span><span class="countdown-unit">Secs</span></div>
     </div>
   </div>
 
-  <!-- HOW TO JOIN & FEATURE ACCESS -->
+  <!-- MULTI-BRAND SLIDER (FOXY STYLE) -->
+  <div class="brand-slider-section">
+    <div class="brand-slider-title">Trusted by Leading Crypto Exchanges & Ecosystems</div>
+    <div style="position:relative; overflow:hidden;">
+      <div class="brand-slider-track">
+        <div class="brand-item"><svg width="100" height="40" viewBox="0 0 256 417" fill="none"><path d="M127.961 0L125.507 8.17L125.507 285.168L127.961 287.618L255.922 212.32L127.961 0Z" fill="#F4DFFF" fill-opacity="0.7"/></svg></div>
+        <div class="brand-item"><svg width="80" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F4DFFF" fill-opacity="0.2"/><path d="M21.5 15.5C21.5 14.5 20.8 13.8 20 13.5C20.5 13 20.8 12.3 20.5 11.5C20.2 10.3 19 9.8 17.8 10.2L17.5 8.5H16L16.3 10.2C15.9 10.3 15.5 10.4 15.1 10.5L14.8 8.5H13.3L13.6 10.2C13.3 10.3 12.9 10.4 12.6 10.5L10.5 11L11 12.5C11 12.5 12 12.2 12 12.3C12.5 12.2 12.8 12.5 12.9 12.9L13.5 16.5L13.6 19.5C13.6 19.8 13.5 20.2 13 20.3C13.1 20.3 12 20.6 12 20.6L11.5 22.2L13.5 21.7C13.9 21.6 14.2 21.5 14.6 21.4L14.9 23.2H16.4L16.1 21.4C16.5 21.3 16.9 21.2 17.3 21.1L17.6 22.9H19.1L18.8 21.1C20.3 20.8 21.5 19.8 21.5 18.2C21.6 17 21 16.2 20 15.8C20.8 15.5 21.4 14.8 21.5 13.9V15.5ZM18.5 18.5C18.5 19.5 16.5 19.8 15.5 20L15.2 17C16.2 16.8 18.5 16.5 18.5 18.5ZM17.5 13C17.5 14 15.8 14.2 15 14.4L14.7 11.9C15.5 11.7 17.5 11.4 17.5 13Z" fill="#F4DFFF" fill-opacity="0.8"/></svg></div>
+        <div class="brand-item"><svg width="90" height="40" viewBox="0 0 126 126" fill="none"><path d="M38.171 53.203L62.998 28.376L87.826 53.203L101.648 39.381L62.998 0.731L24.348 39.381L38.171 53.203Z" fill="#F4DFFF" fill-opacity="0.7"/></svg></div>
+        <div class="brand-item"><svg width="100" height="30" viewBox="0 0 397 311" fill="none"><path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z" fill="#F4DFFF" fill-opacity="0.6"/></svg></div>
+        <div class="brand-item"><svg width="100" height="40" viewBox="0 0 256 417" fill="none"><path d="M127.961 0L125.507 8.17L125.507 285.168L127.961 287.618L255.922 212.32L127.961 0Z" fill="#F4DFFF" fill-opacity="0.7"/></svg></div>
+        <div class="brand-item"><svg width="80" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F4DFFF" fill-opacity="0.2"/><path d="M21.5 15.5C21.5 14.5 20.8 13.8 20 13.5C20.5 13 20.8 12.3 20.5 11.5C20.2 10.3 19 9.8 17.8 10.2L17.5 8.5H16L16.3 10.2C15.9 10.3 15.5 10.4 15.1 10.5L14.8 8.5H13.3L13.6 10.2C13.3 10.3 12.9 10.4 12.6 10.5L10.5 11L11 12.5C11 12.5 12 12.2 12 12.3C12.5 12.2 12.8 12.5 12.9 12.9L13.5 16.5L13.6 19.5C13.6 19.8 13.5 20.2 13 20.3C13.1 20.3 12 20.6 12 20.6L11.5 22.2L13.5 21.7C13.9 21.6 14.2 21.5 14.6 21.4L14.9 23.2H16.4L16.1 21.4C16.5 21.3 16.9 21.2 17.3 21.1L17.6 22.9H19.1L18.8 21.1C20.3 20.8 21.5 19.8 21.5 18.2C21.6 17 21 16.2 20 15.8C20.8 15.5 21.4 14.8 21.5 13.9V15.5ZM18.5 18.5C18.5 19.5 16.5 19.8 15.5 20L15.2 17C16.2 16.8 18.5 16.5 18.5 18.5ZM17.5 13C17.5 14 15.8 14.2 15 14.4L14.7 11.9C15.5 11.7 17.5 11.4 17.5 13Z" fill="#F4DFFF" fill-opacity="0.8"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO JOIN & FOXY FEATURE CARDS -->
   <section id="join">
     <div class="container">
       <div class="section-badge">HOW TO JOIN & EXPERIENCES</div>
       <h2 class="section-title">ວິທີ<span>ເຂົ້າຮ່ວມ</span> ແລະ ລະບົບແຂ່ງຂັນ</h2>
       <p class="section-desc">ກົດເຂົ້າເບິ່ງແຕ່ລະລະບົບໄດ້ທັນທີ — ຈາກການລົງທະບຽນ ຈົນເຖິງ Demo Trade ແລະ Leaderboard Realtime</p>
 
-      <!-- 3 GLASSMORPHIC FEATURE CARDS -->
-      <div class="feature-cards-grid">
+      <!-- 3 FOXY GLASSMORPHIC FEATURE CARDS -->
+      <div class="foxy-cards-grid">
         
         <!-- CARD 1: REGISTER -->
-        <a href="register.html" class="glass-feature-card card-reg">
-          <div class="card-icon-box">📋</div>
+        <a href="register.html" class="foxy-card">
+          <div class="foxy-card-icon">📋</div>
           <div>
-            <div class="card-title" style="color:var(--gold)">Timeline ລົງທະບຽນ</div>
-            <div class="card-desc">ຈຳລອງ ຂັ້ນຕອນການລົງທະບຽນ Task 1 (BD) & Task 2 (PC) ພ້ອມ Animation ຄວາມຄືບໜ້າ</div>
+            <div class="foxy-card-title">Timeline ລົງທະບຽນ</div>
+            <div class="foxy-card-desc">ຈຳລອງ ຂັ້ນຕອນການລົງທະບຽນ Task 1 (BD) & Task 2 (PC) ພ້ອມ Animation ຄວາມຄືບໜ້າ</div>
           </div>
-          <button class="card-btn btn-gold">ເລີ່ມ ລົງທະບຽນ →</button>
+          <span class="btn-pill-cta" style="width:100%; margin-top:1rem;">ເລີ່ມ ລົງທະບຽນ →</span>
         </a>
 
         <!-- CARD 2: DEMO TRADE -->
-        <a href="trade.html" class="glass-feature-card card-trade">
-          <div class="card-icon-box">📈</div>
+        <a href="trade.html" class="foxy-card">
+          <div class="foxy-card-icon">📈</div>
           <div>
-            <div class="card-title" style="color:var(--green)">Demo Trade Realtime</div>
-            <div class="card-desc">ລະບົບ Trade Future ຈຳລອງ ອີງລາຄາ Realtime ຈາກ Binance WebSocket + TradingView Charts</div>
+            <div class="foxy-card-title" style="color:var(--green)">Demo Trade Realtime</div>
+            <div class="foxy-card-desc">ລະບົບ Trade Future (BTC-PERP) ອີງລາຄາ Realtime ຈາກ Binance WebSocket</div>
           </div>
-          <button class="card-btn btn-green">Trade Now →</button>
+          <span class="btn-pill-cta" style="width:100%; margin-top:1rem; background:linear-gradient(135deg,#00C96B,#00FF88); color:#000;">Explore Terminal ></span>
         </a>
 
         <!-- CARD 3: LEADERBOARD -->
-        <a href="leaderboard.html" class="glass-feature-card card-lead">
-          <div class="card-icon-box">🏆</div>
+        <a href="leaderboard.html" class="foxy-card">
+          <div class="foxy-card-icon">🏆</div>
           <div>
-            <div class="card-title" style="color:#8B7CF6">Live Leaderboard</div>
-            <div class="card-desc">ຕາຕະລາງຈັດອັນດັບ 25 Traders ແບບ Realtime ທຸກ 5 ວິນາທີ ພ້ອມ Sync Position ຂອງທ່ານ</div>
+            <div class="foxy-card-title" style="color:var(--purple-accent)">Live Leaderboard</div>
+            <div class="foxy-card-desc">ຕາຕະລາງຈັດອັນດັບ 25 Traders ແບບ Realtime ພ້ອມ Sync Position ຂອງທ່ານ</div>
           </div>
-          <button class="card-btn btn-purple">ເບິ່ງ Leaderboard →</button>
+          <span class="btn-pill-secondary" style="width:100%; margin-top:1rem; border-color:var(--purple-accent);">ເບິ່ງ Leaderboard →</span>
         </a>
 
       </div>
 
       <!-- TASK DETAIL CARDS -->
       <div class="tasks-grid">
-        
         <div class="task-card">
           <span class="task-badge task-badge-bd">TASK 1 — BD (Bonus Distribution)</span>
           <h3>💰 Bonus Distribution</h3>
@@ -452,7 +402,7 @@
             <li><span class="step-num">6</span>ຊື້ Spot BTC/XAUT ມູນລະຄ່າ 50 USD</li>
           </ul>
           <div class="task-bonus">
-            🎁 ໄດ້ຮັບ <strong>10 USDT Bonus</strong> ທັນທີ + ສິດຖືຄອງ BTC & ທອງຄຳ ແລະ ຂາຍໄດ້ຫຼັງຈົບ campaign
+            🎁 ໄດ້ຮັບ <strong>10 USDT Bonus</strong> ທັນທີ + ສິດຖືຄອງ BTC & ທອງຄຳ
           </div>
         </div>
 
@@ -460,7 +410,7 @@
           <span class="task-badge task-badge-pc">TASK 2 — PC (Player Contribution)</span>
           <h3>🎮 Player Contribution</h3>
           <p class="task-fee">ຄ່າທຳນຽມລົງທະບຽນ <strong style="color:var(--green)">10 USDT</strong></p>
-          <ul class="task-steps green">
+          <ul class="task-steps">
             <li><span class="step-num">1</span>ດາວໂຫຼດ Bitqik App</li>
             <li><span class="step-num">2</span>ລົງທະບຽນ + KYC ຢືນຢັນຕົວຕົນ</li>
             <li><span class="step-num">3</span>ຕັ້ງ 2FA Security</li>
@@ -471,7 +421,6 @@
             ⚠️ ກໍລະນີຕົກຮອບ: ສາມາດຖອນເງີນຕາມຍອດຄົງເຫຼືອໃນ Future Wallet ໄດ້
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -555,12 +504,9 @@
   <!-- FOOTER -->
   <footer>
     <div style="margin-bottom:1rem;">
-      <a href="index.html" class="glass-logo" style="display:inline-flex;">
-        <div class="glass-logo-icon">⚡</div>
-        <div class="glass-logo-text">
-          <span class="glass-logo-title">BITQIK</span>
-          <span class="glass-logo-sub">Trade Championship</span>
-        </div>
+      <a href="index.html" class="brand-logo" style="display:inline-flex;">
+        <div class="brand-icon">⚡</div>
+        <span class="brand-title">BITQIK</span>
       </a>
     </div>
     <p>Alternative Investment for Futures Trading Championship</p>
@@ -570,18 +516,6 @@
 </div>
 
 <script>
-  // Particles
-  const pEl = document.getElementById('particles');
-  const colors = ['#FFD700','#FFE94D','#00FF88','#B8860B'];
-  for (let i = 0; i < 30; i++) {
-    const p = document.createElement('div');
-    p.className = 'particle';
-    const size = Math.random() * 4 + 2;
-    p.style.cssText = `left:${Math.random()*100}%;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${Math.random()*15+10}s;animation-delay:${Math.random()*10}s;`;
-    pEl.appendChild(p);
-  }
-
-  // Countdown to Oct 1, 2026
   function updateCountdown() {
     const target = new Date('2026-10-01T00:00:00+07:00');
     const now = new Date();

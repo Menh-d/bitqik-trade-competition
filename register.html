@@ -6,146 +6,99 @@
   <title>Bitqik Trade Championship - Registration Process</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+Lao:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Noto+Sans+Lao:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --gold: #FFD700;
-      --gold-light: #FFE94D;
-      --gold-dark: #B8860B;
+      --purple-accent: #C069FF;
+      --purple-deep: #551A94;
+      --purple-bg: #0C0414;
+      --text-purple-light: #F4DFFF;
       --green: #00FF88;
       --green-dim: #00C96B;
-      --bg-deep: #030712;
-      --bg-glass: rgba(255, 255, 255, 0.04);
-      --bg-glass-strong: rgba(18, 26, 53, 0.65);
-      --border: rgba(255, 215, 0, 0.25);
-      --text: #F1F5F9;
-      --text-dim: #94A3B8;
-      --font-en: 'Outfit', sans-serif;
-      --font-lo: 'Noto Sans Lao', 'Outfit', sans-serif;
-      --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      --border-glass: rgba(255, 255, 255, 0.12);
+      --font-en: 'Inter', 'Outfit', sans-serif;
+      --font-lo: 'Noto Sans Lao', 'Inter', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
-    body { font-family: var(--font-lo); background: var(--bg-deep); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+    body { font-family: var(--font-lo); background: var(--purple-bg); color: #FFFFFF; min-height: 100vh; overflow-x: hidden; }
 
-    /* BG */
-    .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255,215,0,0.1) 0%, transparent 60%),
-        linear-gradient(180deg, #030712 0%, #080d24 50%, #030712 100%); }
-    .grid-lines { position: fixed; inset: 0; z-index: 0; pointer-events: none;
-      background-image: linear-gradient(rgba(255,215,0,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,215,0,0.03) 1px, transparent 1px);
-      background-size: 50px 50px; }
+    .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #0C0414; }
+    .purple-ambient-light { position: fixed; width: 1000px; height: 900px; left: 50%; top: -150px; transform: translateX(-50%); background: rgba(85, 26, 148, 0.5); filter: blur(240px); border-radius: 50%; pointer-events: none; z-index: 0; }
+    .grid-lines { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 60px 60px; }
 
     .wrapper { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
 
-    /* GLASS DYNAMIC LOGO COMPONENT */
-    .glass-logo {
-      display: inline-flex; align-items: center; gap: 0.75rem;
-      background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border); padding: 0.55rem 1.1rem; border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2);
-      text-decoration: none; transition: all 0.3s;
-    }
-    .glass-logo:hover { transform: translateY(-2px); border-color: var(--gold); }
-    .glass-logo-icon { width: 34px; height: 34px; background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--green)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 900; color: #000; }
-    .glass-logo-text { display: flex; flex-direction: column; text-align: left; }
-    .glass-logo-title { font-family: var(--font-en); font-weight: 900; font-size: 1.1rem; letter-spacing: 0.05em; line-height: 1; background: linear-gradient(135deg, #FFF, var(--gold-light), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .glass-logo-sub { font-family: var(--font-en); font-size: 0.6rem; font-weight: 700; color: var(--green); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 2px; }
-
     /* NAV */
-    nav { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 0 1.8rem; border-bottom: 1px solid rgba(255,215,0,0.15); margin-bottom: 2rem; }
-    .nav-back { color: var(--text-dim); text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; font-weight: 600; }
-    .nav-back:hover { color: var(--gold); }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0 2rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 2rem; }
+    .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-icon { width: 36px; height: 36px; border-radius: 10px; background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 100%), #551A94; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; border: 1px solid rgba(255, 255, 255, 0.2); }
+    .brand-title { font-family: var(--font-en); font-weight: 700; font-size: 1.3rem; color: #FFFFFF; }
+    .nav-back { color: rgba(244, 223, 255, 0.7); text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; font-weight: 500; }
+    .nav-back:hover { color: #FFFFFF; }
 
-    /* HEADER */
-    .page-title { text-align: center; margin-bottom: 2rem; }
-    .page-title h1 { font-size: 2.2rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
-    .page-title h1 span { background: linear-gradient(135deg, var(--gold), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .page-title p { color: var(--text-dim); font-size: 0.95rem; }
+    .page-title { text-align: center; margin-bottom: 2.5rem; }
+    .page-title h1 { font-family: var(--font-en); font-size: 2.4rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
+    .page-title h1 span { background: linear-gradient(91.84deg, #F4DFFF 0%, var(--purple-accent) 60%, var(--green) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .page-title p { color: rgba(244, 223, 255, 0.7); font-size: 0.95rem; }
 
     /* TASK SELECTOR */
     .task-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
-    .task-opt { background: var(--bg-glass-strong); border: 2px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 1.5rem; cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden; backdrop-filter: blur(16px); box-shadow: var(--glass-shadow); }
-    .task-opt:hover { border-color: rgba(255,215,0,0.4); transform: translateY(-3px); }
-    .task-opt.active { border-color: var(--gold); background: rgba(255,215,0,0.08); box-shadow: 0 10px 35px rgba(255,215,0,0.18); }
-    .task-opt.active.green { border-color: var(--green); background: rgba(0,255,136,0.08); box-shadow: 0 10px 35px rgba(0,255,136,0.18); }
-    .task-opt-badge { display: inline-block; font-size: 0.72rem; font-family: var(--font-en); font-weight: 800; padding: 0.25rem 0.7rem; border-radius: 50px; margin-bottom: 0.8rem; text-transform: uppercase; }
-    .task-opt-bd { background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid rgba(255,215,0,0.3); }
-    .task-opt-pc { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid rgba(0,255,136,0.3); }
-    .task-opt h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; }
-    .task-opt p { font-size: 0.85rem; color: var(--text-dim); }
+    .task-opt { background: rgba(255, 255, 255, 0.04); border: 1.5px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.5rem; cursor: pointer; transition: all 0.3s; position: relative; backdrop-filter: blur(16px); }
+    .task-opt:hover { border-color: var(--purple-accent); transform: translateY(-3px); }
+    .task-opt.active { border-color: var(--purple-accent); background: rgba(192, 105, 255, 0.12); box-shadow: 0 10px 30px rgba(85, 26, 148, 0.5); }
+    .task-opt-badge { display: inline-block; font-size: 0.72rem; font-family: var(--font-en); font-weight: 700; padding: 4px 12px; border-radius: 100px; margin-bottom: 0.8rem; text-transform: uppercase; }
+    .task-opt-bd { background: rgba(255, 215, 0, 0.15); color: var(--gold); border: 1px solid rgba(255, 215, 0, 0.3); }
+    .task-opt-pc { background: rgba(0, 255, 136, 0.15); color: var(--green); border: 1px solid rgba(0, 255, 136, 0.3); }
 
     /* PROGRESS BAR */
-    .progress-box { background: var(--bg-glass-strong); border: 1px solid var(--border); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 3rem; backdrop-filter: blur(16px); box-shadow: var(--glass-shadow); }
+    .progress-box { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 3rem; backdrop-filter: blur(16px); }
     .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; font-size: 0.9rem; font-family: var(--font-en); }
-    .progress-track { height: 10px; background: rgba(255,255,255,0.08); border-radius: 50px; overflow: hidden; position: relative; }
-    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--green)); border-radius: 50px; transition: width 0.5s ease; }
+    .progress-track { height: 10px; background: rgba(255, 255, 255, 0.08); border-radius: 50px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #551A94, #C069FF, var(--green)); border-radius: 50px; transition: width 0.5s ease; }
 
     /* TIMELINE */
     .timeline { position: relative; padding-left: 3.5rem; }
-    .timeline::before { content: ''; position: absolute; left: 1.25rem; top: 1.5rem; bottom: 1.5rem; width: 3px; background: rgba(255,255,255,0.1); border-radius: 3px; }
-    .timeline-line-progress { position: absolute; left: 1.25rem; top: 1.5rem; width: 3px; background: linear-gradient(180deg, var(--gold), var(--green)); border-radius: 3px; height: 0%; transition: height 0.5s ease; }
+    .timeline::before { content: ''; position: absolute; left: 1.25rem; top: 1.5rem; bottom: 1.5rem; width: 3px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; }
+    .timeline-line-progress { position: absolute; left: 1.25rem; top: 1.5rem; width: 3px; background: linear-gradient(180deg, #C069FF, var(--green)); border-radius: 3px; height: 0%; transition: height 0.5s ease; }
 
     .step-item { position: relative; margin-bottom: 2.2rem; opacity: 0.55; transition: all 0.4s; }
     .step-item.active { opacity: 1; }
     .step-item.completed { opacity: 1; }
 
-    .step-dot { position: absolute; left: -3.5rem; top: 0; width: 44px; height: 44px; border-radius: 50%; background: #080d24; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-family: var(--font-en); font-weight: 800; color: var(--text-dim); transition: all 0.3s; z-index: 2; }
-    .step-item.active .step-dot { border-color: var(--gold); color: var(--gold); background: #121c3b; box-shadow: 0 0 20px rgba(255,215,0,0.4); }
-    .step-item.completed .step-dot { border-color: var(--green); background: var(--green); color: #000; box-shadow: 0 0 15px rgba(0,255,136,0.4); }
+    .step-dot { position: absolute; left: -3.5rem; top: 0; width: 44px; height: 44px; border-radius: 50%; background: #0C0414; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-family: var(--font-en); font-weight: 800; color: rgba(244,223,255,0.6); transition: all 0.3s; z-index: 2; }
+    .step-item.active .step-dot { border-color: var(--purple-accent); color: #fff; background: #551A94; box-shadow: 0 0 20px rgba(192, 105, 255, 0.6); }
+    .step-item.completed .step-dot { border-color: var(--green); background: var(--green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.5); }
 
-    .step-card { background: var(--bg-glass-strong); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 1.8rem; backdrop-filter: blur(16px); box-shadow: var(--glass-shadow); transition: all 0.3s; }
-    .step-item.active .step-card { border-color: var(--border); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
-    .step-item.completed .step-card { border-color: rgba(0,255,136,0.3); }
+    .step-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.8rem; backdrop-filter: blur(16px); transition: all 0.3s; }
+    .step-item.active .step-card { border-color: var(--purple-accent); box-shadow: 0 15px 40px rgba(85, 26, 148, 0.4); }
 
-    .step-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
-    .step-title { font-size: 1.15rem; font-weight: 700; color: #fff; }
-    .step-badge { font-size: 0.75rem; font-family: var(--font-en); padding: 0.25rem 0.7rem; border-radius: 50px; background: rgba(255,255,255,0.08); color: var(--text-dim); font-weight: 700; }
-    .step-item.completed .step-badge { background: rgba(0,255,136,0.15); color: var(--green); }
+    .btn-step {
+      padding: 8px 24px; border-radius: 100px;
+      background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.3) 100%), #551A94;
+      border: 1px solid rgba(255, 255, 255, 0.3); color: #FFFFFF; font-family: var(--font-en); font-weight: 600; font-size: 0.9rem;
+      cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .btn-step:hover { transform: scale(1.05); }
 
-    .step-desc { font-size: 0.9rem; color: var(--text-dim); line-height: 1.6; margin-bottom: 1.2rem; }
-
-    /* STEP BODY / FORMS */
-    .step-body { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed rgba(255,255,255,0.1); }
-    .step-item.active .step-body { display: block; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    .input-group { margin-bottom: 1rem; }
-    .input-label { display: block; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 0.4rem; }
-    .input-field { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; padding: 0.75rem 1rem; color: #fff; font-family: inherit; font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
-    .input-field:focus { border-color: var(--gold); }
-
-    .btn-step { background: linear-gradient(135deg, var(--gold-dark), var(--gold)); color: #000; border: none; border-radius: 12px; padding: 0.8rem 1.8rem; font-weight: 800; font-family: var(--font-en); font-size: 0.9rem; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(255,215,0,0.25); }
-    .btn-step:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,215,0,0.4); }
-    .btn-step:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
-
-    /* SUCCESS SCREEN */
-    .success-box { display: none; text-align: center; background: var(--bg-glass-strong); border: 2px solid var(--gold); border-radius: 24px; padding: 3rem 2rem; backdrop-filter: blur(20px); margin-top: 2rem; box-shadow: var(--glass-shadow); animation: zoomIn 0.5s ease; }
-    @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-    .success-icon { font-size: 4rem; margin-bottom: 1rem; }
-    .success-title { font-size: 2rem; font-weight: 800; color: var(--gold); margin-bottom: 0.5rem; }
-    .success-desc { font-size: 1rem; color: var(--text-dim); max-width: 500px; margin: 0 auto 2rem; line-height: 1.7; }
-    .success-buttons { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .success-box { display: none; text-align: center; background: rgba(255, 255, 255, 0.05); border: 2px solid var(--purple-accent); border-radius: 24px; padding: 3rem 2rem; backdrop-filter: blur(20px); margin-top: 2rem; }
   </style>
 </head>
 <body>
 
 <div class="bg-canvas"></div>
+<div class="purple-ambient-light"></div>
 <div class="grid-lines"></div>
 
 <div class="wrapper">
 
   <nav>
-    <a href="index.html" class="glass-logo">
-      <div class="glass-logo-icon">⚡</div>
-      <div class="glass-logo-text">
-        <span class="glass-logo-title">BITQIK</span>
-        <span class="glass-logo-sub">Trade Championship</span>
-      </div>
+    <a href="index.html" class="brand-logo">
+      <div class="brand-icon">⚡</div>
+      <span class="brand-title">BITQIK</span>
     </a>
     <a href="index.html" class="nav-back">← ກັບໄປໜ້າຫຼັກ</a>
   </nav>
@@ -173,7 +126,7 @@
   <div class="progress-box">
     <div class="progress-header">
       <span id="progress-text">ຄວາມຄືບໜ້າ: 0 / 6 ຂັ້ນຕອນ</span>
-      <span id="progress-pct" style="color:var(--gold); font-weight:800;">0%</span>
+      <span id="progress-pct" style="color:var(--purple-accent); font-weight:800;">0%</span>
     </div>
     <div class="progress-track">
       <div class="progress-fill" id="progress-fill"></div>
@@ -187,14 +140,14 @@
 
   <!-- SUCCESS BOX -->
   <div class="success-box" id="success-box">
-    <div class="success-icon">🎉</div>
-    <div class="success-title">ລົງທະບຽນ ສຳເລັດແລ້ວ!</div>
-    <div class="success-desc">
+    <div style="font-size:4rem; margin-bottom:1rem;">🎉</div>
+    <h2 style="font-size:2rem; font-weight:800; color:var(--purple-accent); margin-bottom:0.5rem;">ລົງທະບຽນ ສຳເລັດແລ້ວ!</h2>
+    <p style="color:rgba(244, 223, 255, 0.7); max-width:500px; margin:0 auto 2rem;">
       ທ່ານໄດ້ສຳເລັດທຸກຂັ້ນຕອນການລົງທະບຽນແລ້ວ. ຕອນນີ້ທ່ານພ້ອມທີ່ຈະລອງ Trade ຜ່ານລະບົບ Demo ຫຼື ເບິ່ງອັນດັບການແຂ່ງຂັນ real-time ໄດ້ເລີຍ!
-    </div>
-    <div class="success-buttons">
-      <a href="trade.html" class="btn-step" style="background:linear-gradient(135deg,#00C96B,#00FF88); text-decoration:none;">📈 ເຂົ້າສູ່ Demo Trade</a>
-      <a href="leaderboard.html" class="btn-step" style="background:linear-gradient(135deg,#7C3AED,#8B7CF6); color:#fff; text-decoration:none;">🏆 ເບິ່ງ Leaderboard Realtime</a>
+    </p>
+    <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
+      <a href="trade.html" class="btn-step" style="background:linear-gradient(135deg,#00C96B,#00FF88); color:#000; text-decoration:none;">📈 ເຂົ້າສູ່ Demo Trade</a>
+      <a href="leaderboard.html" class="btn-step" style="text-decoration:none;">🏆 ເບິ່ງ Leaderboard Realtime</a>
     </div>
   </div>
 
@@ -205,92 +158,30 @@
   let currentStepIndex = 0;
 
   const STEPS_BD = [
-    {
-      title: '1. ດາວໂຫຼດ Bitqik App',
-      desc: 'ດາວໂຫຼດ Bitqik Application ໃນ Smart Phone ຂອງທ່ານ (iOS / Android)',
-      type: 'download'
-    },
-    {
-      title: '2. ລົງທະບຽນບັນຊີ (Register)',
-      desc: 'ກອກ Email ແລະ ຕັ້ງ Password ເພື່ອສ້າງບັນຊີ Bitqik',
-      type: 'form',
-      fields: [
-        { label: 'Email Address', placeholder: 'yourname@gmail.com', type: 'email' },
-        { label: 'Password', placeholder: '••••••••', type: 'password' }
-      ]
-    },
-    {
-      title: '3. ຢືນຢັນຕົວຕົນ (KYC Verification)',
-      desc: 'ອັບໂຫຼດເອກະສານ Passport ຫຼື ໃບຂັບຂີ່ ເພື່ອຢືນຢັນຕົວຕົນ',
-      type: 'upload'
-    },
-    {
-      title: '4. ຕັ້ງຄ່າຄວາມປອດໄພ (2FA Setup)',
-      desc: 'ຜູກ 2-Factor Authentication ເພື່ອຄວາມປອດໄພຂອງບັນຊີ',
-      type: '2fa'
-    },
-    {
-      title: '5. ຝາກເງີນຂັ້ນຕ່ຳ (Deposit 50 USDT)',
-      desc: 'ຝາກເງີນ 50 USDT ເຂົ້າ Spot Wallet',
-      type: 'confirm',
-      btnText: 'Confirm Deposit 50 USDT'
-    },
-    {
-      title: '6. ຊື້ Spot BTC / XAUT (50 USDT)',
-      desc: 'ຊື້ຫຼຽນ Bitcoin (BTC) ຫຼື Gold Token (XAUT) ມູນລະຄ່າ 50 USD',
-      type: 'buy_spot'
-    }
+    { title: '1. ດາວໂຫຼດ Bitqik App', desc: 'ດາວໂຫຼດ Bitqik Application ໃນ Smart Phone ຂອງທ່ານ (iOS / Android)', type: 'download' },
+    { title: '2. ລົງທະບຽນບັນຊີ (Register)', desc: 'ກອກ Email ແລະ ຕັ້ງ Password ເພື່ອສ້າງບັນຊີ Bitqik', type: 'form' },
+    { title: '3. ຢືນຢັນຕົວຕົນ (KYC Verification)', desc: 'ອັບໂຫຼດເອກະສານ Passport ຫຼື ໃບຂັບຂີ່ ເພື່ອຢືນຢັນຕົວຕົນ', type: 'upload' },
+    { title: '4. ຕັ້ງຄ່າຄວາມປອດໄພ (2FA Setup)', desc: 'ຜູກ 2-Factor Authentication ເພື່ອຄວາມປອດໄພຂອງບັນຊີ', type: '2fa' },
+    { title: '5. ຝາກເງີນຂັ້ນຕ່ຳ (Deposit 50 USDT)', desc: 'ຝາກເງີນ 50 USDT ເຂົ້າ Spot Wallet', type: 'confirm', btnText: 'Confirm Deposit 50 USDT' },
+    { title: '6. ຊື້ Spot BTC / XAUT (50 USDT)', desc: 'ຊື້ຫຼຽນ Bitcoin (BTC) ຫຼື Gold Token (XAUT) ມູນລະຄ່າ 50 USD', type: 'buy_spot' }
   ];
 
   const STEPS_PC = [
-    {
-      title: '1. ດາວໂຫຼດ Bitqik App',
-      desc: 'ດາວໂຫຼດ Bitqik Application ໃນ Smart Phone ຂອງທ່ານ',
-      type: 'download'
-    },
-    {
-      title: '2. ລົງທະບຽນບັນຊີ (Register)',
-      desc: 'ກອກ Email ແລະ Password ສ້າງບັນຊີໃໝ່',
-      type: 'form',
-      fields: [
-        { label: 'Email Address', placeholder: 'yourname@gmail.com', type: 'email' },
-        { label: 'Password', placeholder: '••••••••', type: 'password' }
-      ]
-    },
-    {
-      title: '3. ຢືນຢັນຕົວຕົນ (KYC Verification)',
-      desc: 'ອັບໂຫຼດ Passport / ໃບຂັບຂີ່ ເພື່ອ KYC',
-      type: 'upload'
-    },
-    {
-      title: '4. ຕັ້ງຄ່າ 2FA Security',
-      desc: 'ຕັ້ງຄ່າ 2FA ເພື່ອຄວາມປອດໄພ',
-      type: '2fa'
-    },
-    {
-      title: '5. ຈ່າຍຄ່າລົງທະບຽນ (10 USDT Registration Fee)',
-      desc: 'ຊຳລະຄ່າລົງທະບຽນ 10 USDT ເພື່ອຮັບສິດເຂົ້າຮ່ວມແຂ່ງຂັນ',
-      type: 'confirm',
-      btnText: 'Pay 10 USDT Registration Fee'
-    },
-    {
-      title: '6. Transfer ເຂົ້າ Future Wallet',
-      desc: 'ໂອນເງີນ 10 USDT ເຂົ້າ Future Wallet ເພື່ອກຽມ Trade',
-      type: 'confirm',
-      btnText: 'Transfer to Future Wallet'
-    }
+    { title: '1. ດາວໂຫຼດ Bitqik App', desc: 'ດາວໂຫຼດ Bitqik Application ໃນ Smart Phone ຂອງທ່ານ', type: 'download' },
+    { title: '2. ລົງທະບຽນບັນຊີ (Register)', desc: 'ກອກ Email ແລະ Password ສ້າງບັນຊີໃໝ່', type: 'form' },
+    { title: '3. ຢືນຢັນຕົວຕົນ (KYC Verification)', desc: 'ອັບໂຫຼດ Passport / ໃບຂັບຂີ່ ເພື່ອ KYC', type: 'upload' },
+    { title: '4. ຕັ້ງຄ່າ 2FA Security', desc: 'ຕັ້ງຄ່າ 2FA ເພື່ອຄວາມປອດໄພ', type: '2fa' },
+    { title: '5. ຈ່າຍຄ່າລົງທະບຽນ (10 USDT Fee)', desc: 'ຊຳລະຄ່າລົງທະບຽນ 10 USDT ເພື່ອຮັບສິດເຂົ້າຮ່ວມແຂ່ງຂັນ', type: 'confirm', btnText: 'Pay 10 USDT Registration Fee' },
+    { title: '6. Transfer ເຂົ້າ Future Wallet', desc: 'ໂອນເງີນ 10 USDT ເຂົ້າ Future Wallet ເພື່ອກຽມ Trade', type: 'confirm', btnText: 'Transfer to Future Wallet' }
   ];
 
-  function getSteps() {
-    return currentTask === 'BD' ? STEPS_BD : STEPS_PC;
-  }
+  function getSteps() { return currentTask === 'BD' ? STEPS_BD : STEPS_PC; }
 
   function switchTask(task) {
     currentTask = task;
     currentStepIndex = 0;
     document.getElementById('opt-bd').classList.toggle('active', task === 'BD');
     document.getElementById('opt-pc').classList.toggle('active', task === 'PC');
-    document.getElementById('opt-pc').classList.toggle('green', task === 'PC');
     document.getElementById('success-box').style.display = 'none';
     renderSteps();
     updateProgress();
@@ -304,112 +195,37 @@
     steps.forEach((step, idx) => {
       const isCompleted = idx < currentStepIndex;
       const isActive = idx === currentStepIndex;
-
-      let bodyHTML = '';
-
-      if (step.type === 'download') {
-        bodyHTML = `
-          <div style="margin-bottom:1rem;">
-            <div style="font-size:0.85rem; color:var(--text-dim); margin-bottom:0.5rem;">ກຳລັງດາວໂຫຼດ Bitqik v2.4.0...</div>
-            <div style="height:8px; background:rgba(255,255,255,0.1); border-radius:5px; overflow:hidden;">
-              <div id="dl-bar" style="width:100%; height:100%; background:var(--green); border-radius:5px;"></div>
-            </div>
-          </div>
-          <button class="btn-step" onclick="completeStep(${idx})">✓ Complete Download</button>
-        `;
-      } else if (step.type === 'form') {
-        let fieldsHTML = step.fields.map(f => `
-          <div class="input-group">
-            <label class="input-label">${f.label}</label>
-            <input type="${f.type}" class="input-field" placeholder="${f.placeholder}" value="${f.type === 'email' ? 'trader.lao@gmail.com' : '••••••••'}" />
-          </div>
-        `).join('');
-        bodyHTML = `
-          ${fieldsHTML}
-          <button class="btn-step" onclick="completeStep(${idx})">Submit Registration →</button>
-        `;
-      } else if (step.type === 'upload') {
-        bodyHTML = `
-          <div style="border:2px dashed rgba(255,215,0,0.3); border-radius:12px; padding:1.5rem; text-align:center; margin-bottom:1rem; cursor:pointer;" onclick="this.style.borderColor='var(--green)'">
-            <div style="font-size:2rem; margin-bottom:0.4rem;">🪪</div>
-            <div style="font-size:0.85rem; color:var(--text-dim);">ກົດເພື່ອອັບໂຫຼດ ຮູບ Passport / ໃບຂັບຂີ່</div>
-            <div style="font-size:0.75rem; color:var(--gold); margin-top:0.4rem;">✓ Lao_ID_Card_Verified.jpg (Uploaded)</div>
-          </div>
-          <button class="btn-step" onclick="completeStep(${idx})">Verify KYC →</button>
-        `;
-      } else if (step.type === '2fa') {
-        bodyHTML = `
-          <div style="display:flex; gap:1rem; align-items:center; margin-bottom:1rem;">
-            <div style="width:70px; height:70px; background:#fff; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:2rem;">📱</div>
-            <div>
-              <div style="font-size:0.85rem; color:var(--text-dim);">Scan QR ດ້ວຍ Google Authenticator</div>
-              <div style="font-family:var(--font-en); font-weight:700; color:var(--gold); margin-top:0.2rem;">Code: 849 201</div>
-            </div>
-          </div>
-          <button class="btn-step" onclick="completeStep(${idx})">Enable 2FA ✓</button>
-        `;
-      } else if (step.type === 'confirm') {
-        bodyHTML = `
-          <div style="background:rgba(255,215,0,0.06); border:1px solid var(--border); border-radius:12px; padding:1rem; margin-bottom:1rem; font-size:0.9rem;">
-            💰 ຍອດເງີນທີ່ຕ້ອງດຳເນີນການ: <strong style="color:var(--gold);">${currentTask === 'BD' ? '50 USDT' : '10 USDT'}</strong>
-          </div>
-          <button class="btn-step" onclick="completeStep(${idx})">${step.btnText} →</button>
-        `;
-      } else if (step.type === 'buy_spot') {
-        bodyHTML = `
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
-            <div style="background:rgba(255,215,0,0.08); border:1px solid var(--gold); border-radius:12px; padding:1rem; text-align:center;">
-              <div style="font-size:1.5rem;">₿</div>
-              <div style="font-weight:700; font-family:var(--font-en);">BTC/USDT</div>
-              <div style="font-size:0.75rem; color:var(--text-dim);">Buy 50 USDT</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:1rem; text-align:center;">
-              <div style="font-size:1.5rem;">🥇</div>
-              <div style="font-weight:700; font-family:var(--font-en);">XAUT/USDT</div>
-              <div style="font-size:0.75rem; color:var(--text-dim);">Gold Token</div>
-            </div>
-          </div>
-          <button class="btn-step" onclick="completeStep(${idx})">Buy Spot & Claim 10 USDT Bonus 🎉</button>
-        `;
-      }
+      let bodyHTML = `<button class="btn-step" onclick="completeStep(${idx})">Complete Step →</button>`;
 
       const itemHTML = `
-        <div class="step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" id="step-item-${idx}">
+        <div class="step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}">
           <div class="step-dot">${isCompleted ? '✓' : idx + 1}</div>
           <div class="step-card">
-            <div class="step-title-row">
-              <div class="step-title">${step.title}</div>
-              <span class="step-badge">${isCompleted ? 'ສຳເລັດ' : isActive ? 'ກຳລັງດຳເນີນການ' : 'ລໍຖ້າ'}</span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem;">
+              <strong style="font-size:1.1rem; color:#fff;">${step.title}</strong>
+              <span style="font-size:0.75rem; color:var(--text-purple-light); font-family:var(--font-en); font-weight:700;">${isCompleted ? 'Completed' : isActive ? 'In Progress' : 'Pending'}</span>
             </div>
-            <div class="step-desc">${step.desc}</div>
-            <div class="step-body">${bodyHTML}</div>
+            <div style="font-size:0.88rem; color:rgba(244, 223, 255, 0.7); margin-bottom:1rem;">${step.desc}</div>
+            ${isActive ? bodyHTML : ''}
           </div>
         </div>
       `;
-
       container.insertAdjacentHTML('beforeend', itemHTML);
     });
   }
 
   function completeStep(idx) {
-    const btn = event.target;
-    btn.disabled = true;
-    btn.innerHTML = `⏳ ກຳລັງດຳເນີນການ...`;
-
-    setTimeout(() => {
-      currentStepIndex = idx + 1;
-      const steps = getSteps();
-
-      if (currentStepIndex >= steps.length) {
-        renderSteps();
-        updateProgress();
-        document.getElementById('success-box').style.display = 'block';
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-      } else {
-        renderSteps();
-        updateProgress();
-      }
-    }, 700);
+    currentStepIndex = idx + 1;
+    const steps = getSteps();
+    if (currentStepIndex >= steps.length) {
+      renderSteps();
+      updateProgress();
+      document.getElementById('success-box').style.display = 'block';
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    } else {
+      renderSteps();
+      updateProgress();
+    }
   }
 
   function updateProgress() {
@@ -418,12 +234,6 @@
     document.getElementById('progress-fill').style.width = `${pct}%`;
     document.getElementById('progress-pct').textContent = `${pct}%`;
     document.getElementById('progress-text').textContent = `ຄວາມຄືບໜ້າ: ${currentStepIndex} / ${steps.length} ຂັ້ນຕອນ`;
-
-    const lineProgress = document.getElementById('line-progress');
-    if (lineProgress) {
-      const linePct = Math.min(100, (currentStepIndex / (steps.length - 1)) * 100);
-      lineProgress.style.height = `${linePct}%`;
-    }
   }
 
   renderSteps();
