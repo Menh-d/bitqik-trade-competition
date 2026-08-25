@@ -17,7 +17,6 @@
       --text-purple-light: #F4DFFF;
       --green: #00FF88;
       --red: #FF4060;
-      --border-glass: rgba(255, 255, 255, 0.12);
       --font-en: 'Inter', 'Outfit', sans-serif;
       --font-lo: 'Noto Sans Lao', 'Inter', sans-serif;
     }
@@ -32,9 +31,9 @@
 
     /* NAV */
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0 2rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 2rem; }
-    .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand-icon { width: 36px; height: 36px; border-radius: 10px; background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 100%), #551A94; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; border: 1px solid rgba(255, 255, 255, 0.2); }
-    .brand-title { font-family: var(--font-en); font-weight: 700; font-size: 1.3rem; color: #FFFFFF; }
+    .brand-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-logo-img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; border: 1.5px solid rgba(255, 215, 0, 0.6); box-shadow: 0 4px 15px rgba(192, 105, 255, 0.4); }
+    .brand-title { font-family: var(--font-en); font-weight: 800; font-size: 1.25rem; color: #FFFFFF; }
     .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
     .nav-links a { color: rgba(244, 223, 255, 0.7); text-decoration: none; font-size: 0.9rem; font-weight: 500; }
 
@@ -70,7 +69,7 @@
 
   <nav>
     <a href="index.html" class="brand-logo">
-      <div class="brand-icon">⚡</div>
+      <img src="assets/logo.jpg" alt="Trade Championship Logo" class="brand-logo-img" />
       <span class="brand-title">BITQIK</span>
     </a>
     <ul class="nav-links">

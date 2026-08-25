@@ -20,8 +20,6 @@
       --green: #00FF88;
       --green-dim: #00C96B;
       --red: #FF4060;
-      --border-glass: rgba(255, 255, 255, 0.12);
-      --border-purple: rgba(192, 105, 255, 0.3);
       --font-en: 'Inter', 'Outfit', sans-serif;
       --font-lo: 'Noto Sans Lao', 'Inter', sans-serif;
     }
@@ -29,7 +27,6 @@
     html { scroll-behavior: smooth; }
     body { font-family: var(--font-lo); background: var(--purple-bg); color: #FFFFFF; overflow-x: hidden; min-height: 100vh; }
 
-    /* BACKGROUND MASK & AMBIENT LIGHTS */
     .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #0C0414; }
 
     .purple-ambient-light {
@@ -37,15 +34,13 @@
       background: rgba(85, 26, 148, 0.55); filter: blur(240px); border-radius: 50%; pointer-events: none; z-index: 0;
       animation: ambientPulse 8s ease-in-out infinite alternate;
     }
-    @keyframes ambientPulse { 0% { opacity: 0.4; transform: translateX(-50%) scale(1); } 100% { opacity: 0.7; transform: translateX(-50%) scale(1.15); } }
+    @keyframes ambientPulse { 0% { opacity: 0.4; transform: translateX(-50%) scale(1); } 100% { opacity: 0.75; transform: translateX(-50%) scale(1.15); } }
 
     .light-beam-1 {
-      position: absolute; width: 200px; height: 350px; right: 20%; top: -80px;
+      position: absolute; width: 220px; height: 380px; right: 20%; top: -80px;
       background: linear-gradient(180deg, #C069FF 0%, rgba(192, 105, 255, 0) 100%);
       mix-blend-mode: plus-lighter; filter: blur(12px); transform: rotate(13deg); pointer-events: none; opacity: 0.6;
-      animation: beamPulse 4s ease-in-out infinite alternate;
     }
-    @keyframes beamPulse { 0% { opacity: 0.4; } 100% { opacity: 0.9; } }
 
     .grid-lines { position: fixed; inset: 0; z-index: 0; pointer-events: none;
       background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
@@ -53,24 +48,24 @@
 
     .wrapper { position: relative; z-index: 1; }
 
-    /* SHCOJ / FOXY HEADER NAV */
+    /* NAV */
     nav {
       position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between;
-      padding: 1.2rem 3rem; background: rgba(12, 4, 20, 0.75); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      padding: 0.8rem 3rem; background: rgba(12, 4, 20, 0.82); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand-icon {
-      width: 38px; height: 38px; border-radius: 12px;
-      background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 100%), #551A94;
-      display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
-      box-shadow: 0 4px 15px rgba(192, 105, 255, 0.4); border: 1px solid rgba(255, 255, 255, 0.2);
+    .brand-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-logo-img {
+      width: 44px; height: 44px; border-radius: 12px; object-fit: cover;
+      box-shadow: 0 4px 18px rgba(192, 105, 255, 0.5); border: 1.5px solid rgba(255, 215, 0, 0.6);
     }
+    .brand-text-wrap { display: flex; flex-direction: column; }
     .brand-title {
-      font-family: var(--font-en); font-weight: 700; font-size: 1.4rem; color: #FFFFFF;
-      filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); letter-spacing: -0.02em;
+      font-family: var(--font-en); font-weight: 800; font-size: 1.25rem; color: #FFFFFF; line-height: 1;
+      letter-spacing: -0.02em;
     }
+    .brand-sub { font-family: var(--font-en); font-size: 0.62rem; font-weight: 700; color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase; margin-top: 3px; }
 
     .nav-links { display: flex; gap: 2.2rem; list-style: none; align-items: center; }
     .nav-links a {
@@ -106,24 +101,41 @@
     @keyframes tickerMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
     /* HERO SECTION */
-    .hero { position: relative; min-height: 85vh; display: flex; flex-direction: column; items-center; justify-content: center; text-align: center; padding: 5rem 1.5rem 3rem; }
-    .hero-content { position: relative; max-width: 860px; z-index: 2; margin: 0 auto; }
+    .hero { position: relative; min-height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4rem 1.5rem 3rem; }
+    .hero-content { position: relative; max-width: 880px; z-index: 2; margin: 0 auto; }
+
+    /* EVENT LOGO EMBLEM SHOWCASE */
+    .hero-logo-showcase {
+      position: relative; width: 220px; height: 220px; margin: 0 auto 2rem; display: flex; align-items: center; justify-content: center;
+    }
+    .hero-logo-showcase::before {
+      content: ''; position: absolute; inset: -15px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(192, 105, 255, 0.4) 0%, rgba(255, 215, 0, 0.2) 50%, transparent 75%);
+      filter: blur(20px); z-index: 0; animation: logoGlow 4s ease-in-out infinite alternate;
+    }
+    @keyframes logoGlow { 0% { opacity: 0.5; transform: scale(0.95); } 100% { opacity: 0.9; transform: scale(1.08); } }
+    
+    .hero-logo-img {
+      position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; border-radius: 30px;
+      filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.8)); transition: transform 0.4s ease;
+    }
+    .hero-logo-showcase:hover .hero-logo-img { transform: scale(1.05) rotate(1deg); }
 
     .hero-pill-badge {
-      display: inline-flex; align-items: center; gap: 0.7rem; padding: 6px 20px; border-radius: 100px;
-      background: rgba(192, 105, 255, 0.12); border: 1px solid rgba(192, 105, 255, 0.4);
-      color: var(--text-purple-light); font-family: var(--font-en); font-size: 0.85rem; font-weight: 600;
-      margin-bottom: 2rem; box-shadow: 0 0 25px rgba(192, 105, 255, 0.2);
+      display: inline-flex; align-items: center; gap: 0.7rem; padding: 6px 22px; border-radius: 100px;
+      background: rgba(192, 105, 255, 0.12); border: 1px solid rgba(255, 215, 0, 0.4);
+      color: var(--gold); font-family: var(--font-en); font-size: 0.85rem; font-weight: 700;
+      margin-bottom: 1.5rem; box-shadow: 0 0 25px rgba(192, 105, 255, 0.2);
     }
 
     .hero-title {
-      font-family: var(--font-en); font-weight: 800; font-size: clamp(3rem, 7vw, 5.8rem); line-height: 1.1; letter-spacing: -0.02em;
-      background: linear-gradient(91.84deg, #231233 -12.23%, #F4DFFF 50%, #FFD700 80%, #00FF88 115%), #F4DFFF;
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1.2rem;
+      font-family: var(--font-en); font-weight: 900; font-size: clamp(2.8rem, 6.5vw, 5.5rem); line-height: 1.05; letter-spacing: -0.02em;
+      background: linear-gradient(91.84deg, #FFFFFF 0%, #F4DFFF 35%, #FFD700 70%, #00FF88 110%), #F4DFFF;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem;
     }
 
     .hero-subtitle {
-      font-family: var(--font-en); font-weight: 400; font-size: clamp(1.1rem, 2vw, 1.4rem); line-height: 1.5;
+      font-family: var(--font-en); font-weight: 500; font-size: clamp(1.1rem, 2vw, 1.35rem); line-height: 1.5;
       color: rgba(244, 223, 255, 0.8); max-width: 680px; margin: 0 auto 2.5rem;
     }
 
@@ -160,14 +172,14 @@
     .section-title span { background: linear-gradient(91.84deg, #F4DFFF 0%, var(--gold) 50%, var(--green) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .section-desc { color: rgba(244, 223, 255, 0.7); font-size: 1rem; line-height: 1.8; max-width: 620px; margin-bottom: 3.5rem; }
 
-    /* FOXY FEATURE CARDS (FOXY-HERO / SHCOJ STYLE) */
+    /* FOXY FEATURE CARDS */
     .foxy-cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem; margin-bottom: 3.5rem; }
     
     .foxy-card {
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
       border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 2.2rem 1.8rem;
       text-decoration: none; color: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: space-between;
-      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
+      backdrop-filter: blur(20px); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); text-align: center;
     }
     .foxy-card:hover {
       transform: translateY(-8px); border-color: var(--purple-accent);
@@ -198,16 +210,6 @@
     .step-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(192, 105, 255, 0.2); border: 1px solid rgba(192, 105, 255, 0.4); color: var(--text-purple-light); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-family: var(--font-en); font-weight: 800; flex-shrink: 0; }
     .task-bonus { margin-top: 1.5rem; padding: 1rem; background: rgba(192, 105, 255, 0.08); border: 1px solid rgba(192, 105, 255, 0.25); border-radius: 12px; font-size: 0.85rem; color: var(--text-purple-light); }
 
-    /* TIMELINE TRACK */
-    .timeline-outer { overflow-x: auto; padding-bottom: 1.5rem; }
-    .timeline-track { display: flex; gap: 0; min-width: 950px; position: relative; }
-    .timeline-track::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: linear-gradient(90deg, #551A94, #C069FF, var(--gold), var(--green)); transform: translateY(-50%); z-index: 0; }
-    .timeline-item { flex: 1; text-align: center; position: relative; padding: 0 0.5rem; }
-    .timeline-dot { width: 48px; height: 48px; border-radius: 50%; background: #0C0414; border: 2.5px solid var(--purple-accent); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; position: relative; z-index: 1; font-family: var(--font-en); font-size: 0.85rem; font-weight: 800; color: var(--text-purple-light); transition: all 0.3s; }
-    .timeline-item.active .timeline-dot { background: var(--purple-accent); color: #000; transform: scale(1.2); box-shadow: 0 0 25px rgba(192, 105, 255, 0.6); }
-    .timeline-day { font-size: 0.68rem; font-family: var(--font-en); font-weight: 800; color: var(--purple-accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
-    .timeline-event { font-size: 0.78rem; color: rgba(244, 223, 255, 0.7); line-height: 1.4; }
-
     /* REWARDS */
     .top3-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 2.5rem; align-items: end; }
     .prize-card { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 2rem; text-align: center; backdrop-filter: blur(20px); position: relative; }
@@ -221,14 +223,6 @@
     .prizes-table { width: 100%; border-collapse: collapse; font-family: var(--font-en); font-size: 0.9rem; }
     .prizes-table th { background: rgba(85, 26, 148, 0.4); color: var(--text-purple-light); font-weight: 800; padding: 1rem 1.5rem; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.1); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; }
     .prizes-table td { padding: 0.9rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); color: #FFFFFF; }
-
-    /* MULTI-BRAND SLIDER (FOXY STYLE) */
-    .brand-slider-section { position: relative; overflow: hidden; padding: 3rem 0 5rem; }
-    .brand-slider-title { font-family: var(--font-en); font-size: 0.9rem; font-weight: 600; color: rgba(244, 223, 255, 0.5); text-transform: uppercase; letter-spacing: 0.15em; text-align: center; margin-bottom: 2rem; }
-    .brand-slider-track { display: flex; gap: 4rem; animation: sliderMove 25s linear infinite; white-space: nowrap; }
-    .brand-item { flex-shrink: 0; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.3s; }
-    .brand-item:hover { opacity: 1; }
-    @keyframes sliderMove { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
     /* FOOTER */
     footer { background: rgba(0,0,0,0.6); border-top: 1px solid rgba(255,255,255,0.08); padding: 3rem 1.5rem; text-align: center; font-size: 0.85rem; color: rgba(244, 223, 255, 0.6); }
@@ -252,8 +246,11 @@
   <!-- NAV -->
   <nav>
     <a href="index.html" class="brand-logo">
-      <div class="brand-icon">⚡</div>
-      <span class="brand-title">BITQIK</span>
+      <img src="assets/logo.jpg" alt="Trade Championship Logo" class="brand-logo-img" />
+      <div class="brand-text-wrap">
+        <span class="brand-title">BITQIK</span>
+        <span class="brand-sub">Trade Championship</span>
+      </div>
     </a>
 
     <ul class="nav-links">
@@ -286,12 +283,18 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-content">
+      
+      <!-- OFFICIAL EVENT EMBLEM LOGO SHOWCASE -->
+      <div class="hero-logo-showcase">
+        <img src="assets/logo.jpg" alt="Bitqik Trade Championship Logo" class="hero-logo-img" />
+      </div>
+
       <div class="hero-pill-badge">
         <span>⚡ BITQIK ALTERNATIVE INVESTMENT FOR FUTURES</span>
       </div>
 
       <h1 class="hero-title">TRADE CHAMPIONSHIP</h1>
-      <p class="hero-subtitle">Where Artificial Intelligence Meets Financial Precision</p>
+      <p class="hero-subtitle">The Ultimate Crypto Trading Showdown — Where Strategy Meets Precision</p>
 
       <div class="hero-cta-group">
         <a href="register.html" class="btn-pill-cta" style="min-width:180px; height:46px; font-size:1.05rem;">Try for free →</a>
@@ -330,21 +333,6 @@
     </div>
   </div>
 
-  <!-- MULTI-BRAND SLIDER (FOXY STYLE) -->
-  <div class="brand-slider-section">
-    <div class="brand-slider-title">Trusted by Leading Crypto Exchanges & Ecosystems</div>
-    <div style="position:relative; overflow:hidden;">
-      <div class="brand-slider-track">
-        <div class="brand-item"><svg width="100" height="40" viewBox="0 0 256 417" fill="none"><path d="M127.961 0L125.507 8.17L125.507 285.168L127.961 287.618L255.922 212.32L127.961 0Z" fill="#F4DFFF" fill-opacity="0.7"/></svg></div>
-        <div class="brand-item"><svg width="80" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F4DFFF" fill-opacity="0.2"/><path d="M21.5 15.5C21.5 14.5 20.8 13.8 20 13.5C20.5 13 20.8 12.3 20.5 11.5C20.2 10.3 19 9.8 17.8 10.2L17.5 8.5H16L16.3 10.2C15.9 10.3 15.5 10.4 15.1 10.5L14.8 8.5H13.3L13.6 10.2C13.3 10.3 12.9 10.4 12.6 10.5L10.5 11L11 12.5C11 12.5 12 12.2 12 12.3C12.5 12.2 12.8 12.5 12.9 12.9L13.5 16.5L13.6 19.5C13.6 19.8 13.5 20.2 13 20.3C13.1 20.3 12 20.6 12 20.6L11.5 22.2L13.5 21.7C13.9 21.6 14.2 21.5 14.6 21.4L14.9 23.2H16.4L16.1 21.4C16.5 21.3 16.9 21.2 17.3 21.1L17.6 22.9H19.1L18.8 21.1C20.3 20.8 21.5 19.8 21.5 18.2C21.6 17 21 16.2 20 15.8C20.8 15.5 21.4 14.8 21.5 13.9V15.5ZM18.5 18.5C18.5 19.5 16.5 19.8 15.5 20L15.2 17C16.2 16.8 18.5 16.5 18.5 18.5ZM17.5 13C17.5 14 15.8 14.2 15 14.4L14.7 11.9C15.5 11.7 17.5 11.4 17.5 13Z" fill="#F4DFFF" fill-opacity="0.8"/></svg></div>
-        <div class="brand-item"><svg width="90" height="40" viewBox="0 0 126 126" fill="none"><path d="M38.171 53.203L62.998 28.376L87.826 53.203L101.648 39.381L62.998 0.731L24.348 39.381L38.171 53.203Z" fill="#F4DFFF" fill-opacity="0.7"/></svg></div>
-        <div class="brand-item"><svg width="100" height="30" viewBox="0 0 397 311" fill="none"><path d="M64.6 237.9c2.4-2.4 5.7-3.8 9.2-3.8h317.4c5.8 0 8.7 7 4.6 11.1l-62.7 62.7c-2.4 2.4-5.7 3.8-9.2 3.8H6.5c-5.8 0-8.7-7-4.6-11.1l62.7-62.7z" fill="#F4DFFF" fill-opacity="0.6"/></svg></div>
-        <div class="brand-item"><svg width="100" height="40" viewBox="0 0 256 417" fill="none"><path d="M127.961 0L125.507 8.17L125.507 285.168L127.961 287.618L255.922 212.32L127.961 0Z" fill="#F4DFFF" fill-opacity="0.7"/></svg></div>
-        <div class="brand-item"><svg width="80" height="40" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#F4DFFF" fill-opacity="0.2"/><path d="M21.5 15.5C21.5 14.5 20.8 13.8 20 13.5C20.5 13 20.8 12.3 20.5 11.5C20.2 10.3 19 9.8 17.8 10.2L17.5 8.5H16L16.3 10.2C15.9 10.3 15.5 10.4 15.1 10.5L14.8 8.5H13.3L13.6 10.2C13.3 10.3 12.9 10.4 12.6 10.5L10.5 11L11 12.5C11 12.5 12 12.2 12 12.3C12.5 12.2 12.8 12.5 12.9 12.9L13.5 16.5L13.6 19.5C13.6 19.8 13.5 20.2 13 20.3C13.1 20.3 12 20.6 12 20.6L11.5 22.2L13.5 21.7C13.9 21.6 14.2 21.5 14.6 21.4L14.9 23.2H16.4L16.1 21.4C16.5 21.3 16.9 21.2 17.3 21.1L17.6 22.9H19.1L18.8 21.1C20.3 20.8 21.5 19.8 21.5 18.2C21.6 17 21 16.2 20 15.8C20.8 15.5 21.4 14.8 21.5 13.9V15.5ZM18.5 18.5C18.5 19.5 16.5 19.8 15.5 20L15.2 17C16.2 16.8 18.5 16.5 18.5 18.5ZM17.5 13C17.5 14 15.8 14.2 15 14.4L14.7 11.9C15.5 11.7 17.5 11.4 17.5 13Z" fill="#F4DFFF" fill-opacity="0.8"/></svg></div>
-      </div>
-    </div>
-  </div>
-
   <!-- HOW TO JOIN & FOXY FEATURE CARDS -->
   <section id="join">
     <div class="container">
@@ -352,10 +340,7 @@
       <h2 class="section-title">ວິທີ<span>ເຂົ້າຮ່ວມ</span> ແລະ ລະບົບແຂ່ງຂັນ</h2>
       <p class="section-desc">ກົດເຂົ້າເບິ່ງແຕ່ລະລະບົບໄດ້ທັນທີ — ຈາກການລົງທະບຽນ ຈົນເຖິງ Demo Trade ແລະ Leaderboard Realtime</p>
 
-      <!-- 3 FOXY GLASSMORPHIC FEATURE CARDS -->
       <div class="foxy-cards-grid">
-        
-        <!-- CARD 1: REGISTER -->
         <a href="register.html" class="foxy-card">
           <div class="foxy-card-icon">📋</div>
           <div>
@@ -365,7 +350,6 @@
           <span class="btn-pill-cta" style="width:100%; margin-top:1rem;">ເລີ່ມ ລົງທະບຽນ →</span>
         </a>
 
-        <!-- CARD 2: DEMO TRADE -->
         <a href="trade.html" class="foxy-card">
           <div class="foxy-card-icon">📈</div>
           <div>
@@ -375,7 +359,6 @@
           <span class="btn-pill-cta" style="width:100%; margin-top:1rem; background:linear-gradient(135deg,#00C96B,#00FF88); color:#000;">Explore Terminal ></span>
         </a>
 
-        <!-- CARD 3: LEADERBOARD -->
         <a href="leaderboard.html" class="foxy-card">
           <div class="foxy-card-icon">🏆</div>
           <div>
@@ -384,7 +367,6 @@
           </div>
           <span class="btn-pill-secondary" style="width:100%; margin-top:1rem; border-color:var(--purple-accent);">ເບິ່ງ Leaderboard →</span>
         </a>
-
       </div>
 
       <!-- TASK DETAIL CARDS -->
@@ -420,34 +402,6 @@
           <div class="task-bonus" style="border-color:rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);color:var(--green)">
             ⚠️ ກໍລະນີຕົກຮອບ: ສາມາດຖອນເງີນຕາມຍອດຄົງເຫຼືອໃນ Future Wallet ໄດ້
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TIMELINE -->
-  <section id="timeline">
-    <div class="container">
-      <div class="section-badge">SCHEDULE</div>
-      <h2 class="section-title">ຕາຕະລາງ<span>ການແຂ່ງຂັນ</span></h2>
-      <p class="section-desc">October 2026 — ທຸກກິດຈະກຳ Live Leaderboard</p>
-
-      <div class="timeline-outer">
-        <div class="timeline-track">
-          <div class="timeline-item"><div class="timeline-day">Saturday</div><div class="timeline-dot">📋</div><div class="timeline-event">Relation /<br/>Registration</div></div>
-          <div class="timeline-item active"><div class="timeline-day">Wednesday</div><div class="timeline-dot">🚀</div><div class="timeline-event">Start Trade<br/>Round 1</div></div>
-          <div class="timeline-item"><div class="timeline-day">Tue/Fri/Sat/Sun</div><div class="timeline-dot">📊</div><div class="timeline-event">Live<br/>Leaderboard</div></div>
-          <div class="timeline-item"><div class="timeline-day">Tuesday D+1</div><div class="timeline-dot">P1</div><div class="timeline-event">Phase 1 (A)<br/>Artwork Trailer</div></div>
-          <div class="timeline-item"><div class="timeline-day">Thursday D+3</div><div class="timeline-dot">P1</div><div class="timeline-event">Phase 1 (B)<br/>Meme VDO</div></div>
-          <div class="timeline-item"><div class="timeline-day">Friday D+4</div><div class="timeline-dot">P1</div><div class="timeline-event">Phase 1 (C)<br/>Official VDO</div></div>
-          <div class="timeline-item"><div class="timeline-day">Monday D+7</div><div class="timeline-dot">P2</div><div class="timeline-event">Phase 2 (A)<br/>History VDO</div></div>
-          <div class="timeline-item"><div class="timeline-day">Wednesday D+9</div><div class="timeline-dot">P2</div><div class="timeline-event">Phase 2 (B)<br/>Reward VDO</div></div>
-          <div class="timeline-item"><div class="timeline-day">Friday D+11</div><div class="timeline-dot">P2</div><div class="timeline-event">Phase 2 (C)<br/>Meet Up Art</div></div>
-          <div class="timeline-item"><div class="timeline-day">Monday</div><div class="timeline-dot">40</div><div class="timeline-event">Top 40<br/>Phase 3 (A)</div></div>
-          <div class="timeline-item"><div class="timeline-day">Monday</div><div class="timeline-dot">20</div><div class="timeline-event">Top 20<br/>Phase 3 (B)</div></div>
-          <div class="timeline-item"><div class="timeline-day">Wednesday</div><div class="timeline-dot">10</div><div class="timeline-event">Top 10<br/>Announce</div></div>
-          <div class="timeline-item"><div class="timeline-day">Friday</div><div class="timeline-dot">🎬</div><div class="timeline-event">Phase 3 (D)<br/>Studio Photo</div></div>
-          <div class="timeline-item final"><div class="timeline-day">SATURDAY</div><div class="timeline-dot">🏆</div><div class="timeline-event"><strong>FINAL BATTLE</strong><br/>Phase 3 (E)</div></div>
         </div>
       </div>
     </div>
@@ -503,10 +457,13 @@
 
   <!-- FOOTER -->
   <footer>
-    <div style="margin-bottom:1rem;">
-      <a href="index.html" class="brand-logo" style="display:inline-flex;">
-        <div class="brand-icon">⚡</div>
-        <span class="brand-title">BITQIK</span>
+    <div style="margin-bottom:1rem; display:flex; justify-content:center;">
+      <a href="index.html" class="brand-logo">
+        <img src="assets/logo.jpg" alt="Trade Championship Logo" class="brand-logo-img" />
+        <div class="brand-text-wrap">
+          <span class="brand-title">BITQIK</span>
+          <span class="brand-sub">Trade Championship</span>
+        </div>
       </a>
     </div>
     <p>Alternative Investment for Futures Trading Championship</p>
