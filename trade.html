@@ -46,7 +46,6 @@
     .demo-bal-box { background: rgba(192, 105, 255, 0.12); border: 1px solid rgba(192, 105, 255, 0.3); border-radius: 8px; padding: 0.35rem 0.8rem; text-align: right; }
     .demo-bal-num { font-family: var(--font-en); font-weight: 800; font-size: 0.95rem; color: var(--gold); }
 
-    /* LAYOUT */
     .terminal-container { flex: 1; display: grid; grid-template-columns: 280px 1fr 320px; grid-template-rows: 1fr 230px; overflow: hidden; }
 
     .left-col { grid-column: 1 / 2; grid-row: 1 / 3; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
@@ -69,7 +68,7 @@
   <header>
     <div class="header-left">
       <a href="index.html" class="brand-logo">
-        <img src="assets/logo.jpg" alt="Trade Championship Logo" class="brand-logo-img" />
+        <img src="assets/logo.png" alt="Trade Championship Logo" class="brand-logo-img" />
         <span class="brand-title">BITQIK DEMO</span>
       </a>
       <div class="pair-badge">
@@ -93,8 +92,6 @@
   </header>
 
   <div class="terminal-container">
-    
-    <!-- LEFT: ORDER BOOK -->
     <div class="left-col">
       <div style="height:36px; background:rgba(0,0,0,0.3); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 0.8rem; font-size:0.8rem; font-weight:700; color:rgba(244,223,255,0.7);">
         Order Book (Live Depth)
@@ -112,7 +109,6 @@
       </div>
     </div>
 
-    <!-- CENTER TOP: CHART -->
     <div class="center-col-chart">
       <div style="height:36px; border-bottom:1px solid rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:space-between; padding:0 1rem; background:rgba(0,0,0,0.2);">
         <span style="font-size:0.78rem; font-family:var(--font-en); font-weight:700; color:var(--purple-accent);">BTC-PERP Lightweight Chart</span>
@@ -121,7 +117,6 @@
       <div id="tv-chart"></div>
     </div>
 
-    <!-- CENTER BOTTOM: POSITIONS -->
     <div class="center-col-pos">
       <div style="height:36px; background:rgba(0,0,0,0.3); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 1rem; font-size:0.82rem; font-weight:700; color:var(--gold);">
         Open Positions (1)
@@ -133,9 +128,7 @@
               <th>Symbol</th><th>Side</th><th>Size</th><th>Entry Price</th><th>Mark Price</th><th>P&L</th><th>Action</th>
             </tr>
           </thead>
-          <tbody id="pos-tbody">
-            <!-- JS -->
-          </tbody>
+          <tbody id="pos-tbody"></tbody>
         </table>
         <div id="empty-pos" style="text-align:center; padding:2.5rem; color:rgba(244,223,255,0.5); font-size:0.85rem;">
           No open positions. Use the order form on the right to open a position.
@@ -143,7 +136,6 @@
       </div>
     </div>
 
-    <!-- RIGHT: ORDER ENTRY -->
     <div class="right-col-order">
       <div style="font-family:var(--font-en); font-weight:800; font-size:1.05rem; color:#fff;">Futures Order Entry</div>
 
@@ -162,7 +154,6 @@
         <button class="btn-pill-action short" onclick="placeOrder('SHORT')">SELL / SHORT</button>
       </div>
     </div>
-
   </div>
 
 <script>

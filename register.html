@@ -31,7 +31,6 @@
 
     .wrapper { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
 
-    /* NAV */
     nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0 2rem; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 2rem; }
     .brand-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .brand-logo-img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; border: 1.5px solid rgba(255, 215, 0, 0.6); box-shadow: 0 4px 15px rgba(192, 105, 255, 0.4); }
@@ -44,7 +43,6 @@
     .page-title h1 span { background: linear-gradient(91.84deg, #F4DFFF 0%, var(--purple-accent) 60%, var(--green) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .page-title p { color: rgba(244, 223, 255, 0.7); font-size: 0.95rem; }
 
-    /* TASK SELECTOR */
     .task-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
     .task-opt { background: rgba(255, 255, 255, 0.04); border: 1.5px solid rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1.5rem; cursor: pointer; transition: all 0.3s; position: relative; backdrop-filter: blur(16px); }
     .task-opt:hover { border-color: var(--purple-accent); transform: translateY(-3px); }
@@ -53,13 +51,11 @@
     .task-opt-bd { background: rgba(255, 215, 0, 0.15); color: var(--gold); border: 1px solid rgba(255, 215, 0, 0.3); }
     .task-opt-pc { background: rgba(0, 255, 136, 0.15); color: var(--green); border: 1px solid rgba(0, 255, 136, 0.3); }
 
-    /* PROGRESS BAR */
     .progress-box { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 3rem; backdrop-filter: blur(16px); }
     .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; font-size: 0.9rem; font-family: var(--font-en); }
     .progress-track { height: 10px; background: rgba(255, 255, 255, 0.08); border-radius: 50px; overflow: hidden; }
     .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #551A94, #C069FF, var(--green)); border-radius: 50px; transition: width 0.5s ease; }
 
-    /* TIMELINE */
     .timeline { position: relative; padding-left: 3.5rem; }
     .timeline::before { content: ''; position: absolute; left: 1.25rem; top: 1.5rem; bottom: 1.5rem; width: 3px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; }
     .timeline-line-progress { position: absolute; left: 1.25rem; top: 1.5rem; width: 3px; background: linear-gradient(180deg, #C069FF, var(--green)); border-radius: 3px; height: 0%; transition: height 0.5s ease; }
@@ -96,7 +92,7 @@
 
   <nav>
     <a href="index.html" class="brand-logo">
-      <img src="assets/logo.jpg" alt="Trade Championship Logo" class="brand-logo-img" />
+      <img src="assets/logo.png" alt="Trade Championship Logo" class="brand-logo-img" />
       <span class="brand-title">BITQIK</span>
     </a>
     <a href="index.html" class="nav-back">← ກັບໄປໜ້າຫຼັກ</a>
@@ -107,7 +103,6 @@
     <p>ຈຳລອງ ຂັ້ນຕອນການລົງທະບຽນ ແລະ ກຽມພ້ອມ Trade ເພື່ອຮັບລາງວັນ</p>
   </div>
 
-  <!-- TASK SELECTOR -->
   <div class="task-selector">
     <div class="task-opt active" id="opt-bd" onclick="switchTask('BD')">
       <span class="task-opt-badge task-opt-bd">TASK 1</span>
@@ -121,7 +116,6 @@
     </div>
   </div>
 
-  <!-- PROGRESS BAR -->
   <div class="progress-box">
     <div class="progress-header">
       <span id="progress-text">ຄວາມຄືບໜ້າ: 0 / 6 ຂັ້ນຕອນ</span>
@@ -132,12 +126,8 @@
     </div>
   </div>
 
-  <!-- TIMELINE CONTAINER -->
-  <div class="timeline" id="timeline-container">
-    <!-- Dynamic Steps Rendered by JS -->
-  </div>
+  <div class="timeline" id="timeline-container"></div>
 
-  <!-- SUCCESS BOX -->
   <div class="success-box" id="success-box">
     <div style="font-size:4rem; margin-bottom:1rem;">🎉</div>
     <h2 style="font-size:2rem; font-weight:800; color:var(--purple-accent); margin-bottom:0.5rem;">ລົງທະບຽນ ສຳເລັດແລ້ວ!</h2>
@@ -177,13 +167,11 @@
   function getSteps() { return currentTask === 'BD' ? STEPS_BD : STEPS_PC; }
 
   function switchTask(task) {
-    currentTask = task;
-    currentStepIndex = 0;
+    currentTask = task; currentStepIndex = 0;
     document.getElementById('opt-bd').classList.toggle('active', task === 'BD');
     document.getElementById('opt-pc').classList.toggle('active', task === 'PC');
     document.getElementById('success-box').style.display = 'none';
-    renderSteps();
-    updateProgress();
+    renderSteps(); updateProgress();
   }
 
   function renderSteps() {
@@ -217,13 +205,11 @@
     currentStepIndex = idx + 1;
     const steps = getSteps();
     if (currentStepIndex >= steps.length) {
-      renderSteps();
-      updateProgress();
+      renderSteps(); updateProgress();
       document.getElementById('success-box').style.display = 'block';
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     } else {
-      renderSteps();
-      updateProgress();
+      renderSteps(); updateProgress();
     }
   }
 
@@ -235,8 +221,7 @@
     document.getElementById('progress-text').textContent = `ຄວາມຄືບໜ້າ: ${currentStepIndex} / ${steps.length} ຂັ້ນຕອນ`;
   }
 
-  renderSteps();
-  updateProgress();
+  renderSteps(); updateProgress();
 </script>
 </body>
 </html>
