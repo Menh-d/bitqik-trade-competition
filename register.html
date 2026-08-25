@@ -3,90 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bitqik Trade Championship - Registration Process</title>
+  <title>bitqik Trade Championship - Registration Timeline</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --orange-accent: #FF6B00;
       --orange-light: #FF9433;
-      --orange-glow: rgba(255, 107, 0, 0.45);
-      --orange-deep: #C94A00;
       --bg-dark: #0A0806;
       --bg-panel: #140E0A;
-      --text-main: #FFFFFF;
       --text-sub: #E8D5C8;
       --gold: #FFC700;
       --green: #00FF88;
       --red: #FF4060;
+      --border: rgba(255, 107, 0, 0.18);
       --font-lao: 'Noto Sans Lao', sans-serif;
     }
 
-    html { scroll-behavior: smooth; }
     body { font-family: var(--font-lao); background: var(--bg-dark); color: #FFFFFF; min-height: 100vh; overflow-x: hidden; }
-
     .bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #0A0806; }
     .orange-ambient-light { position: fixed; width: 1000px; height: 900px; left: 50%; top: -150px; transform: translateX(-50%); background: rgba(255, 107, 0, 0.3); filter: blur(240px); border-radius: 50%; pointer-events: none; z-index: 0; }
     .grid-lines { position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255, 107, 0, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 107, 0, 0.04) 1px, transparent 1px); background-size: 60px 60px; }
 
-    .wrapper { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 1.5rem 1.5rem 5rem; }
+    .wrapper { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; padding: 1.5rem 1.2rem 5rem; }
 
     /* NAV */
-    nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 0 2rem; border-bottom: 1px solid rgba(255, 107, 0, 0.15); margin-bottom: 2rem; }
+    nav { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem 0 1.8rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
     .brand-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-    .brand-logo-img { width: 44px; height: 44px; border-radius: 10px; object-fit: cover; border: 1.5px solid var(--orange-accent); box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4); }
-    .brand-title { font-family: var(--font-lao); font-weight: 800; font-size: 1.25rem; color: #FFFFFF; }
-    .nav-back { color: var(--text-sub); text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; transition: color 0.2s; font-weight: 600; }
-    .nav-back:hover { color: var(--orange-light); }
+    .brand-logo-img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; border: 1.5px solid var(--orange-accent); box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4); }
+    .brand-title { font-family: var(--font-lao); font-weight: 800; font-size: 1.25rem; color: #FFFFFF; text-transform: lowercase; }
 
-    .page-title { text-align: center; margin-bottom: 2.5rem; }
-    .page-title h1 { font-family: var(--font-lao); font-size: 2.4rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
-    .page-title h1 span { color: var(--orange-accent); }
-    .page-title p { color: var(--text-sub); font-size: 0.95rem; }
+    .btn-pill-back { padding: 6px 18px; border-radius: 100px; border: 1px solid var(--border); background: rgba(255, 107, 0, 0.08); color: var(--text-sub); text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+
+    /* TITLE */
+    .page-header { text-align: center; margin-bottom: 2.5rem; }
+    .page-header h1 { font-family: var(--font-lao); font-size: 2.2rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .page-header h1 span { color: var(--orange-accent); }
+    .page-header p { color: var(--text-sub); font-size: 0.95rem; }
 
     /* TASK SELECTOR */
-    .task-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2.5rem; }
-    .task-opt { background: rgba(255, 107, 0, 0.05); border: 1.5px solid rgba(255, 107, 0, 0.2); border-radius: 20px; padding: 1.5rem; cursor: pointer; transition: all 0.3s; position: relative; backdrop-filter: blur(16px); }
-    .task-opt:hover { border-color: var(--orange-accent); transform: translateY(-3px); }
-    .task-opt.active { border-color: var(--orange-accent); background: rgba(255, 107, 0, 0.15); box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3); }
-    .task-opt-badge { display: inline-block; font-size: 0.75rem; font-family: var(--font-lao); font-weight: 700; padding: 4px 12px; border-radius: 100px; margin-bottom: 0.8rem; text-transform: uppercase; }
-    .task-opt-bd { background: rgba(255, 199, 0, 0.15); color: var(--gold); border: 1px solid rgba(255, 199, 0, 0.4); }
-    .task-opt-pc { background: rgba(255, 107, 0, 0.15); color: var(--orange-light); border: 1px solid rgba(255, 107, 0, 0.4); }
+    .task-switcher { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 2.5rem; }
+    .task-tab { background: rgba(255, 107, 0, 0.04); border: 1.5px solid var(--border); border-radius: 20px; padding: 1.2rem 1.5rem; cursor: pointer; transition: all 0.3s; backdrop-filter: blur(16px); }
+    .task-tab.active { border-color: var(--orange-accent); background: rgba(255, 107, 0, 0.14); box-shadow: 0 10px 30px rgba(255, 107, 0, 0.3); }
+    .task-tab-tag { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; color: var(--orange-light); margin-bottom: 0.3rem; }
+    .task-tab-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.2rem; font-family: var(--font-lao); }
+    .task-tab-sub { font-size: 0.82rem; color: var(--text-sub); }
 
-    /* PROGRESS BAR */
-    .progress-box { background: rgba(255, 107, 0, 0.05); border: 1px solid rgba(255, 107, 0, 0.2); border-radius: 18px; padding: 1.2rem 1.5rem; margin-bottom: 3rem; backdrop-filter: blur(16px); }
-    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; font-size: 0.9rem; font-family: var(--font-lao); font-weight: 600; }
-    .progress-track { height: 10px; background: rgba(255, 255, 255, 0.08); border-radius: 50px; overflow: hidden; }
-    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #C94A00, #FF6B00, var(--gold)); border-radius: 50px; transition: width 0.5s ease; }
+    /* PROGRESS */
+    .progress-bar-card { background: rgba(255, 107, 0, 0.05); border: 1px solid var(--border); border-radius: 16px; padding: 1rem 1.5rem; margin-bottom: 2.5rem; backdrop-filter: blur(16px); }
+    .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; color: var(--text-sub); margin-bottom: 0.5rem; }
+    .progress-track { height: 10px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden; }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--orange-accent), var(--gold)); transition: width 0.5s ease; }
 
     /* TIMELINE */
-    .timeline { position: relative; padding-left: 3.5rem; }
-    .timeline::before { content: ''; position: absolute; left: 1.25rem; top: 1.5rem; bottom: 1.5rem; width: 3px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; }
-    .timeline-line-progress { position: absolute; left: 1.25rem; top: 1.5rem; width: 3px; background: linear-gradient(180deg, #FF6B00, var(--gold)); border-radius: 3px; height: 0%; transition: height 0.5s ease; }
+    .timeline-container { position: relative; padding-left: 2.5rem; }
+    .timeline-container::before { content: ''; position: absolute; left: 18px; top: 20px; bottom: 40px; width: 2px; background: rgba(255, 107, 0, 0.2); }
 
-    .step-item { position: relative; margin-bottom: 2.2rem; opacity: 0.55; transition: all 0.4s; }
-    .step-item.active { opacity: 1; }
-    .step-item.completed { opacity: 1; }
+    .step-item { position: relative; margin-bottom: 1.8rem; }
+    .step-dot { position: absolute; left: -2.5rem; top: 12px; width: 36px; height: 36px; border-radius: 50%; background: #140E0A; border: 2px solid var(--border); color: var(--text-sub); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 800; z-index: 2; transition: all 0.3s; }
+    .step-item.active .step-dot { border-color: var(--orange-accent); background: var(--orange-accent); color: #fff; box-shadow: 0 0 20px rgba(255, 107, 0, 0.8); }
+    .step-item.done .step-dot { border-color: var(--green); background: var(--green); color: #000; }
 
-    .step-dot { position: absolute; left: -3.5rem; top: 0; width: 44px; height: 44px; border-radius: 50%; background: #0A0806; border: 2px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-family: var(--font-lao); font-weight: 800; color: rgba(255,255,255,0.6); transition: all 0.3s; z-index: 2; }
-    .step-item.active .step-dot { border-color: var(--orange-accent); color: #fff; background: var(--orange-accent); box-shadow: 0 0 20px rgba(255, 107, 0, 0.6); }
-    .step-item.completed .step-dot { border-color: var(--gold); background: var(--gold); color: #000; box-shadow: 0 0 15px rgba(255, 199, 0, 0.5); }
+    .step-card { background: rgba(255, 107, 0, 0.04); border: 1.5px solid var(--border); border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(16px); transition: all 0.3s; }
+    .step-item.active .step-card { border-color: var(--orange-accent); background: rgba(255, 107, 0, 0.1); box-shadow: 0 10px 30px rgba(255, 107, 0, 0.25); }
 
-    .step-card { background: rgba(255, 107, 0, 0.05); border: 1px solid rgba(255, 107, 0, 0.2); border-radius: 20px; padding: 1.8rem; backdrop-filter: blur(16px); transition: all 0.3s; }
-    .step-item.active .step-card { border-color: var(--orange-accent); box-shadow: 0 15px 40px rgba(255, 107, 0, 0.3); }
+    .step-title { font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 0.4rem; font-family: var(--font-lao); }
+    .step-desc { font-size: 0.88rem; color: var(--text-sub); line-height: 1.6; margin-bottom: 1.2rem; }
 
-    .btn-step {
-      padding: 10px 26px; border-radius: 100px;
-      background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 107, 0, 0.8) 100%), #FF6B00;
-      border: 1px solid rgba(255, 255, 255, 0.3); color: #FFFFFF; font-family: var(--font-lao); font-weight: 700; font-size: 0.92rem;
-      cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
-    }
-    .btn-step:hover { transform: scale(1.05); }
+    .btn-action { padding: 10px 24px; border-radius: 100px; border: none; background: linear-gradient(135deg, var(--orange-accent), var(--orange-light)); color: #fff; font-family: var(--font-lao); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4); }
+    .btn-action:hover { transform: scale(1.04); box-shadow: 0 8px 25px rgba(255, 107, 0, 0.6); }
 
-    .success-box { display: none; text-align: center; background: rgba(255, 107, 0, 0.08); border: 2px solid var(--orange-accent); border-radius: 24px; padding: 3rem 2rem; backdrop-filter: blur(20px); margin-top: 2rem; }
+    /* SUCCESS modal */
+    .success-modal { display: none; text-align: center; background: rgba(255, 107, 0, 0.12); border: 2px solid var(--orange-accent); border-radius: 28px; padding: 3rem 2rem; backdrop-filter: blur(24px); box-shadow: 0 20px 60px rgba(255, 107, 0, 0.4); }
+    .success-modal h2 { font-size: 2rem; color: var(--gold); margin-bottom: 0.8rem; font-family: var(--font-lao); }
   </style>
 </head>
 <body>
@@ -96,139 +88,130 @@
 <div class="grid-lines"></div>
 
 <div class="wrapper">
-
+  <!-- NAV -->
   <nav>
     <a href="index.html" class="brand-logo">
-      <img src="assets/logo.png" alt="Trade Championship Logo" class="brand-logo-img" />
-      <span class="brand-title">BITQIK</span>
+      <img src="assets/bitqik_logo.png" alt="bitqik Logo" class="brand-logo-img" />
+      <span class="brand-title">bitqik</span>
     </a>
-    <a href="index.html" class="nav-back">← ກັບໄປໜ້າຫຼັກ</a>
+    <a href="index.html" class="btn-pill-back">← ກັບໜ້າຫຼັກ</a>
   </nav>
 
-  <div class="page-title">
-    <h1>ລົງທະບຽນ<span>ເຂົ້າຮ່ວມແຂ່ງຂັນ</span></h1>
-    <p>ຈຳລອງ ຂັ້ນຕອນການລົງທະບຽນ ແລະ ກຽມພ້ອມ Trade ເພື່ອຮັບລາງວັນ</p>
+  <!-- TITLE -->
+  <div class="page-header">
+    <h1>ຂັ້ນຕອນການລົງທະບຽນ <span>Registration Timeline</span></h1>
+    <p>ເລືອກ Task ທີ່ທ່ານຕ້ອງການລົງທະບຽນ ແລະ ດຳເນີນຕາມຂັ້ນຕອນ</p>
   </div>
 
-  <div class="task-selector">
-    <div class="task-opt active" id="opt-bd" onclick="switchTask('BD')">
-      <span class="task-opt-badge task-opt-bd">TASK 1</span>
-      <h3>Bonus Distribution (BD)</h3>
-      <p>ຝາກ 50 USDT ຮັບ 10 USDT Bonus ຟຣີ + ໄດ້ສິດຖືຄອງ BTC/XAUT</p>
+  <!-- TASK SELECTOR -->
+  <div class="task-switcher">
+    <div class="task-tab active" onclick="switchTask('BD')">
+      <div class="task-tab-tag">TASK 1</div>
+      <div class="task-tab-title">💰 Bonus Distribution (BD)</div>
+      <div class="task-tab-sub">ຮັບ 10 USDT Bonus ຟຣີ</div>
     </div>
-    <div class="task-opt" id="opt-pc" onclick="switchTask('PC')">
-      <span class="task-opt-badge task-opt-pc">TASK 2</span>
-      <h3>Player Contribution (PC)</h3>
-      <p>ຈ່າຍຄ່າລົງທະບຽນ 10 USDT ເພື່ອເຂົ້າຮ່ວມ Trade Future ຊິງລາງວັນ</p>
-    </div>
-  </div>
-
-  <div class="progress-box">
-    <div class="progress-header">
-      <span id="progress-text">ຄວາມຄືບໜ້າ: 0 / 6 ຂັ້ນຕອນ</span>
-      <span id="progress-pct" style="color:var(--orange-accent); font-weight:800;">0%</span>
-    </div>
-    <div class="progress-track">
-      <div class="progress-fill" id="progress-fill"></div>
+    <div class="task-tab" onclick="switchTask('PC')">
+      <div class="task-tab-tag">TASK 2</div>
+      <div class="task-tab-title">🎮 Player Contribution (PC)</div>
+      <div class="task-tab-sub">ຄ່າລົງທະບຽນ 10 USDT</div>
     </div>
   </div>
 
-  <div class="timeline" id="timeline-container"></div>
-
-  <div class="success-box" id="success-box">
-    <div style="font-size:4rem; margin-bottom:1rem;">🎉</div>
-    <h2 style="font-size:2rem; font-weight:800; color:var(--orange-accent); margin-bottom:0.5rem;">ລົງທະບຽນ ສຳເລັດແລ້ວ!</h2>
-    <p style="color:var(--text-sub); max-width:500px; margin:0 auto 2rem;">
-      ທ່ານໄດ້ສຳເລັດທຸກຂັ້ນຕອນການລົງທະບຽນແລ້ວ. ຕອນນີ້ທ່ານພ້ອມທີ່ຈະລອງ Trade ຜ່ານລະບົບ Demo ຫຼື ເບິ່ງອັນດັບການແຂ່ງຂັນ real-time ໄດ້ເລີຍ!
-    </p>
-    <div style="display:flex; justify-content:center; gap:1rem; flex-wrap:wrap;">
-      <a href="trade.html" class="btn-step" style="background:linear-gradient(135deg,#FF6B00,#FF9433); color:#fff; text-decoration:none;">📈 ເຂົ້າສູ່ Demo Trade</a>
-      <a href="leaderboard.html" class="btn-step" style="text-decoration:none;">🏆 ເບິ່ງ Leaderboard Realtime</a>
+  <!-- PROGRESS -->
+  <div class="progress-bar-card">
+    <div class="progress-info">
+      <span>ຄວາມຄືບໜ້າການລົງທະບຽນ</span>
+      <span id="progress-text">0 / 6 ຂັ້ນຕອນ (0%)</span>
     </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
   </div>
 
+  <!-- TIMELINE -->
+  <div class="timeline-container" id="timeline-steps"></div>
+
+  <!-- SUCCESS MODAL -->
+  <div class="success-modal" id="success-card">
+    <div style="font-size:3.5rem; margin-bottom:1rem;">🎉</div>
+    <h2>ລົງທະບຽນ ສຳເລັດຮຽບຮ້ອຍ!</h2>
+    <p style="color:var(--text-sub); margin-bottom:2rem;">ທ່ານໄດ້ຮັບສິດເຂົ້າຮ່ວມການແຂ່ງຂັນ bitqik Trade Championship ແລ້ວ</p>
+    <div style="display:flex; justify-content:center; gap:1rem;">
+      <a href="trade.html" class="btn-action" style="text-decoration:none; padding:12px 30px;">📈 ເຂົ້າສູ່ Demo Trade</a>
+      <a href="leaderboard.html" class="btn-action" style="text-decoration:none; padding:12px 30px; background:rgba(255,107,0,0.2); border:1px solid var(--orange-accent);">🏆 ເບິ່ງ Leaderboard</a>
+    </div>
+  </div>
 </div>
 
 <script>
   let currentTask = 'BD';
-  let currentStepIndex = 0;
+  let currentStep = 1;
 
   const STEPS_BD = [
-    { title: '1. ດາວໂຫຼດ Bitqik App', desc: 'ດາວໂຫຼດ Bitqik Application ໃນ Smart Phone ຂອງທ່ານ (iOS / Android)', type: 'download' },
-    { title: '2. ລົງທະບຽນບັນຊີ (Register)', desc: 'ກອກ Email ແລະ ຕັ້ງ Password ເພື່ອສ້າງບັນຊີ Bitqik', type: 'form' },
-    { title: '3. ຢືນຢັນຕົວຕົນ (KYC Verification)', desc: 'ອັບໂຫຼດເອກະສານ Passport ຫຼື ໃບຂັບຂີ່ ເພື່ອຢືນຢັນຕົວຕົນ', type: 'upload' },
-    { title: '4. ຕັ້ງຄ່າຄວາມປອດໄພ (2FA Setup)', desc: 'ຜູກ 2-Factor Authentication ເພື່ອຄວາມປອດໄພຂອງບັນຊີ', type: '2fa' },
-    { title: '5. ຝາກເງີນຂັ້ນຕ່ຳ (Deposit 50 USDT)', desc: 'ຝາກເງີນ 50 USDT ເຂົ້າ Spot Wallet', type: 'confirm', btnText: 'Confirm Deposit 50 USDT' },
-    { title: '6. ຊື້ Spot BTC / XAUT (50 USDT)', desc: 'ຊື້ຫຼຽນ Bitcoin (BTC) ຫຼື Gold Token (XAUT) ມູນລະຄ່າ 50 USD', type: 'buy_spot' }
+    { title: '📱 ຂັ້ນຕອນທີ 1: ດາວໂຫຼດ bitqik App', desc: 'ດາວໂຫຼດແອັບ bitqik ຜ່ານ App Store ຫຼື Google Play Store' },
+    { title: '✉️ ຂັ້ນຕອນທີ 2: ລົງທະບຽນ Gmail', desc: 'ປ້ອນ Email ແລະ ລະຫັດຜ່ານ ຂອງທ່ານເພື່ອສ້າງບັນຊີ' },
+    { title: '🪪 ຂັ້ນຕອນທີ 3: ຢືນຢັນຕົວຕົນ KYC', desc: 'ອັບໂຫຼດຮູບ Passport ຫຼື ໃບຂັບຂີ່ ເພື່ອ ຢືນຢັນຕົວຕົນ' },
+    { title: '🔐 ຂັ້ນຕອນທີ 4: ຕັ້ງຄ່າ 2FA Security', desc: 'ຜູກບັນຊີ Google Authenticator ເພື່ອຄວາມປອດໄພ' },
+    { title: '💵 ຂັ້ນຕອນທີ 5: ຝາກເງີນຂັ້ນຕ່ຳ 50 USDT', desc: 'ຝາກເງີນ 50 USDT ເຂົ້າ Spot Wallet ຂອງທ່ານ' },
+    { title: '₿ ຂັ້ນຕອນທີ 6: ຊື້ Spot BTC ຫຼື XAUT', desc: 'ຊື້ Spot BTC/XAUT ມູນລະຄ່າ 50 USD ເພື່ອຮັບ Bonus 10 USDT' }
   ];
 
   const STEPS_PC = [
-    { title: '1. ດາວໂຫຼດ Bitqik App', desc: 'ດາວໂຫຼດ Bitqik Application ໃນ Smart Phone ຂອງທ່ານ', type: 'download' },
-    { title: '2. ລົງທະບຽນບັນຊີ (Register)', desc: 'ກອກ Email ແລະ Password ສ້າງບັນຊີໃໝ່', type: 'form' },
-    { title: '3. ຢືນຢັນຕົວຕົນ (KYC Verification)', desc: 'ອັບໂຫຼດ Passport / ໃບຂັບຂີ່ ເພື່ອ KYC', type: 'upload' },
-    { title: '4. ຕັ້ງຄ່າ 2FA Security', desc: 'ຕັ້ງຄ່າ 2FA ເພື່ອຄວາມປອດໄພ', type: '2fa' },
-    { title: '5. ຈ່າຍຄ່າລົງທະບຽນ (10 USDT Fee)', desc: 'ຊຳລະຄ່າລົງທະບຽນ 10 USDT ເພື່ອຮັບສິດເຂົ້າຮ່ວມແຂ່ງຂັນ', type: 'confirm', btnText: 'Pay 10 USDT Registration Fee' },
-    { title: '6. Transfer ເຂົ້າ Future Wallet', desc: 'ໂອນເງີນ 10 USDT ເຂົ້າ Future Wallet ເພື່ອກຽມ Trade', type: 'confirm', btnText: 'Transfer to Future Wallet' }
+    { title: '📱 ຂັ້ນຕອນທີ 1: ດາວໂຫຼດ bitqik App', desc: 'ດາວໂຫຼດແອັບ bitqik ຜ່ານ App Store ຫຼື Google Play Store' },
+    { title: '✉️ ຂັ້ນຕອນທີ 2: ລົງທະບຽນ Gmail', desc: 'ປ້ອນ Email ແລະ ລະຫັດຜ່ານ ຂອງທ່ານເພື່ອສ້າງບັນຊີ' },
+    { title: '🪪 ຂັ້ນຕອນທີ 3: ຢືນຢັນຕົວຕົນ KYC', desc: 'ອັບໂຫຼດຮູບ Passport ຫຼື ໃບຂັບຂີ່ ເພື່ອ ຢືນຢັນຕົວຕົນ' },
+    { title: '🔐 ຂັ້ນຕອນທີ 4: ຕັ້ງຄ່າ 2FA Security', desc: 'ຜູກບັນຊີ Google Authenticator ເພື່ອຄວາມປອດໄພ' },
+    { title: '💳 ຂັ້ນຕອນທີ 5: ຈ່າຍຄ່າລົງທະບຽນ 10 USDT', desc: 'ຊຳລະຄ່າທຳນຽມລົງທະບຽນແຂ່ງຂັນ 10 USDT' },
+    { title: '🔄 ຂັ້ນຕອນທີ 6: ໂອນເຂົ້າ Future Wallet', desc: 'ໂອນເງີນ 10 USDT ເຂົ້າ Future Wallet ເພື່ອເລີ່ມເທຣດ' }
   ];
 
-  function getSteps() { return currentTask === 'BD' ? STEPS_BD : STEPS_PC; }
-
-  function switchTask(task) {
-    currentTask = task; currentStepIndex = 0;
-    document.getElementById('opt-bd').classList.toggle('active', task === 'BD');
-    document.getElementById('opt-pc').classList.toggle('active', task === 'PC');
-    document.getElementById('success-box').style.display = 'none';
-    renderSteps(); updateProgress();
-  }
-
   function renderSteps() {
-    const steps = getSteps();
-    const container = document.getElementById('timeline-container');
-    container.innerHTML = `<div class="timeline-line-progress" id="line-progress"></div>`;
-
-    steps.forEach((step, idx) => {
-      const isCompleted = idx < currentStepIndex;
-      const isActive = idx === currentStepIndex;
-      let bodyHTML = `<button class="btn-step" onclick="completeStep(${idx})">Complete Step →</button>`;
-
-      const itemHTML = `
-        <div class="step-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}">
-          <div class="step-dot">${isCompleted ? '✓' : idx + 1}</div>
+    const steps = currentTask === 'BD' ? STEPS_BD : STEPS_PC;
+    const container = document.getElementById('timeline-steps');
+    container.innerHTML = steps.map((s, idx) => {
+      const num = idx + 1;
+      let statusClass = '';
+      if (num < currentStep) statusClass = 'done';
+      else if (num === currentStep) statusClass = 'active';
+      return `
+        <div class="step-item ${statusClass}">
+          <div class="step-dot">${num < currentStep ? '✓' : num}</div>
           <div class="step-card">
-            <div style="display:flex; justify-content:space-between; margin-bottom:0.6rem;">
-              <strong style="font-size:1.1rem; color:#fff;">${step.title}</strong>
-              <span style="font-size:0.78rem; color:var(--orange-light); font-family:var(--font-lao); font-weight:700;">${isCompleted ? 'Completed' : isActive ? 'In Progress' : 'Pending'}</span>
-            </div>
-            <div style="font-size:0.88rem; color:var(--text-sub); margin-bottom:1rem;">${step.desc}</div>
-            ${isActive ? bodyHTML : ''}
+            <div class="step-title">${s.title}</div>
+            <div class="step-desc">${s.desc}</div>
+            ${num === currentStep ? `<button class="btn-action" onclick="completeStep()">ດຳເນີນການຂັ້ນຕອນນີ້ →</button>` : ''}
           </div>
         </div>
       `;
-      container.insertAdjacentHTML('beforeend', itemHTML);
-    });
+    }).join('');
+
+    const pct = Math.round(((currentStep - 1) / steps.length) * 100);
+    document.getElementById('progress-fill').style.width = `${pct}%`;
+    document.getElementById('progress-text').textContent = `${currentStep - 1} / ${steps.length} ຂັ້ນຕອນ (${pct}%)`;
   }
 
-  function completeStep(idx) {
-    currentStepIndex = idx + 1;
-    const steps = getSteps();
-    if (currentStepIndex >= steps.length) {
-      renderSteps(); updateProgress();
-      document.getElementById('success-box').style.display = 'block';
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+  function completeStep() {
+    const steps = currentTask === 'BD' ? STEPS_BD : STEPS_PC;
+    if (currentStep < steps.length) {
+      currentStep++;
+      renderSteps();
     } else {
-      renderSteps(); updateProgress();
+      document.getElementById('timeline-steps').style.display = 'none';
+      document.getElementById('success-card').style.display = 'block';
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
   }
 
-  function updateProgress() {
-    const steps = getSteps();
-    const pct = Math.round((currentStepIndex / steps.length) * 100);
-    document.getElementById('progress-fill').style.width = `${pct}%`;
-    document.getElementById('progress-pct').textContent = `${pct}%`;
-    document.getElementById('progress-text').textContent = `ຄວາມຄືບໜ້າ: ${currentStepIndex} / ${steps.length} ຂັ້ນຕອນ`;
+  function switchTask(task) {
+    currentTask = task;
+    currentStep = 1;
+    document.querySelectorAll('.task-tab').forEach((el, i) => {
+      el.classList.toggle('active', (task==='BD'&&i===0)||(task==='PC'&&i===1));
+    });
+    document.getElementById('timeline-steps').style.display = 'block';
+    document.getElementById('success-card').style.display = 'none';
+    renderSteps();
   }
 
-  renderSteps(); updateProgress();
+  renderSteps();
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bitqik Futures Demo | BTC-PERP Trading Terminal</title>
+  <title>bitqik Demo Futures Trading Terminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -15,168 +15,146 @@
       --orange-light: #FF9433;
       --bg-dark: #0A0806;
       --bg-panel: #140E0A;
+      --text-sub: #E8D5C8;
       --gold: #FFC700;
       --green: #00FF88;
       --red: #FF4060;
-      --border: rgba(255, 107, 0, 0.15);
+      --border: rgba(255, 107, 0, 0.18);
       --font-lao: 'Noto Sans Lao', sans-serif;
     }
-    body { font-family: var(--font-lao); background: var(--bg-dark); color: #FFFFFF; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
 
-    header { height: 62px; background: rgba(20, 14, 10, 0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 1.2rem; z-index: 10; flex-shrink: 0; }
-    .header-left { display: flex; align-items: center; gap: 1.5rem; }
+    body { font-family: var(--font-lao); background: var(--bg-dark); color: #FFFFFF; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
+    /* TOP BAR */
+    header { height: 56px; background: rgba(10, 8, 6, 0.95); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 1.2rem; flex-shrink: 0; }
     .brand-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .brand-logo-img { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1.5px solid var(--orange-accent); box-shadow: 0 4px 15px rgba(255, 107, 0, 0.4); }
-    .brand-title { font-family: var(--font-lao); font-weight: 800; font-size: 1.15rem; color: #FFFFFF; }
+    .brand-logo-img { width: 34px; height: 34px; border-radius: 8px; object-fit: cover; border: 1px solid var(--orange-accent); }
+    .brand-title { font-family: var(--font-lao); font-weight: 800; font-size: 1.1rem; color: #FFFFFF; text-transform: lowercase; }
 
-    .pair-badge { display: flex; align-items: center; gap: 0.8rem; background: rgba(255,107,0,0.08); padding: 0.35rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); }
-    .pair-symbol { font-family: var(--font-lao); font-weight: 800; font-size: 0.95rem; color: #fff; }
+    .ticker-bar { display: flex; align-items: center; gap: 2rem; }
+    .symbol-badge { background: rgba(255,107,0,0.15); border: 1px solid var(--orange-accent); color: var(--gold); padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 0.85rem; }
+    .live-price { font-family: var(--font-lao); font-weight: 900; font-size: 1.25rem; color: var(--green); }
 
-    .ticker-metrics { display: flex; align-items: center; gap: 1.5rem; font-family: var(--font-lao); }
-    .metric-item { display: flex; flex-direction: column; }
-    .metric-label { font-size: 0.68rem; color: rgba(255,255,255,0.6); text-transform: uppercase; font-weight: 600; }
-    .metric-val { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .user-balance-box { background: rgba(255,107,0,0.1); border: 1px solid var(--border); border-radius: 8px; padding: 4px 12px; font-size: 0.82rem; }
+    .user-balance-val { font-weight: 800; color: var(--gold); }
 
-    .header-right { display: flex; align-items: center; gap: 1rem; }
-    .nav-link { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.85rem; font-weight: 600; padding: 0.35rem 0.7rem; border-radius: 6px; }
-    .nav-link:hover { color: var(--orange-light); }
+    /* MAIN TRADING GRID */
+    .trading-layout { flex: 1; display: grid; grid-template-columns: 1fr 340px; grid-template-rows: 1fr 180px; height: calc(100vh - 56px); }
 
-    .demo-bal-box { background: rgba(255, 107, 0, 0.15); border: 1px solid rgba(255, 107, 0, 0.35); border-radius: 8px; padding: 0.35rem 0.8rem; text-align: right; }
-    .demo-bal-num { font-family: var(--font-lao); font-weight: 800; font-size: 0.95rem; color: var(--gold); }
+    /* CHART AREA */
+    .chart-panel { grid-column: 1; grid-row: 1; background: #070504; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; }
+    #chart-container { width: 100%; height: 100%; }
 
-    .terminal-container { flex: 1; display: grid; grid-template-columns: 280px 1fr 320px; grid-template-rows: 1fr 230px; overflow: hidden; }
+    /* ORDER PANEL */
+    .order-panel { grid-column: 2; grid-row: 1 / 3; background: var(--bg-panel); border-left: 1px solid var(--border); padding: 1.2rem; display: flex; flex-direction: column; gap: 1.2rem; overflow-y: auto; }
+    .order-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .tab-btn { padding: 10px; border-radius: 8px; border: none; font-family: var(--font-lao); font-weight: 800; font-size: 0.95rem; cursor: pointer; opacity: 0.5; transition: all 0.2s; }
+    .tab-btn.active.long { opacity: 1; background: var(--green); color: #000; box-shadow: 0 4px 15px rgba(0,255,136,0.4); }
+    .tab-btn.active.short { opacity: 1; background: var(--red); color: #fff; box-shadow: 0 4px 15px rgba(255,64,96,0.4); }
 
-    .left-col { grid-column: 1 / 2; grid-row: 1 / 3; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-    .center-col-chart { grid-column: 2 / 3; grid-row: 1 / 2; background: #070504; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; }
-    .center-col-pos { grid-column: 2 / 3; grid-row: 2 / 3; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-    .right-col-order { grid-column: 3 / 4; grid-row: 1 / 3; background: var(--bg-panel); padding: 1.2rem; display: flex; flex-direction: column; gap: 1.1rem; overflow-y: auto; }
+    .input-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .input-label { font-size: 0.78rem; color: var(--text-sub); font-weight: 700; }
+    .input-field { background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem; color: #fff; font-weight: 700; font-family: var(--font-lao); outline: none; }
 
-    #tv-chart { flex: 1; width: 100%; height: 100%; }
+    .leverage-btn-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+    .lev-btn { background: rgba(255,107,0,0.08); border: 1px solid var(--border); color: var(--text-sub); padding: 6px; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+    .lev-btn.active { border-color: var(--orange-accent); background: var(--orange-accent); color: #fff; }
 
-    .btn-pill-action {
-      padding: 10px; border-radius: 100px; border: none; font-family: var(--font-lao); font-weight: 800; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; transition: all 0.2s;
-    }
-    .btn-pill-action.long { background: linear-gradient(135deg, #00C96B, #00FF88); color: #000; box-shadow: 0 4px 15px rgba(0,255,136,0.3); }
-    .btn-pill-action.short { background: linear-gradient(135deg, #D32F2F, #FF4060); color: #fff; box-shadow: 0 4px 15px rgba(255,64,96,0.3); }
-    .btn-pill-action:hover { transform: scale(1.03); }
+    .btn-submit-order { padding: 12px; border-radius: 100px; border: none; font-family: var(--font-lao); font-weight: 800; font-size: 1rem; cursor: pointer; margin-top: auto; }
+    .btn-submit-order.long { background: linear-gradient(135deg, #00C96B, #00FF88); color: #000; box-shadow: 0 6px 20px rgba(0,255,136,0.4); }
+    .btn-submit-order.short { background: linear-gradient(135deg, #D32F2F, #FF4060); color: #fff; box-shadow: 0 6px 20px rgba(255,64,96,0.4); }
+
+    /* POSITIONS PANEL */
+    .positions-panel { grid-column: 1; grid-row: 2; background: var(--bg-panel); border-right: 1px solid var(--border); padding: 1rem; overflow-y: auto; }
+    .pos-table { width: 100%; border-collapse: collapse; font-family: var(--font-lao); font-size: 0.85rem; text-align: left; }
+    .pos-table th { background: rgba(255,107,0,0.1); color: var(--text-sub); padding: 0.6rem; border-bottom: 1px solid var(--border); font-size: 0.75rem; text-transform: uppercase; }
+    .pos-table td { padding: 0.7rem 0.6rem; border-bottom: 1px solid rgba(255,107,0,0.08); }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="header-left">
-      <a href="index.html" class="brand-logo">
-        <img src="assets/logo.png" alt="Trade Championship Logo" class="brand-logo-img" />
-        <span class="brand-title">BITQIK DEMO</span>
-      </a>
-      <div class="pair-badge">
-        <span class="pair-symbol">BTC-PERP</span>
-      </div>
-      <div class="ticker-metrics">
-        <div class="metric-item"><span class="metric-label">Mark Price</span><span class="metric-val" style="color:var(--green)" id="mark-price">$65,240.50</span></div>
-        <div class="metric-item"><span class="metric-label">24h Change</span><span class="metric-val" style="color:var(--green)">+2.45%</span></div>
-        <div class="metric-item"><span class="metric-label">Funding / Countdown</span><span class="metric-val" style="color:var(--gold)">0.0100% / 04:15:20</span></div>
-      </div>
+    <a href="index.html" class="brand-logo">
+      <img src="assets/bitqik_logo.png" alt="bitqik Logo" class="brand-logo-img" />
+      <span class="brand-title">bitqik</span>
+    </a>
+    <div class="ticker-bar">
+      <span class="symbol-badge">BTC-PERP</span>
+      <span class="live-price" id="top-price">$65,240.50</span>
     </div>
-    <div class="header-right">
-      <a href="index.html" class="nav-link">🏠 ໜ້າຫຼັກ</a>
-      <a href="register.html" class="nav-link">📋 ລົງທະບຽນ</a>
-      <a href="leaderboard.html" class="nav-link" style="color:var(--gold)">🏆 Leaderboard</a>
-      <div class="demo-bal-box">
-        <div style="font-size:0.65rem; color:rgba(255,255,255,0.7); text-transform:uppercase;">Margin Bal</div>
-        <div class="demo-bal-num" id="user-balance">$10.00 USDT</div>
-      </div>
+    <div class="user-balance-box">
+      <span>Demo Balance: </span><span class="user-balance-val" id="user-bal">$10.00 USDT</span>
     </div>
   </header>
 
-  <div class="terminal-container">
-    <div class="left-col">
-      <div style="height:36px; background:rgba(0,0,0,0.4); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 0.8rem; font-size:0.8rem; font-weight:700; color:rgba(255,255,255,0.8);">
-        Order Book (Live Depth)
-      </div>
-      <div style="flex:1; padding:0.8rem; font-family:var(--font-lao); font-size:0.8rem;" id="ob-container">
-        <div style="color:var(--red); display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>65,242.00</span><span>0.412 BTC</span></div>
-        <div style="color:var(--red); display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>65,241.50</span><span>1.050 BTC</span></div>
-        <div style="color:var(--red); display:flex; justify-content:space-between; margin-bottom:0.6rem;"><span>65,241.00</span><span>0.180 BTC</span></div>
-        <div style="padding:0.4rem 0; border-top:1px solid var(--border); border-bottom:1px solid var(--border); color:var(--green); font-weight:800; font-size:0.95rem; margin-bottom:0.6rem;">
-          65,240.50 ↑
-        </div>
-        <div style="color:var(--green); display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>65,240.00</span><span>0.890 BTC</span></div>
-        <div style="color:var(--green); display:flex; justify-content:space-between; margin-bottom:0.3rem;"><span>65,239.50</span><span>2.150 BTC</span></div>
-        <div style="color:var(--green); display:flex; justify-content:space-between;"><span>65,239.00</span><span>0.540 BTC</span></div>
-      </div>
-    </div>
+  <div class="trading-layout">
+    <div class="chart-panel"><div id="chart-container"></div></div>
 
-    <div class="center-col-chart">
-      <div style="height:36px; border-bottom:1px solid rgba(255,107,0,0.1); display:flex; align-items:center; justify-content:space-between; padding:0 1rem; background:rgba(0,0,0,0.3);">
-        <span style="font-size:0.78rem; font-family:var(--font-lao); font-weight:700; color:var(--orange-light);">BTC-PERP Lightweight Chart</span>
-        <span style="font-size:0.75rem; color:var(--green);">🟢 Live WS Connected</span>
+    <div class="order-panel">
+      <div class="order-tabs">
+        <button class="tab-btn active long" onclick="setSide('LONG')">LONG</button>
+        <button class="tab-btn short" onclick="setSide('SHORT')">SHORT</button>
       </div>
-      <div id="tv-chart"></div>
-    </div>
 
-    <div class="center-col-pos">
-      <div style="height:36px; background:rgba(0,0,0,0.4); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 1rem; font-size:0.82rem; font-weight:700; color:var(--gold);">
-        Open Positions (1)
-      </div>
-      <div style="flex:1; padding:0.8rem; overflow-y:auto;">
-        <table style="width:100%; border-collapse:collapse; font-size:0.82rem; font-family:var(--font-lao); text-align:left;">
-          <thead>
-            <tr style="color:rgba(255,255,255,0.6); font-size:0.75rem; border-bottom:1px solid var(--border);">
-              <th>Symbol</th><th>Side</th><th>Size</th><th>Entry Price</th><th>Mark Price</th><th>P&L</th><th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="pos-tbody"></tbody>
-        </table>
-        <div id="empty-pos" style="text-align:center; padding:2.5rem; color:rgba(255,255,255,0.5); font-size:0.85rem;">
-          No open positions. Use the order form on the right to open a position.
+      <div class="input-group">
+        <span class="input-label">Leverage</span>
+        <div class="leverage-btn-grid">
+          <button class="lev-btn" onclick="setLev(5)">5x</button>
+          <button class="lev-btn" onclick="setLev(10)">10x</button>
+          <button class="lev-btn active" onclick="setLev(20)">20x</button>
+          <button class="lev-btn" onclick="setLev(50)">50x</button>
         </div>
       </div>
+
+      <div class="input-group">
+        <span class="input-label">Margin (USDT)</span>
+        <input type="number" id="margin-val" value="10" class="input-field" />
+      </div>
+
+      <div style="font-size:0.8rem; color:var(--text-sub); display:flex; flex-direction:column; gap:0.4rem; background:rgba(0,0,0,0.3); padding:0.8rem; border-radius:8px;">
+        <div style="display:flex; justify-content:space-between;"><span>Position Size:</span><span id="pos-size-val">0.0030 BTC</span></div>
+        <div style="display:flex; justify-content:space-between;"><span>Liq Price (Est):</span><span style="color:var(--red);" id="liq-price-val">$62,100</span></div>
+      </div>
+
+      <button class="btn-submit-order long" id="btn-submit" onclick="executeTrade()">Open LONG Position</button>
     </div>
 
-    <div class="right-col-order">
-      <div style="font-family:var(--font-lao); font-weight:800; font-size:1.05rem; color:#fff;">Futures Order Entry</div>
-
-      <div style="display:flex; flex-direction:column; gap:0.4rem;">
-        <label style="font-size:0.78rem; color:rgba(255,255,255,0.7);">Leverage (20x)</label>
-        <input type="range" min="1" max="100" value="20" style="accent-color:var(--orange-accent);" id="lev-range" />
-      </div>
-
-      <div style="display:flex; flex-direction:column; gap:0.4rem;">
-        <label style="font-size:0.78rem; color:rgba(255,255,255,0.7);">Margin USDT</label>
-        <input type="number" value="10" style="background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:8px; padding:0.6rem 0.8rem; color:#fff; font-family:var(--font-lao); font-weight:700; outline:none;" id="margin-input" />
-      </div>
-
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; margin-top:0.5rem;">
-        <button class="btn-pill-action long" onclick="placeOrder('LONG')">BUY / LONG</button>
-        <button class="btn-pill-action short" onclick="placeOrder('SHORT')">SELL / SHORT</button>
-      </div>
+    <div class="positions-panel">
+      <h4 style="font-family:var(--font-lao); margin-bottom:0.6rem; color:var(--orange-light);">Open Positions</h4>
+      <table class="pos-table">
+        <thead>
+          <tr><th>Symbol</th><th>Side</th><th>Size</th><th>Leverage</th><th>Entry Price</th><th>Mark Price</th><th>P&L %</th><th>Action</th></tr>
+        </thead>
+        <tbody id="pos-tbody">
+          <tr><td colspan="8" style="text-align:center; color:var(--text-sub);">No active open positions</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
 <script>
+  let side = 'LONG';
+  let lev = 20;
   let currentPrice = 65240.50;
   let chart, candleSeries;
-  let demoBalance = parseFloat(localStorage.getItem('bitqik_demo_balance') || '10.00');
-  let openPosition = JSON.parse(localStorage.getItem('bitqik_trade_position') || 'null');
+  let currentPos = JSON.parse(localStorage.getItem('bitqik_trade_position') || 'null');
 
   function initChart() {
-    const container = document.getElementById('tv-chart');
+    const container = document.getElementById('chart-container');
     chart = LightweightCharts.createChart(container, {
       layout: { background: { color: '#070504' }, textColor: '#E8D5C8' },
       grid: { vertLines: { color: 'rgba(255,107,0,0.03)' }, horzLines: { color: 'rgba(255,107,0,0.03)' } }
     });
     candleSeries = chart.addCandlestickSeries({ upColor: '#00FF88', downColor: '#FF4060' });
 
-    fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=80')
+    fetch('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m&limit=100')
       .then(res => res.json())
       .then(data => {
         const candles = data.map(d => ({ time: d[0]/1000, open: parseFloat(d[1]), high: parseFloat(d[2]), low: parseFloat(d[3]), close: parseFloat(d[4]) }));
         candleSeries.setData(candles);
-        if (candles.length > 0) currentPrice = candles[candles.length - 1].close;
-        renderPositions();
-      }).catch(e => console.log(e));
+        if(candles.length>0) currentPrice = candles[candles.length-1].close;
+        renderPos();
+      });
 
     const ws = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@kline_1m');
     ws.onmessage = (e) => {
@@ -184,45 +162,60 @@
       if (msg.k) {
         currentPrice = parseFloat(msg.k.c);
         candleSeries.update({ time: msg.k.t/1000, open: parseFloat(msg.k.o), high: parseFloat(msg.k.h), low: parseFloat(msg.k.l), close: currentPrice });
-        document.getElementById('mark-price').textContent = `$${currentPrice.toFixed(2)}`;
-        renderPositions();
+        document.getElementById('top-price').textContent = `$${currentPrice.toFixed(2)}`;
+        renderPos();
       }
     };
   }
 
-  function placeOrder(side) {
-    const margin = parseFloat(document.getElementById('margin-input').value) || 10;
-    openPosition = { symbol: 'BTC-PERP', side: side, margin: margin, leverage: 20, entryPrice: currentPrice };
-    localStorage.setItem('bitqik_trade_position', JSON.stringify(openPosition));
-    renderPositions();
+  function setSide(s) {
+    side = s;
+    const btn = document.getElementById('btn-submit');
+    btn.className = `btn-submit-order ${side.toLowerCase()}`;
+    btn.textContent = `Open ${side} Position`;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.tab-btn.${side.toLowerCase()}`).classList.add('active');
   }
 
-  function closePosition() {
-    openPosition = null;
+  function setLev(l) {
+    lev = l;
+    document.querySelectorAll('.lev-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  function executeTrade() {
+    const margin = parseFloat(document.getElementById('margin-val').value) || 10;
+    currentPos = { symbol: 'BTC-PERP', side, margin, leverage: lev, entryPrice: currentPrice };
+    localStorage.setItem('bitqik_trade_position', JSON.stringify(currentPos));
+    renderPos();
+  }
+
+  function closeTrade() {
+    currentPos = null;
     localStorage.removeItem('bitqik_trade_position');
-    renderPositions();
+    renderPos();
   }
 
-  function renderPositions() {
+  function renderPos() {
     const tbody = document.getElementById('pos-tbody');
-    const emptyEl = document.getElementById('empty-pos');
-    if (!openPosition) { tbody.innerHTML = ''; emptyEl.style.display = 'block'; return; }
-    emptyEl.style.display = 'none';
-
-    let deltaPct = (currentPrice - openPosition.entryPrice) / openPosition.entryPrice;
-    if (openPosition.side === 'SHORT') deltaPct = -deltaPct;
-    const pnlUsdt = openPosition.margin * 20 * deltaPct;
-    const isWin = pnlUsdt >= 0;
+    if (!currentPos) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-sub);">No active open positions</td></tr>`;
+      return;
+    }
+    let deltaPct = (currentPrice - currentPos.entryPrice) / currentPos.entryPrice;
+    if (currentPos.side === 'SHORT') deltaPct = -deltaPct;
+    const pnlPct = deltaPct * currentPos.leverage * 100;
 
     tbody.innerHTML = `
       <tr>
-        <td><strong>BTC-PERP</strong></td>
-        <td style="color:${openPosition.side === 'LONG' ? 'var(--green)' : 'var(--red)'}">${openPosition.side}</td>
-        <td>$${openPosition.margin} (20x)</td>
-        <td>$${openPosition.entryPrice.toFixed(2)}</td>
+        <td><strong>${currentPos.symbol}</strong></td>
+        <td style="color:${currentPos.side==='LONG'?'var(--green)':'var(--red)'}; font-weight:800;">${currentPos.side}</td>
+        <td>$${(currentPos.margin * currentPos.leverage).toFixed(2)}</td>
+        <td>${currentPos.leverage}x</td>
+        <td>$${currentPos.entryPrice.toFixed(2)}</td>
         <td>$${currentPrice.toFixed(2)}</td>
-        <td style="font-weight:800; color:${isWin ? 'var(--green)' : 'var(--red)'}">${isWin ? '+' : ''}$${pnlUsdt.toFixed(2)}</td>
-        <td><button onclick="closePosition()" style="background:rgba(255,64,96,0.2); color:var(--red); border:1px solid var(--red); border-radius:4px; padding:0.2rem 0.5rem; cursor:pointer;">Close</button></td>
+        <td style="font-weight:900; color:${pnlPct>=0?'var(--green)':'var(--red)'};">${pnlPct>=0?'+':''}${pnlPct.toFixed(2)}%</td>
+        <td><button onclick="closeTrade()" style="background:rgba(255,64,96,0.2); color:var(--red); border:1px solid var(--red); padding:4px 10px; border-radius:4px; cursor:pointer; font-weight:800;">Close</button></td>
       </tr>
     `;
   }
